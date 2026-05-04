@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form đặt hàng</title>
+</head>
+<body>
+    <h1>Giỏ hàng</h1>
+    <table border="1">
+        <thead>
+            <tr> <th>STT</th> <th>Sản phẩm</th> <th>Đơn giá</th> <th>Số lượng</th> <th>Thành tiền</th> </tr>
+        </thead>
+        <tbody>
+            <tr> <td>1</td> <td>iPhone 15</td> <td>15.000.000</td> <td>3</td> <td>45.000.000</td> </tr>
+            <tr> <td>2</td> <td>iPhone 16</td> <td>20.000.000</td> <td>3</td> <td>60.000.000</td> </tr>
+            <tr> <td>3</td> <td>iPhone 17</td> <td>25.000.000</td> <td>3</td> <td>75.000.000</td> </tr>
+        </tbody>
+
+        <tfoot>
+            <tr> <td colspan="4">Tổng cộng</td> <td>180.000.000</td> </tr>
+        </tfoot>
+    </table>
+
+    <h2>Thanh toán</h2>
+    <form>
+        <p>Phương thức thanh toán:</p>
+        <label><input type="radio" name="qay" value="cod">COD</label>
+        <label><input type="radio" name="qay" value="bank">Chuyển khoản</label>
+        <label><input type="radio" name="qay" value="vidt">Ví điện tử</label>
+    
+        <p>Mã giảm giá:</p>
+        <input type="text" name="ma" pattern="SALE[0-9]{4}">
+
+        <p>Ghi chú:</p>
+        <textarea name="note" rows="4" cols="40"></textarea>
+
+    <h2>Thông tin giao hàng</h2>
+    <p>Ngày giao hàng mong muốn:</p>
+    <input type="date" name="date" min="2026-05-04">
+    
+    <p>Khung giờ giao:</p>
+    <select name="time">
+        <option>Sáng 8-12h</option>
+        <option>Chiều 14-18h</option>
+        <option>Tối 18-21h</option>
+    </select>
+
+    <p>Thời gian giao hàng (số ngày):</p>
+    <input type="range" name="time" min="1" max="7" step="1">
+    
+    <br>
+    <button type="submit" aria-label="Xác nhận đơn hàng">Đặt hàng</button>
+    </form>
+</body>
+</html>
