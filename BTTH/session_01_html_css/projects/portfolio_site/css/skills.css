@@ -1,0 +1,65 @@
+/* ===== SKILLS ===== */
+.skills-section {
+    padding: 5rem var(--spacing-lg);
+    background-color: #f1f5f9;
+}
+
+.skills-section h2 {
+    font-size: 2rem;
+    color: var(--color-dark);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* Grid 2 cột */
+.skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Mỗi skill */
+.skill-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.skill-name {
+    font-weight: 600;
+    color: var(--color-dark);
+}
+
+.skill-percent {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* Thanh bar */
+.skill-bar {
+    height: 12px;
+    background-color: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Progress fill */
+.skill-progress {
+    height: 100%;
+    width: 0;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    transition: width 1s ease-out;
+}
+
+/* Trigger animation */
+.skill-progress.animate {
+    width: var(--target-width);
+}
