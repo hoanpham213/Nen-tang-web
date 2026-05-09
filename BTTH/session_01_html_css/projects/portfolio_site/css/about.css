@@ -1,0 +1,47 @@
+/* ===== ABOUT ===== */
+.about-section {
+    padding: 5rem var(--spacing-lg);
+    background-color: var(--color-light);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.about-section h2 {
+    font-size: 2rem;
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Grid 2 cột */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+/* Avatar */
+.about-image img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--color-primary);
+    margin: 0 auto;
+}
+
+/* Text */
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: var(--color-dark);
+}
