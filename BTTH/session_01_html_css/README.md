@@ -278,7 +278,7 @@ input, textarea { min-height: 44px; font-size: 16px; }
 - [ ] Portfolio grid responsive (3/2/1 columns)
 - [ ] CSS-only lightbox hoạt động
 - [ ] Contact form với validation UI
-- [ ] Footer responsive trên mobile
+- [ ] Footer responsive trên    mobile
 - [ ] Tối thiểu 12 commits với meaningful messages
 - [ ] Commit messages đúng format `[TYPE] Description`
 
@@ -296,7 +296,7 @@ input, textarea { min-height: 44px; font-size: 16px; }
 
 1. Fork repository `session_01_portfolio_htmlcss`
 2. Clone về máy local
-3. Tạo folder structure theo cấu trúc trên
+3. Tạo   cấu trúc trên
 4. Commit `[SETUP] Initialize project structure` trước
 5. Làm bài 1.1 → commit → bài 1.2 → commit → ....
 
