@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Selectors Test — A2</title>
+  <style>
+    body { font-family: sans-serif; background: #f5f5f5; padding: 20px; }
+    h1 { color: #333; border-bottom: 2px solid #333; padding-bottom: 8px; }
+    .result-box { background: white; border-radius: 8px; padding: 16px; margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+    .result-box h2 { margin: 0 0 8px; font-size: 15px; color: #555; }
+    code { background: #eee; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+
+    /* === SELECTORS ĐANG KIỂM CHỨNG === */
+
+    /* 1. h1 → ShopTLU */
+    h1 { outline: 3px solid #e53e3e; }
+
+    /* 2. .price → 25.990.000đ + 45.990.000đ */
+    .price { background: #fef3cd; font-weight: bold; }
+
+    /* 3. #app header → toàn bộ header */
+    #app header { border: 3px solid #3182ce; border-radius: 6px; padding: 8px; }
+
+    /* 4. nav a:first-child → Home */
+    nav a:first-child { text-decoration: underline; color: #e53e3e; font-weight: bold; }
+
+    /* 5. .product.featured h2 → MacBook Pro */
+    .product.featured h2 { color: #d69e2e; text-decoration: underline; }
+
+    /* 6. article > p → tất cả 4 p trực tiếp trong article */
+    article > p { border-left: 3px solid #38a169; padding-left: 8px; }
+
+    /* 7. a[href="/"] → Home */
+    a[href="/"] { font-size: 1.2em; }
+
+    /* 8. .top-bar.dark h1 → ShopTLU */
+    .top-bar.dark h1 { letter-spacing: 2px; }
+  </style>
+</head>
+<body>
+
+  <h1>📌 Selectors Test — Câu A2</h1>
+  <p>Mỗi selector được highlight bằng style riêng để kiểm chứng đáp án.</p>
+
+  <!-- HTML gốc từ đề bài -->
+  <div id="app">
+    <header class="top-bar dark">
+      <h1>ShopTLU</h1>
+      <nav>
+        <a href="/" class="active">Home</a>
+        <a href="/products">Products</a>
+        <a href="/about">About</a>
+      </nav>
+    </header>
+    <main>
+      <article class="product">
+        <h2>iPhone 16</h2>
+        <p class="price">25.990.000đ</p>
+        <p>Mô tả sản phẩm...</p>
+      </article>
+      <article class="product featured">
+        <h2>MacBook Pro</h2>
+        <p class="price">45.990.000đ</p>
+        <p>Mô tả sản phẩm...</p>
+      </article>
+    </main>
+  </div>
+
+  <hr style="margin:32px 0">
+
+  <!-- Bảng giải thích -->
+  <div class="result-box">
+    <h2>Bảng kết quả đáp án</h2>
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;width:100%">
+      <tr style="background:#333;color:white">
+        <th>#</th><th>Selector</th><th>Chọn được</th><th>Visual cue</th>
+      </tr>
+      <tr><td>1</td><td><code>h1</code></td><td>ShopTLU</td><td>outline đỏ</td></tr>
+      <tr style="background:#f9f9f9"><td>2</td><td><code>.price</code></td><td>2 giá tiền</td><td>background vàng</td></tr>
+      <tr><td>3</td><td><code>#app header</code></td><td>Cả thẻ header</td><td>border xanh dương</td></tr>
+      <tr style="background:#f9f9f9"><td>4</td><td><code>nav a:first-child</code></td><td>Home</td><td>gạch chân + đỏ + to</td></tr>
+      <tr><td>5</td><td><code>.product.featured h2</code></td><td>MacBook Pro</td><td>màu vàng + gạch chân</td></tr>
+      <tr style="background:#f9f9f9"><td>6</td><td><code>article > p</code></td><td>4 thẻ p</td><td>border trái xanh lá</td></tr>
+      <tr><td>7</td><td><code>a[href="/"]</code></td><td>Home</td><td>font lớn hơn</td></tr>
+      <tr style="background:#f9f9f9"><td>8</td><td><code>.top-bar.dark h1</code></td><td>ShopTLU</td><td>letter-spacing</td></tr>
+    </table>
+  </div>
+
+</body>
+</html>

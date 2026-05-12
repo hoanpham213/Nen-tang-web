@@ -74,3 +74,41 @@ Câu hỏi thêm:
 Nếu cùng một element có cả inline, internal và external CSS cùng áp dụng một thuộc tính, thông thường inline CSS thắng vì inline CSS có độ ưu tiên cao hơn selector trong internal và external CSS.
 
 Tuy nhiên, kết quả cuối cùng còn phụ thuộc vào cascade, specificity, thứ tự khai báo và !important. Nếu external hoặc internal CSS có !important, nó có thể thắng inline CSS bình thường. Nếu cả hai rule có cùng mức ưu tiên và cùng specificity, rule viết sau sẽ được áp dụng.
+
+Câu A2 - CSS Selectors
+Cho HTML:
+<div id="app">
+    <header class="top-bar dark">
+        <h1>ShopTLU</h1>
+        <nav>
+            <a href="/" class="active">Home</a>
+            <a href="/products">Products</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+    <main>
+        <article class="product">
+            <h2>iPhone 16</h2>
+            <p class="price">25.990.000đ</p>
+            <p>Mô tả sản phẩm...</p>
+        </article>
+        <article class="product featured">
+            <h2>MacBook Pro</h2>
+            <p class="price">45.990.000đ</p>
+            <p>Mô tả sản phẩm...</p>
+        </article>
+    </main>
+</div>
+
+Kết quả chọn element:
+ #  | Selector               | Chọn được                           | 
+|---|------------------------|-------------------------------------|
+| 1 | `h1`                   | `ShopTLU`                           | 
+| 2 | `.price`               | `25.990.000đ` và `45.990.000đ`      | 
+| 3 | `#app header`          | Thẻ `<header class="top-bar dark">` | 
+| 4 | `nav a:first-child`    | `Home`                              | 
+| 5 | `.product.featured h2` | `MacBook Pro`                       | 
+| 6 | `article > p`          | 4 thẻ p (2 giá + 2 mô tả)           | 
+| 7 | `a[href="/"]`          | `Home`                              | 
+| 8 | `.top-bar.dark h1`     | `ShopTLU`                           | 
+
