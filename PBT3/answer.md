@@ -112,3 +112,36 @@ Kết quả chọn element:
 | 7 | `a[href="/"]`          | `Home`                              | 
 | 8 | `.top-bar.dark h1`     | `ShopTLU`                           | 
 
+Câu A3 - Box model - Tính toán kích thước
+- Trướng hợp 1 - Content-box (mặc định)
+CSS:
+.box-1 {
+    width: 400px;
+    padding: 20px;
+    border: 5px solid black;
+    margin: 10px;
+}
+-> Chiều rộng hiển thị = 400 + 20×2 + 5×2 = 450px
+-> Không gian chiếm trên trang = 450 + 10×2 = 470px
+
+- Trường hợp 2 - Border-box
+CSS:
+.box-2 {
+    box-sizing: border-box;
+    width: 400px;
+    padding: 20px;
+    border: 5px solid black;
+    margin: 10px;
+}
+-> Chiều rộng hiển thị = 400px (padding + border gói TRONG 400px)
+-> Content thực tế = 400 - 20×2 - 5×2 = 350px
+-> Không gian chiếm trên trang = 400 + 10×2 = 420px
+
+- Trường hợp 3 - Margin collapse
+CSS: 
+.box-a { margin-bottom: 25px; }
+.box-b { margin-top: 40px; }
+-> Khoảng cách = 40px (chỉ lấy giá trị lớn hơn, KHÔNG cộng)
+-> Lý do: Margin dọc giữa 2 block-level elements liền kề bị collapse — browser lấy max(25, 40) = 40px
+
+- Nâng cao: -10px + 40px → max(-10, 40) = 30px (khi có margin âm: lấy max của dương + min của âm = 40 + (-10) = 30px)
