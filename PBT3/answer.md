@@ -145,3 +145,34 @@ CSS:
 -> Lý do: Margin dọc giữa 2 block-level elements liền kề bị collapse — browser lấy max(25, 40) = 40px
 
 - Nâng cao: -10px + 40px → max(-10, 40) = 30px (khi có margin âm: lấy max của dương + min của âm = 40 + (-10) = 30px)
+
+Câu A4 - Specificity
+- elemennt:
+<p class="price" id="main-price">
+- Các rules:
+p { color: black; }                    /* Rule A */
+.price { color: blue; }               /* Rule B */
+#main-price { color: red; }           /* Rule C */
+p.price { color: green; }             /* Rule D */
+
+1.  Specificity score
+Rule	    Selector	    Specificity (a,b,c)	    Giải thích
+Rule A	    p	            (0,0,1)	                Có 1 element selector
+Rule B	    .price	        (0,1,0)	                Có 1 class selector
+Rule C	    #main-price	    (1,0,0)             	Có 1 id selector
+Rule D	    p.price	        (0,1,1)             	Có 1 class và 1 element
+
+2. Element sẽ có màu gì?
+- Màu hiển thị sẽ là màu đỏ
+-> Do rule C có selector #main-price với score 1,0,0 với độ ưu tiên cao hơn nên rule C thắng các rules còn lại 
+
+3. Nếu thêm inline style
+<p class="price" id="main-price" style="color: orange;">...</p>
+- Element sẽ có màu cam
+-> Inline style có độ ưu tiên cao hơn các rule CSS thông thường trong file CSS hoặc trong thẻ <style>
+
+4. Nếu rules A có thêm !important
+Nếu rules A thêm !important
+p { color: black !important; }
+- Element sẽ có màu đen
+-> !important làm declaration được ưu tiên hơn các declaration thông thường. Vì vậy, dù selector p có specificity thấp hơn #main-price, rule có !important vẫn thắng các rule thường. Nếu có nhiều rule cùng !important, khi đó mới so sánh specificity và thứ tự khai báo
