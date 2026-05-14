@@ -1,0 +1,238 @@
+/* ============================================================
+   style.css — Profile: Phạm Hải Hoàn
+   Yêu cầu: Bài B1 — PBT03 CSS Core
+   ============================================================ */
+
+/* ① RESET — dòng đầu tiên bắt buộc */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ============================================================
+   ELEMENT SELECTORS — selector 1/5
+   ============================================================ */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f4f8;
+  color: #2d3748;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+main {
+  max-width: 860px;
+  margin: 32px auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 16px;
+  padding-left: 12px;
+  border-left: 4px solid #3b82f6;
+}
+
+p {
+  margin-bottom: 8px;
+}
+
+img {
+  display: block;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.6);
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+}
+
+figcaption {
+  text-align: center;
+  margin-top: 8px;
+  font-style: italic;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+footer {
+  /* Footer: background đậm, text nhạt, căn giữa */
+  background-color: #1e293b;
+  color: #94a3b8;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+  margin-top: 32px;
+}
+
+
+/* ============================================================
+   HEADER & GRADIENT — element selector: header
+   ============================================================ */
+
+header {
+  /* Header: gradient, chữ trắng, padding >= 20px */
+  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 60%, #60a5fa 100%);
+  color: white;
+  padding: 28px 24px 0;
+}
+
+
+/* ============================================================
+   DESCENDANT SELECTORS
+   ============================================================ */
+
+header nav {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 4px;
+}
+
+/* Navigation links — mặc định: không gạch chân, màu cụ thể */
+header nav a {
+  display: inline-block;
+  padding: 10px 22px;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 6px 6px 0 0;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Section và aside dùng chung kiểu card */
+main section,
+aside {
+  background: white;
+  border-radius: 12px;
+  padding: 28px 32px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+}
+
+/* Layout ảnh + đoạn văn trong "Về tôi" nằm cạnh nhau */
+#about article {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* Danh sách trong aside */
+aside ul {
+  list-style: none;
+}
+
+aside ul li {
+  padding: 9px 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.97rem;
+}
+
+aside ul li:last-child {
+  border-bottom: none;
+}
+
+
+/* ============================================================
+   PSEUDO-CLASS SELECTORS
+   ============================================================ */
+
+/* Hover: đổi màu + gạch chân */
+header nav a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Active link — thêm class="active" vào 1 thẻ <a> trong HTML */
+header nav a.active {
+  background-color: #ffffff;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+/* Zebra striping: hàng chẵn đổi màu */
+#skills tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+/* Hover hàng trong bảng */
+#skills tbody tr:hover {
+  background-color: #dbeafe;
+  cursor: default;
+}
+
+
+/* ============================================================
+   ID SELECTORS
+   ============================================================ */
+
+aside {
+  max-width: 860px;
+  margin: 0 24px 32px;
+}
+
+/* Trên màn hình rộng: căn giữa aside giống main */
+@media (min-width: 860px) {
+  aside {
+    max-width: 860px;
+    margin: 0 auto 32px;
+    padding: 28px 32px;
+  }
+}
+
+
+/* ============================================================
+   TABLE STYLING
+   ============================================================ */
+
+#skills table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+/* Header row: background đậm, chữ trắng */
+#skills thead tr {
+  background-color: #1e293b;
+  color: white;
+}
+
+#skills th {
+  padding: 13px 16px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+#skills td {
+  padding: 11px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #374151;
+}
+
+/* Tfoot: dòng tổng kết */
+#skills tfoot tr {
+  background-color: #f1f5f9;
+}
+
+#skills tfoot td {
+  font-style: italic;
+  color: #64748b;
+  font-size: 0.88rem;
+  padding: 10px 16px;
+  border-top: 2px solid #cbd5e1;
+  border-bottom: none;
+}
