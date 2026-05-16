@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Box Model Lab — Bài B2</title>
+  <link rel="stylesheet" href="boxmodel.css">
+</head>
+<body>
+
+  <h1>📦 Box Model Lab</h1>
+
+  <!-- ====== PHẦN 1: content-box vs border-box ====== -->
+  <section class="demo-section">
+    <h2>Phần 1 — content-box vs border-box</h2>
+    <p>Cả 2 hộp đều có: <code>width: 300px | padding: 20px | border: 5px solid</code></p>
+    <p>Mở DevTools → Computed tab → xem box model diagram để đo chiều rộng thực tế.</p>
+
+    <div class="boxes-row">
+
+      <div class="box-wrapper">
+        <div class="box content-box-demo">
+          <strong>Hộp 1: content-box</strong>
+          <p>Chiều rộng thực = <br>300 + 20×2 + 5×2 = <strong>350px</strong></p>
+          <p>Content: 300px</p>
+          <p>Padding: 20px mỗi bên</p>
+          <p>Border: 5px mỗi bên</p>
+        </div>
+        <div class="box-label">
+          <code>box-sizing: content-box</code>
+          <br>Width thuộc tính chỉ là content area
+          <br><strong>Thực tế = 350px</strong>
+        </div>
+      </div>
+
+      <div class="box-wrapper">
+        <div class="box border-box-demo">
+          <strong>Hộp 2: border-box</strong>
+          <p>Chiều rộng thực = <strong>300px</strong></p>
+          <p>Content: 300-20×2-5×2 = 250px</p>
+          <p>Padding: 20px mỗi bên (trong 300px)</p>
+          <p>Border: 5px mỗi bên (trong 300px)</p>
+        </div>
+        <div class="box-label">
+          <code>box-sizing: border-box</code>
+          <br>Width bao gồm padding + border
+          <br><strong>Thực tế = 300px</strong>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="note">
+      ⚠️ Mở DevTools (F12) → click vào từng hộp → tab "Computed" hoặc "Layout"
+      để thấy box model diagram trực quan. Chụp screenshot!
+    </div>
+  </section>
+
+  <!-- ====== PHẦN 2: Layout 3 cột ====== -->
+  <section class="demo-section">
+    <h2>Phần 2 — Layout 3 cột (container 1000px)</h2>
+
+    <h3>❌ Không dùng border-box (bị vỡ layout)</h3>
+    <p>Sidebar: 250+15×2 = 280px | Content: 500+20×2 = 540px | Ads: 250+15×2 = 280px</p>
+    <p>Tổng = 280 + 540 + 280 = <strong>1100px</strong> — vượt 1000px, layout bị vỡ!</p>
+
+    <div class="layout-broken">
+      <div class="col-left-broken">
+        <strong>Sidebar</strong>
+        <p>width: 250px</p>
+        <p>padding: 15px</p>
+        <p>Thực tế: 280px</p>
+      </div>
+      <div class="col-mid-broken">
+        <strong>Content</strong>
+        <p>width: 500px</p>
+        <p>padding: 20px</p>
+        <p>Thực tế: 540px</p>
+      </div>
+      <div class="col-right-broken">
+        <strong>Ads</strong>
+        <p>width: 250px</p>
+        <p>padding: 15px</p>
+        <p>Thực tế: 280px</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 32px">✅ Dùng border-box (layout đúng)</h3>
+    <p>Với border-box: 250 + 500 + 250 = <strong>1000px</strong> — khớp chính xác!</p>
+
+    <div class="layout-fixed">
+      <div class="col-left-fixed">
+        <strong>Sidebar</strong>
+        <p>width: 250px</p>
+        <p>padding: 15px (bên trong)</p>
+      </div>
+      <div class="col-mid-fixed">
+        <strong>Content</strong>
+        <p>width: 500px</p>
+        <p>padding: 20px (bên trong)</p>
+      </div>
+      <div class="col-right-fixed">
+        <strong>Ads</strong>
+        <p>width: 250px</p>
+        <p>padding: 15px (bên trong)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Margin Collapse Demo ====== -->
+  <section class="demo-section">
+    <h2>Bonus — Margin Collapse</h2>
+    <p>Box A có <code>margin-bottom: 25px</code>, Box B có <code>margin-top: 40px</code></p>
+    <p>Khoảng cách giữa 2 box = <strong>max(25, 40) = 40px</strong> (KHÔNG PHẢI 65px)</p>
+
+    <div class="margin-box-a">Box A — margin-bottom: 25px</div>
+    <div class="margin-box-b">Box B — margin-top: 40px</div>
+    <p>👆 Mở DevTools để xác nhận khoảng cách thực tế giữa 2 box là 40px</p>
+  </section>
+
+</body>
+</html>

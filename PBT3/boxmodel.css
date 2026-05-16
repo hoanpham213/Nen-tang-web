@@ -1,0 +1,174 @@
+/* === RESET === */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  padding: 24px;
+  line-height: 1.6;
+}
+
+h1 { font-size: 1.8rem; margin-bottom: 24px; color: #1a202c; }
+h2 { font-size: 1.3rem; margin: 0 0 12px; color: #2d3748; border-bottom: 2px solid #4299e1; padding-bottom: 8px; }
+h3 { font-size: 1.1rem; margin: 16px 0 8px; color: #4a5568; }
+p { margin: 4px 0 8px; font-size: 0.95rem; }
+code { background: #eee; padding: 2px 5px; border-radius: 4px; font-size: 0.85rem; }
+
+.demo-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+.note {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+/* ======== PHẦN 1: content-box vs border-box ======== */
+
+.boxes-row {
+  display: flex;
+  gap: 32px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.box-wrapper {
+  flex: 1;
+  min-width: 300px;
+}
+
+.box {
+  /* Cả 2 box: SAME width, padding, border */
+  width: 300px;
+  padding: 20px;
+  border: 5px solid;
+  font-size: 0.9rem;
+  border-radius: 4px;
+}
+
+/* Hộp 1: content-box (mặc định) */
+.content-box-demo {
+  box-sizing: content-box; /* default, không cần ghi nhưng ghi cho rõ */
+  border-color: #e53e3e;
+  background: #fff5f5;
+  /* Thực tế: 300 + 40 + 10 = 350px */
+}
+
+/* Hộp 2: border-box */
+.border-box-demo {
+  box-sizing: border-box;
+  border-color: #38a169;
+  background: #f0fff4;
+  /* Thực tế: 300px đúng width */
+}
+
+.box-label {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ======== PHẦN 2: Layout bị vỡ ======== */
+
+.layout-broken {
+  display: flex;
+  width: 1000px;
+  max-width: 100%;
+  overflow: visible;
+  border: 2px dashed #e53e3e;
+  background: #fff5f5;
+  margin-top: 12px;
+}
+
+.col-left-broken {
+  /* box-sizing: content-box (default) */
+  width: 250px;
+  padding: 15px;
+  /* Thực tế: 250 + 30 = 280px */
+  background: #fef3cd;
+  border: 1px solid #d69e2e;
+}
+
+.col-mid-broken {
+  width: 500px;
+  padding: 20px;
+  /* Thực tế: 500 + 40 = 540px */
+  background: #ebf8ff;
+  border: 1px solid #4299e1;
+}
+
+.col-right-broken {
+  width: 250px;
+  padding: 15px;
+  /* Thực tế: 250 + 30 = 280px */
+  background: #fef3cd;
+  border: 1px solid #d69e2e;
+}
+
+/* ======== Layout đúng với border-box ======== */
+
+.layout-fixed {
+  display: flex;
+  width: 1000px;
+  max-width: 100%;
+  border: 2px solid #38a169;
+  background: #f0fff4;
+  margin-top: 12px;
+}
+
+.col-left-fixed,
+.col-mid-fixed,
+.col-right-fixed {
+  box-sizing: border-box; /* KEY: padding INCLUDED in width */
+}
+
+.col-left-fixed {
+  width: 250px;
+  padding: 15px;
+  background: #fefcbf;
+  border: 1px solid #d69e2e;
+}
+
+.col-mid-fixed {
+  width: 500px;
+  padding: 20px;
+  background: #bee3f8;
+  border: 1px solid #4299e1;
+}
+
+.col-right-fixed {
+  width: 250px;
+  padding: 15px;
+  background: #fefcbf;
+  border: 1px solid #d69e2e;
+}
+
+/* ======== Margin Collapse Demo ======== */
+
+.margin-box-a {
+  background: #fed7d7;
+  border: 2px solid #e53e3e;
+  padding: 16px;
+  border-radius: 6px;
+  margin-top: 16px;
+  margin-bottom: 25px; /* margin-collapse với box-b */
+}
+
+.margin-box-b {
+  background: #c6f6d5;
+  border: 2px solid #38a169;
+  padding: 16px;
+  border-radius: 6px;
+  margin-top: 40px; /* collapse với 25px → kết quả = 40px */
+  margin-bottom: 16px;
+}
