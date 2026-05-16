@@ -217,3 +217,23 @@ Nếu dùng border-box, mỗi cột giữ đúng width khai báo:
 
 250 + 500 + 250 = 1000px
 Vì vậy layout vừa khít container
+
+Bài B3 - Specificity Battle
+Element:
+<p id="demo" class="text highlight">Hello World</p>
+
+10 rules đã viết trong specificity.css, sắp xếp từ thấp đến cao:
+#       Selector            Color       Score
+1       *                   lightgray   0,0,0
+2       p                   black       0,0,1
+3       [class]             teal        0,1,0
+4       .text               blue        0,1,0
+5       .highlight          purple      0,1,0
+6       p.text              darkblue    0,1,1
+7       p.text.highlight    darkgreen   0,2,1
+8       body p.text         brown       0,1,2
+9       #demo               red         1,0,0
+10      #demo.highlight     orangered   1,1,0
+
+Element hiển thị màu: ORANGERED — Rule 10 #demo.highlight có specificity cao nhất (1,1,0).
+Thay đổi thứ tự: KHÔNG thay đổi kết quả khi specificity khác nhau. Chỉ khi 2 rules bằng nhau thì rule sau mới thắng.

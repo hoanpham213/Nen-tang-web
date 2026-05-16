@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Specificity Battle — Bài B3</title>
+  <link rel="stylesheet" href="specificity.css">
+</head>
+<body>
+
+  <h1>⚔️ Specificity Battle</h1>
+  <p>10 CSS rules cùng target 1 element — từ thấp đến cao theo specificity.</p>
+
+  <!-- Target element -->
+  <p id="demo" class="text highlight">Hello World</p>
+
+  <!-- Bảng giải thích -->
+  <section class="explanation">
+    <h2>10 CSS Rules — từ thấp đến cao</h2>
+    <table>
+      <tr style="background:#333;color:white">
+        <th>Rule</th>
+        <th>Selector</th>
+        <th>Color</th>
+        <th>Specificity</th>
+        <th>Tính</th>
+      </tr>
+      <tr><td>1</td><td><code>*</code></td><td style="color:lightgray">lightgray</td><td>0,0,0</td><td>Universal selector = 0</td></tr>
+      <tr class="alt"><td>2</td><td><code>p</code></td><td style="color:black">black</td><td>0,0,1</td><td>1 element</td></tr>
+      <tr><td>3</td><td><code>[class]</code></td><td style="color:teal">teal</td><td>0,1,0</td><td>1 attribute selector</td></tr>
+      <tr class="alt"><td>4</td><td><code>.text</code></td><td style="color:blue">blue</td><td>0,1,0</td><td>1 class</td></tr>
+      <tr><td>5</td><td><code>.highlight</code></td><td style="color:purple">purple</td><td>0,1,0</td><td>1 class (sau = thắng khi bằng)</td></tr>
+      <tr class="alt"><td>6</td><td><code>p.text</code></td><td style="color:darkblue">darkblue</td><td>0,1,1</td><td>1 class + 1 element</td></tr>
+      <tr><td>7</td><td><code>p.text.highlight</code></td><td style="color:darkgreen">darkgreen</td><td>0,2,1</td><td>2 class + 1 element</td></tr>
+      <tr class="alt"><td>8</td><td><code>body p.text</code></td><td style="color:brown">brown</td><td>0,1,2</td><td>1 class + 2 element</td></tr>
+      <tr><td>9</td><td><code>#demo</code></td><td style="color:red">red</td><td>1,0,0</td><td>1 ID — thắng mọi class</td></tr>
+      <tr class="alt"><td>10</td><td><code>#demo.highlight</code></td><td style="color:orangered">orangered</td><td>1,1,0</td><td>1 ID + 1 class = THẮNG</td></tr>
+    </table>
+
+    <div class="winner-box">
+      <h3>🏆 Element hiển thị màu: <span id="final-color">orangered</span></h3>
+      <p>Rule 10 <code>#demo.highlight</code> thắng với specificity <strong>1,1,0</strong></p>
+      <p>Không có <code>!important</code> → specificity cao nhất thắng → Rule 10 (orangered).</p>
+    </div>
+
+    <div class="order-note">
+      <h3>Câu hỏi: Thay đổi thứ tự rules có đổi không?</h3>
+      <p><strong>Trả lời: KHÔNG</strong> — khi specificity khác nhau, thứ tự không quan trọng. Rule có specificity cao hơn luôn thắng.</p>
+      <p>Trừ khi 2 rules có specificity <em>bằng nhau</em> — khi đó rule đến sau sẽ thắng (cascade order).</p>
+    </div>
+  </section>
+
+</body>
+</html>

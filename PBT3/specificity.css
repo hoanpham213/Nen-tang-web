@@ -1,0 +1,132 @@
+/* ===================================================
+   SPECIFICITY BATTLE — 10 rules, thấp đến cao
+   Target: <p id="demo" class="text highlight">
+=================================================== */
+
+/* Rule 1 — specificity: 0,0,0 — universal */
+* { color: lightgray; }
+
+/* Rule 2 — specificity: 0,0,1 — 1 element */
+p { color: black; }
+
+/* Rule 3 — specificity: 0,1,0 — attribute selector */
+[class] { color: teal; }
+
+/* Rule 4 — specificity: 0,1,0 — 1 class */
+.text { color: blue; }
+
+/* Rule 5 — specificity: 0,1,0 — 1 class (đến SAU .text → thắng khi bằng score) */
+.highlight { color: purple; }
+
+/* Rule 6 — specificity: 0,1,1 — 1 class + 1 element */
+p.text { color: darkblue; }
+
+/* Rule 7 — specificity: 0,2,1 — 2 class + 1 element */
+p.text.highlight { color: darkgreen; }
+
+/* Rule 8 — specificity: 0,1,2 — 1 class + 2 elements */
+body p.text { color: brown; }
+
+/* Rule 9 — specificity: 1,0,0 — 1 ID */
+#demo { color: red; }
+
+/* Rule 10 — specificity: 1,1,0 — 1 ID + 1 class → WINNER */
+#demo.highlight { color: orangered; }
+
+/* ===========================
+   PAGE LAYOUT STYLES
+=========================== */
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f7fafc;
+  padding: 24px;
+  line-height: 1.6;
+}
+
+h1 {
+  font-size: 1.8rem;
+  color: #1a202c;
+  margin-bottom: 8px;
+}
+
+/* Target demo element */
+#demo {
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: 20px 28px;
+  background: white;
+  border: 2px dashed currentColor;
+  border-radius: 8px;
+  display: inline-block;
+  margin: 16px 0;
+}
+
+/* Explanation section */
+.explanation {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  color: #2d3748;
+}
+
+h3 {
+  font-size: 1.05rem;
+  color: #2d3748;
+  margin-bottom: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.alt { background: #f7fafc; }
+
+code {
+  background: #edf2f7;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #c53030;
+}
+
+.winner-box {
+  background: #fff5f0;
+  border: 2px solid #fc8181;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+#final-color {
+  color: orangered;
+  font-weight: bold;
+}
+
+.order-note {
+  background: #ebf8ff;
+  border: 1px solid #bee3f8;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.order-note p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+}
