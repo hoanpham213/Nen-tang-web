@@ -201,3 +201,19 @@ Kết quả mong đợi:
 
 Hộp 2 (border-box): chiều rộng thực tế = 300px
 Giải thích: Với content-box, width chỉ tính phần content, còn padding và border cộng thêm ra ngoài. Với border-box, width đã bao gồm content, padding và border
+
+Phần 2 — Layout 3 cột
+Container rộng 1000px.
+
+Nếu không dùng border-box:
+
+Sidebar: 250 + 15 + 15 = 280px
+Content: 500 + 20 + 20 = 540px
+Ads: 250 + 15 + 15 = 280px
+Tổng = 1100px
+Vì 1100px > 1000px, layout dễ bị tràn hoặc vỡ.
+
+Nếu dùng border-box, mỗi cột giữ đúng width khai báo:
+
+250 + 500 + 250 = 1000px
+Vì vậy layout vừa khít container
