@@ -176,3 +176,28 @@ Nếu rules A thêm !important
 p { color: black !important; }
 - Element sẽ có màu đen
 -> !important làm declaration được ưu tiên hơn các declaration thông thường. Vì vậy, dù selector p có specificity thấp hơn #main-price, rule có !important vẫn thắng các rule thường. Nếu có nhiều rule cùng !important, khi đó mới so sánh specificity và thứ tự khai báo
+
+PHẦN B - THỰC HÀNH CODE
+Bài B2 - Box Model Lab
+Phần 1 — content-box vs border-box
+Hai hộp có cùng CSS cơ bản:
+
+width: 300px;
+padding: 20px;
+border: 5px solid;
+Hộp 1 dùng:
+
+box-sizing: content-box;
+Tính toán:
+
+300 + 20 + 20 + 5 + 5 = 350px
+Kết quả mong đợi:
+
+Hộp 1 (content-box): chiều rộng thực tế = 350px
+Hộp 2 dùng:
+
+box-sizing: border-box;
+Kết quả mong đợi:
+
+Hộp 2 (border-box): chiều rộng thực tế = 300px
+Giải thích: Với content-box, width chỉ tính phần content, còn padding và border cộng thêm ra ngoài. Với border-box, width đã bao gồm content, padding và border
