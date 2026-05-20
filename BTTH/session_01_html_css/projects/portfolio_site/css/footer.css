@@ -58,3 +58,10 @@
     color: rgba(255, 255, 255, 0.4);
     font-size: 0.875rem;
 }
+
+@media (max-width: 767px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
