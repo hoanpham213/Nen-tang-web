@@ -570,3 +570,103 @@ a { text-decoration: none; color: inherit; }
     --shadow-md: 0 4px 20px rgba(0,0,0,0.10);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
 }
+
+/* ==============================================
+   COMPLETE CUSTOM COLOR PALETTE
+   Documented color system cho toàn bộ project
+
+   PRIMARY (Teal)
+   ├── teal-100: #ccfbf1   Light bg, hover states
+   ├── teal-500: #14b8a6   Buttons, links (primary)
+   └── teal-600: #0d9488   Hover, active states
+
+   NEUTRAL (Slate)
+   ├── slate-50:  #f8fafc  Page background
+   ├── slate-200: #e2e8f0  Borders, dividers
+   ├── slate-500: #64748b  Secondary text
+   ├── slate-700: #334155  Body text
+   └── slate-900: #0f172a  Headings, dark text
+
+   ACCENT
+   ├── success: #22c55e
+   ├── warning: #f59e0b
+   └── danger:  #ef4444
+   ============================================== */
+
+:root {
+    /* Teal scale */
+    --teal-100: #ccfbf1;
+    --teal-500: #14b8a6;
+    --teal-600: #0d9488;
+
+    /* Slate scale */
+    --slate-50:  #f8fafc;
+    --slate-200: #e2e8f0;
+    --slate-500: #64748b;
+    --slate-700: #334155;
+    --slate-900: #0f172a;
+
+    /* Semantic colors */
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-danger:  #ef4444;
+    --color-info:    #38bdf8;
+}
+
+/* ── Apply palette to Bootstrap components ── */
+
+/* Navbar */
+.navbar {
+    box-shadow: var(--shadow-sm);
+}
+
+/* Cards */
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid var(--slate-200);
+}
+
+/* List group */
+.list-group-item {
+    border-color: var(--slate-200);
+}
+
+/* Progress */
+.progress {
+    background-color: var(--slate-200);
+}
+
+/* Badges */
+.badge.bg-secondary {
+    background-color: var(--slate-500) !important;
+}
+
+/* Tags hover */
+.badge:hover {
+    background-color: var(--teal-500) !important;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Sidebar category count */
+.sidebar-count {
+    background-color: var(--teal-100);
+    color: var(--teal-600);
+}
+
+/* Author badge in comments */
+.author-badge {
+    background-color: var(--teal-500);
+}
+
+/* ── Typography ── */
+:root {
+    --bs-body-font-size:    1rem;
+    --bs-body-line-height:  1.75;
+    --bs-body-color:        var(--slate-700);
+}
+
+/* ── Utility overrides ── */
+.text-teal    { color: var(--teal-500) !important; }
+.bg-teal-light { background-color: var(--teal-100) !important; }
+.border-teal  { border-color: var(--teal-500) !important; }
