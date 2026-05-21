@@ -139,9 +139,85 @@
             <!-- END MAIN CONTENT -->
 
             <!-- SIDEBAR placeholder -->
-            <div class="col-lg-4" id="sidebar-col">
-                <!-- Sẽ thêm ở commit 2 -->
+            <!-- ===== SIDEBAR (4 cols) ===== -->
+            <div class="col-lg-4">
+                <div class="sidebar sticky-top" style="top: 100px;">
+
+                    <!-- Search -->
+                    <div class="sidebar-widget mb-4">
+                        <h6 class="sidebar-title">Search</h6>
+                        <div class="input-group sidebar-search">
+                            <input type="text" class="form-control" placeholder="Search posts...">
+                            <button class="btn btn-dark-custom" type="button">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="sidebar-widget mb-4">
+                        <h6 class="sidebar-title">Categories</h6>
+                        <ul class="sidebar-list">
+                            <li class="sidebar-list-item">
+                                <span>Technology</span>
+                                <span class="sidebar-count">12</span>
+                            </li>
+                            <li class="sidebar-list-item">
+                                <span>Design</span>
+                                <span class="sidebar-count">8</span>
+                            </li>
+                            <li class="sidebar-list-item">
+                                <span>Bootstrap</span>
+                                <span class="sidebar-count">5</span>
+                            </li>
+                            <li class="sidebar-list-item">
+                                <span>JavaScript</span>
+                                <span class="sidebar-count">9</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Recent Posts -->
+                    <div class="sidebar-widget mb-4">
+                        <h6 class="sidebar-title">Recent Posts</h6>
+
+                        <div class="recent-post d-flex gap-3 align-items-start mb-3">
+                            <img src="https://via.placeholder.com/64x64/e8e0d8/9e8f82?text=1"
+                                class="recent-thumb" alt="Recent 1">
+                            <div>
+                                <p class="recent-title mb-1">
+                                    <a href="#">Building a Portfolio with HTML & CSS</a>
+                                </p>
+                                <small class="text-muted">Jan 15, 2026</small>
+                            </div>
+                        </div>
+
+                        <div class="recent-post d-flex gap-3 align-items-start mb-3">
+                            <img src="https://via.placeholder.com/64x64/d6cfc7/9e8f82?text=2"
+                                class="recent-thumb" alt="Recent 2">
+                            <div>
+                                <p class="recent-title mb-1">
+                                    <a href="#">Why Typography is the Foundation of Good UI</a>
+                                </p>
+                                <small class="text-muted">Feb 3, 2026</small>
+                            </div>
+                        </div>
+
+                        <div class="recent-post d-flex gap-3 align-items-start">
+                            <img src="https://via.placeholder.com/64x64/c8bfb5/9e8f82?text=3"
+                                class="recent-thumb" alt="Recent 3">
+                            <div>
+                                <p class="recent-title mb-1">
+                                    <a href="#">Getting the Most Out of Bootstrap 5</a>
+                                </p>
+                                <small class="text-muted">Mar 10, 2026</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+<!-- END SIDEBAR -->
 
         </div>
     </div>

@@ -84,3 +84,89 @@
 .blog-readmore:hover { opacity: 0.5; color: var(--c-text); }
 
 .blog-divider { border-color: var(--c-line); }
+
+/* ===== SIDEBAR ===== */
+.sidebar-title {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--c-line);
+}
+
+.sidebar-widget {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--c-line);
+}
+
+.sidebar-widget:last-child { border-bottom: none; }
+
+/* Search */
+.sidebar-search .form-control {
+    border: 1px solid var(--c-line);
+    border-radius: 2px 0 0 2px;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    background: transparent;
+    box-shadow: none !important;
+}
+
+.sidebar-search .form-control:focus {
+    border-color: var(--c-text);
+}
+
+/* Categories list */
+.sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+    color: var(--c-text);
+    border-bottom: 1px solid var(--c-line);
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.sidebar-list-item:last-child { border-bottom: none; }
+.sidebar-list-item:hover { opacity: 0.6; }
+
+.sidebar-count {
+    font-size: 0.75rem;
+    color: var(--c-muted);
+    background: var(--c-warm);
+    padding: 0.1rem 0.5rem;
+    border-radius: 10px;
+}
+
+/* Recent posts */
+.recent-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 2px;
+    flex-shrink: 0;
+    filter: sepia(6%);
+}
+
+.recent-title {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    font-weight: 400;
+}
+
+.recent-title a {
+    color: var(--c-text);
+    transition: opacity 0.2s ease;
+}
+
+.recent-title a:hover { opacity: 0.6; }
