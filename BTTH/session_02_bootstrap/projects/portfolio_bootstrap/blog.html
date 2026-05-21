@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — Your Name</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/custom-theme.css">
+    <link rel="stylesheet" href="css/blog.css">
+</head>
+<body>
+
+<!-- NAVBAR (giống index.html) -->
+<nav class="navbar navbar-expand-lg sticky-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            Your Name
+            <span class="navbar-subtitle d-block">Frontend Developer</span>
+        </a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#portfolio">Portfolio</a></li>
+                <li class="nav-item"><a class="nav-link active" href="blog.html">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- BLOG HERO -->
+<section class="blog-hero py-5">
+    <div class="container">
+        <div class="section-label mb-2">Blog</div>
+        <h1 class="section-heading">Thoughts & Writing</h1>
+        <p class="blog-hero-sub">Notes on design, development, and the craft of building things.</p>
+    </div>
+</section>
+
+<!-- BLOG MAIN -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-5">
+
+            <!-- ===== MAIN CONTENT (8 cols) ===== -->
+            <div class="col-lg-8">
+
+                <!-- Post 1 -->
+                <article class="blog-card mb-5">
+                    <a href="#" class="blog-img-link">
+                        <div class="blog-img-wrap mb-4">
+                            <img src="https://via.placeholder.com/800x450/e8e0d8/9e8f82?text=Post+1"
+                                 class="blog-img" alt="Post 1">
+                        </div>
+                    </a>
+                    <div class="blog-card-body">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="blog-badge">Technology</span>
+                            <span class="blog-dot">·</span>
+                            <span class="blog-meta">5 min read</span>
+                        </div>
+                        <h2 class="blog-title mb-2">
+                            <a href="#">Building a Portfolio with HTML & CSS</a>
+                        </h2>
+                        <p class="blog-byline mb-3">By Your Name &nbsp;·&nbsp; Jan 15, 2026</p>
+                        <p class="blog-excerpt mb-4">
+                            A walkthrough of how I structured my personal portfolio from scratch —
+                            semantic HTML, CSS custom properties, and a mobile-first approach
+                            that keeps the codebase clean and maintainable.
+                        </p>
+                        <a href="#" class="blog-readmore">Read More <i class="bi bi-arrow-right ms-1"></i></a>
+                    </div>
+                    <hr class="blog-divider mt-5">
+                </article>
+
+                <!-- Post 2 -->
+                <article class="blog-card mb-5">
+                    <a href="#" class="blog-img-link">
+                        <div class="blog-img-wrap mb-4">
+                            <img src="https://via.placeholder.com/800x450/d6cfc7/9e8f82?text=Post+2"
+                                 class="blog-img" alt="Post 2">
+                        </div>
+                    </a>
+                    <div class="blog-card-body">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="blog-badge">Design</span>
+                            <span class="blog-dot">·</span>
+                            <span class="blog-meta">7 min read</span>
+                        </div>
+                        <h2 class="blog-title mb-2">
+                            <a href="#">Why Typography is the Foundation of Good UI</a>
+                        </h2>
+                        <p class="blog-byline mb-3">By Your Name &nbsp;·&nbsp; Feb 3, 2026</p>
+                        <p class="blog-excerpt mb-4">
+                            Typography is often the last thing designers think about and the first
+                            thing users notice. Here's how I approach type choices and why it
+                            changes everything about how an interface feels.
+                        </p>
+                        <a href="#" class="blog-readmore">Read More <i class="bi bi-arrow-right ms-1"></i></a>
+                    </div>
+                    <hr class="blog-divider mt-5">
+                </article>
+
+                <!-- Post 3 -->
+                <article class="blog-card mb-5">
+                    <a href="#" class="blog-img-link">
+                        <div class="blog-img-wrap mb-4">
+                            <img src="https://via.placeholder.com/800x450/c8bfb5/9e8f82?text=Post+3"
+                                 class="blog-img" alt="Post 3">
+                        </div>
+                    </a>
+                    <div class="blog-card-body">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="blog-badge">Bootstrap</span>
+                            <span class="blog-dot">·</span>
+                            <span class="blog-meta">4 min read</span>
+                        </div>
+                        <h2 class="blog-title mb-2">
+                            <a href="#">Getting the Most Out of Bootstrap 5</a>
+                        </h2>
+                        <p class="blog-byline mb-3">By Your Name &nbsp;·&nbsp; Mar 10, 2026</p>
+                        <p class="blog-excerpt mb-4">
+                            Bootstrap is powerful when you know how to customize it properly.
+                            Overriding CSS variables, using utility classes strategically,
+                            and avoiding the "Bootstrap look" — here's my approach.
+                        </p>
+                        <a href="#" class="blog-readmore">Read More <i class="bi bi-arrow-right ms-1"></i></a>
+                    </div>
+                </article>
+
+            </div>
+            <!-- END MAIN CONTENT -->
+
+            <!-- SIDEBAR placeholder -->
+            <div class="col-lg-4" id="sidebar-col">
+                <!-- Sẽ thêm ở commit 2 -->
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-section py-4">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            <span class="footer-name">Your Name</span>
+            <p class="footer-copy mb-0">&copy; 2026 Your Name. All rights reserved.</p>
+            <div class="d-flex gap-2">
+                <a href="#" class="social-icon"><i class="bi bi-github"></i></a>
+                <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                <a href="mailto:your@email.com" class="social-icon"><i class="bi bi-envelope"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
