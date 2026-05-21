@@ -162,6 +162,101 @@
                     </form>
                 </div>
 
+                <!-- ===== COMMENTS LIST ===== -->
+                <div class="comments-list mt-5 pt-4" style="border-top: 1px solid var(--c-line);">
+                    <p class="comment-count mb-4">3 Comments</p>
+
+                    <!-- ── Comment 1 (có reply) ── -->
+                    <div class="comment-item mb-4">
+                        <div class="d-flex gap-3">
+                            <img src="https://via.placeholder.com/50x50/e8e0d8/9e8f82?text=JD"
+                                class="comment-avatar" alt="John Doe">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                    <span class="comment-name">John Doe</span>
+                                    <span class="comment-time">2 hours ago</span>
+                                </div>
+                                <p class="comment-text mb-2">
+                                    Great article! The breakdown of CSS Grid vs Flexbox was exactly
+                                    what I needed. Very helpful for beginners like me.
+                                </p>
+                                <button class="comment-reply-btn">
+                                    <i class="bi bi-reply me-1"></i>Reply
+                                </button>
+
+                                <!-- Nested reply -->
+                                <div class="comment-reply mt-3">
+                                    <div class="d-flex gap-3">
+                                        <img src="https://via.placeholder.com/40x40/2c2825/faf9f7?text=Me"
+                                            class="comment-avatar comment-avatar-sm" alt="Author">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                                <span class="comment-name">
+                                                    Your Name
+                                                    <span class="author-badge ms-1">Author</span>
+                                                </span>
+                                                <span class="comment-time">1 hour ago</span>
+                                            </div>
+                                            <p class="comment-text mb-2">
+                                                Thank you, John! Really glad it helped.
+                                                Feel free to ask if you have any questions.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="comment-divider">
+
+                    <!-- ── Comment 2 ── -->
+                    <div class="comment-item mb-4">
+                        <div class="d-flex gap-3">
+                            <img src="https://via.placeholder.com/50x50/d6cfc7/9e8f82?text=SA"
+                                class="comment-avatar" alt="Sarah A">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                    <span class="comment-name">Sarah A.</span>
+                                    <span class="comment-time">5 hours ago</span>
+                                </div>
+                                <p class="comment-text mb-2">
+                                    I've been looking for a clear explanation of sticky positioning forever.
+                                    The troubleshooting section saved me a lot of headaches!
+                                </p>
+                                <button class="comment-reply-btn">
+                                    <i class="bi bi-reply me-1"></i>Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="comment-divider">
+
+                    <!-- ── Comment 3 ── -->
+                    <div class="comment-item mb-4">
+                        <div class="d-flex gap-3">
+                            <img src="https://via.placeholder.com/50x50/c8bfb5/9e8f82?text=MT"
+                                class="comment-avatar" alt="Minh T">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                    <span class="comment-name">Minh T.</span>
+                                    <span class="comment-time">Yesterday</span>
+                                </div>
+                                <p class="comment-text mb-2">
+                                    Could you write a follow-up on CSS animations?
+                                    I struggled with the progress bar animation in particular.
+                                </p>
+                                <button class="comment-reply-btn">
+                                    <i class="bi bi-reply me-1"></i>Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
             <!-- END MAIN CONTENT -->
 
