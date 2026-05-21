@@ -170,3 +170,27 @@
 }
 
 .recent-title a:hover { opacity: 0.6; }
+
+/* ===== TAGS ===== */
+.tag-chip {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    border: 1px solid var(--c-line);
+    padding: 0.25rem 0.65rem;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.tag-chip:hover {
+    background-color: var(--c-text);
+    border-color: var(--c-text);
+    color: var(--c-bg);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 991px) {
+    .sidebar { position: static !important; }
+}
