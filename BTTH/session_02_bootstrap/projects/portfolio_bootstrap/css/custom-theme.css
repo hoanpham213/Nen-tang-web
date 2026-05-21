@@ -2,7 +2,64 @@
    CUSTOM THEME — Minimal Editorial Portfolio
    Session 02 Bootstrap Customization
    ============================================== */
+/* ==============================================
+   BOOTSTRAP VARIABLE OVERRIDES
+   Ghi đè Bootstrap defaults 
+   ============================================== */
 
+/* ── 1. Primary color: Teal  ── */
+:root {
+    --bs-primary:             #14b8a6;
+    --bs-primary-rgb:         20, 184, 166;
+    --bs-primary-hover:       #0d9488;
+
+    --bs-secondary:           #64748b;
+    --bs-secondary-rgb:       100, 116, 139;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: #fff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--bs-primary-hover);
+    border-color: var(--bs-primary-hover);
+    color: #fff;
+}
+
+.btn-outline-primary {
+    color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+/* Links */
+a.text-primary,
+.text-primary { color: var(--bs-primary) !important; }
+
+/* Badges */
+.bg-primary { background-color: var(--bs-primary) !important; }
+
+/* Progress bar */
+.bg-primary.progress-bar { background-color: var(--bs-primary) !important; }
+
+/* Input focus */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+}
+
+/* Navbar brand color */
+.text-primary.navbar-brand { color: var(--bs-primary) !important; }
 /* ===== VARIABLES ===== */
 :root {
     /* Colors */
