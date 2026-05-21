@@ -92,3 +92,16 @@
 }
 
 .comment-divider { border-color: var(--c-line); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 767px) {
+    .comment-reply {
+        padding-left: 0.75rem;
+        margin-left: 0;
+    }
+
+    .comment-avatar { width: 36px; height: 36px; }
+    .comment-avatar-sm { width: 30px; height: 30px; }
+
+    .comment-form .row { flex-direction: column; }
+}
