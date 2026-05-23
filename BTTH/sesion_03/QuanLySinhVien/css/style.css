@@ -1,449 +1,400 @@
 /* =========================================================
-   style.css — Quản lý sinh viên
+   style.css — Quản lý sinh viên (phiên bản đơn giản)
    =========================================================
-   Cấu trúc:
-     1. Reset & biến CSS
-     2. Layout chung
-     3. Thống kê (stat cards)
-     4. Nút bấm (buttons)
-     5. Thông báo (notify)
-     6. Bảng dữ liệu (table)
-     7. Badge xếp loại
-     8. Modal form
-     9. Hộp xác nhận (confirm dialog)
-     10. Tiện ích
+   Mục tiêu: dễ đọc, dễ nhìn, phù hợp người mới học
+   - Màu sắc rõ ràng, không rối mắt
+   - Font chữ lớn vừa phải, dễ đọc
+   - Khoảng cách thoải mái
    ========================================================= */
 
-/* ── 1. Reset & Biến ──────────────────────────────────── */
+/* ── 1. Reset cơ bản ────────────────────────────────────── */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-:root {
-  --font: 'Segoe UI', system-ui, sans-serif;
-
-  --blue-50:  #E6F1FB;
-  --blue-600: #185FA5;
-  --blue-800: #0C447C;
-
-  --teal-50:  #E1F5EE;
-  --teal-800: #085041;
-
-  --red-50:   #FCEBEB;
-  --red-600:  #A32D2D;
-  --red-800:  #791F1F;
-
-  --amber-50:  #FAEEDA;
-  --amber-800: #633806;
-
-  --green-50:  #EAF3DE;
-  --green-600: #3B6D11;
-  --green-800: #27500A;
-
-  --gray-100: #E8E8E4;
-  --gray-300: #C4C2BA;
-  --gray-500: #888780;
-  --gray-700: #4F4F4C;
-
-  --text-primary:   #1a1a1a;
-  --text-secondary: #5a5a58;
-  --text-muted:     #888780;
-
-  --bg-page:    #f5f4f0;
-  --bg-card:    #ffffff;
-  --bg-surface: #f0efea;
-
-  --border-light:  rgba(0,0,0,0.08);
-  --border-medium: rgba(0,0,0,0.16);
-
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-}
-
-/* ── 2. Layout chung ──────────────────────────────────── */
+/* ── 2. Toàn trang ──────────────────────────────────────── */
 body {
-  font-family: var(--font);
-  background: var(--bg-page);
-  color: var(--text-primary);
-  min-height: 100vh;
-  padding: 2rem 1rem;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  background-color: #f0f2f5;
+  color: #333;
+  padding: 24px 16px;
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
+/* ── 3. Tiêu đề trang ───────────────────────────────────── */
 .page-title {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: bold;
+  color: #1a5fb4;
   margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .page-subtitle {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 1.75rem;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
 }
 
+/* ── 4. Thống kê ────────────────────────────────────────── */
+.stats-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 14px 18px;
+  min-width: 160px;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #1a5fb4;
+}
+
+.stat-sub {
+  font-size: 12px;
+  color: #999;
+  margin-top: 2px;
+}
+
+/* ── 5. Thông báo ───────────────────────────────────────── */
+.notify {
+  display: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 14px;
+  border-left: 4px solid;
+}
+
+.notify.success {
+  display: block;
+  background: #eaf5ea;
+  color: #2a7a2a;
+  border-color: #4caf50;
+}
+
+.notify.error {
+  display: block;
+  background: #fdecea;
+  color: #b71c1c;
+  border-color: #e53935;
+}
+
+/* ── 6. Thanh công cụ ───────────────────────────────────── */
 .top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.85rem;
+  margin-bottom: 10px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .top-bar-label {
-  font-size: 13px;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* ── 3. Thống kê ──────────────────────────────────────── */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin-bottom: 1.75rem;
-}
-
-.stat-card {
-  background: var(--bg-card);
-  border: 0.5px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 1rem 1.1rem;
-}
-
-.stat-label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.stat-value {
-  font-size: 26px;
-  font-weight: 600;
-  color: var(--text-primary);
-  line-height: 1;
-}
-
-.stat-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
-/* ── 4. Nút bấm ───────────────────────────────────────── */
-.btn {
-  padding: 7px 16px;
-  border-radius: var(--radius-md);
-  border: 0.5px solid var(--border-medium);
-  background: var(--bg-card);
-  color: var(--text-primary);
   font-size: 14px;
-  font-family: var(--font);
+  font-weight: bold;
+  color: #444;
+}
+
+/* ── 7. Nút bấm ─────────────────────────────────────────── */
+.btn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: background 0.15s, border-color 0.15s;
-  user-select: none;
 }
 
 .btn:hover {
-  background: var(--bg-surface);
+  background: #f5f5f5;
 }
 
-.btn:active {
-  transform: scale(0.98);
-}
-
+/* Nút chính (xanh) */
 .btn-primary {
-  background: var(--blue-600);
+  background: #1a5fb4;
   color: #fff;
-  border-color: var(--blue-600);
+  border-color: #1a5fb4;
 }
 
 .btn-primary:hover {
-  background: var(--blue-800);
-  border-color: var(--blue-800);
+  background: #1450a0;
 }
 
+/* Nút nhỏ trong bảng */
 .btn-sm {
   padding: 4px 10px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
-.btn-danger {
-  color: var(--red-600);
-  border-color: var(--red-600);
-}
-
-.btn-danger:hover {
-  background: var(--red-50);
-}
-
+/* Nút sửa */
 .btn-edit {
-  color: var(--blue-600);
-  border-color: var(--blue-600);
+  background: #e8f0fd;
+  color: #1a5fb4;
+  border-color: #1a5fb4;
 }
 
 .btn-edit:hover {
-  background: var(--blue-50);
+  background: #d0e3fc;
 }
 
-/* ── 5. Thông báo ─────────────────────────────────────── */
-.notify {
-  display: none;
-  padding: 10px 14px;
-  border-radius: var(--radius-md);
-  font-size: 13px;
-  margin-bottom: 1rem;
-  border: 0.5px solid transparent;
+/* Nút xóa */
+.btn-danger {
+  background: #fdecea;
+  color: #c0392b;
+  border-color: #c0392b;
 }
 
-.notify.success {
-  background: var(--green-50);
-  color: var(--green-800);
-  border-color: var(--green-600);
-  display: block;
+.btn-danger:hover {
+  background: #fad4d0;
 }
 
-.notify.error {
-  background: var(--red-50);
-  color: var(--red-800);
-  border-color: var(--red-600);
-  display: block;
-}
-
-/* ── 6. Bảng dữ liệu ─────────────────────────────────── */
+/* ── 8. Bảng dữ liệu ────────────────────────────────────── */
 .table-wrap {
   overflow-x: auto;
-  border: 0.5px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  background: var(--bg-card);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 14px;
 }
 
+/* Header bảng */
 thead {
-  background: var(--bg-surface);
+  background: #1a5fb4;
+  color: #fff;
 }
 
 th {
-  padding: 10px 14px;
+  padding: 11px 14px;
   text-align: left;
-  font-weight: 500;
-  font-size: 12px;
-  color: var(--text-secondary);
-  border-bottom: 0.5px solid var(--border-light);
+  font-weight: bold;
+  font-size: 13px;
   white-space: nowrap;
 }
 
+/* Dòng dữ liệu */
 td {
   padding: 10px 14px;
-  border-bottom: 0.5px solid var(--border-light);
+  border-bottom: 1px solid #eee;
   vertical-align: middle;
-  word-break: break-word;
 }
 
 tr:last-child td {
   border-bottom: none;
 }
 
-tr:hover td {
-  background: var(--bg-surface);
+/* Đổi màu dòng chẵn để dễ đọc */
+tbody tr:nth-child(even) {
+  background: #f9fafc;
 }
 
-.actions-cell {
-  white-space: nowrap;
+tbody tr:hover {
+  background: #edf2fb;
 }
 
+/* Dòng trống khi chưa có dữ liệu */
 .empty-row td {
   text-align: center;
-  color: var(--text-muted);
-  padding: 2.5rem;
-  font-size: 13px;
+  color: #aaa;
+  padding: 32px;
+  font-size: 14px;
 }
 
+/* Mã sinh viên */
 .code-badge {
-  font-size: 11px;
-  background: var(--bg-surface);
-  padding: 2px 6px;
+  background: #f0f2f5;
+  padding: 2px 7px;
   border-radius: 4px;
   font-family: monospace;
+  font-size: 13px;
+  color: #333;
 }
 
-.fw-500 {
-  font-weight: 500;
-}
+.fw-500   { font-weight: bold; }
+.text-muted { color: #888; }
+.text-sm  { font-size: 13px; }
+.actions-cell { white-space: nowrap; }
 
-.text-muted {
-  color: var(--text-muted);
-}
-
-.text-sm {
-  font-size: 12px;
-}
-
-/* ── 7. Badge xếp loại ───────────────────────────────── */
+/* ── 9. Badge xếp loại điểm ─────────────────────────────── */
 .badge {
   display: inline-block;
-  padding: 2px 9px;
-  border-radius: 99px;
-  font-size: 11px;
-  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
 }
 
+/* Giỏi / Xuất sắc */
 .badge-green {
-  background: var(--green-50);
-  color: var(--green-800);
+  background: #e8f5e9;
+  color: #2e7d32;
 }
 
+/* Trung bình */
 .badge-amber {
-  background: var(--amber-50);
-  color: var(--amber-800);
+  background: #fff8e1;
+  color: #e65100;
 }
 
+/* Yếu */
 .badge-red {
-  background: var(--red-50);
-  color: var(--red-800);
+  background: #fce4ec;
+  color: #b71c1c;
 }
 
-/* ── 8. Modal form ───────────────────────────────────── */
+/* ── 10. Modal (popup form) ─────────────────────────────── */
+
+/* Lớp nền tối phía sau modal */
 .modal-backdrop {
   display: none;
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  inset: 0;                        /* phủ toàn màn hình */
+  background: rgba(0, 0, 0, 0.5); /* nền mờ */
   z-index: 100;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 16px;
 }
 
 .modal-backdrop.open {
-  display: flex;
+  display: flex; /* hiện modal */
 }
 
+/* Hộp form */
 .modal {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 0.5px solid var(--border-light);
-  padding: 1.5rem;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 24px;
   width: 100%;
-  max-width: 480px;
+  max-width: 460px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.25rem;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
 }
 
 .modal-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: bold;
+  color: #1a5fb4;
 }
 
 .modal-close {
   background: none;
   border: none;
+  font-size: 24px;
   cursor: pointer;
-  color: var(--text-secondary);
-  font-size: 22px;
+  color: #888;
   line-height: 1;
-  padding: 2px 4px;
+  padding: 0 4px;
 }
 
-.modal-close:hover {
-  color: var(--text-primary);
-}
+.modal-close:hover { color: #333; }
 
-/* Form bên trong modal */
+/* Lưới 2 cột trong form */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 14px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
+/* Chiếm cả 2 cột */
 .form-group.full {
   grid-column: 1 / -1;
 }
 
 label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-input,
-select {
-  padding: 7px 10px;
-  border: 0.5px solid var(--border-medium);
-  border-radius: var(--radius-md);
   font-size: 13px;
-  font-family: var(--font);
-  background: var(--bg-card);
-  color: var(--text-primary);
-  width: 100%;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  font-weight: bold;
+  color: #444;
 }
 
-input:focus,
-select:focus {
+input, select {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: #333;
+  width: 100%;
+}
+
+input:focus, select:focus {
   outline: none;
-  border-color: var(--blue-600);
-  box-shadow: 0 0 0 2px rgba(24, 95, 165, 0.15);
+  border-color: #1a5fb4;
+  box-shadow: 0 0 0 2px rgba(26,95,180,0.15);
 }
 
 input:disabled {
-  background: var(--bg-surface);
-  color: var(--text-muted);
+  background: #f5f5f5;
+  color: #999;
   cursor: not-allowed;
 }
 
 .modal-footer {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   justify-content: flex-end;
-  margin-top: 1.25rem;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #eee;
 }
 
-/* ── 9. Hộp xác nhận ─────────────────────────────────── */
+/* ── 11. Hộp xác nhận xóa ───────────────────────────────── */
 .confirm-backdrop {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 200;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 16px;
 }
 
 .confirm-backdrop.open {
@@ -451,51 +402,44 @@ input:disabled {
 }
 
 .confirm-box {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 0.5px solid var(--border-light);
-  padding: 1.5rem;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 24px;
   max-width: 360px;
   width: 100%;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
 .confirm-title {
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #c0392b;
 }
 
 .confirm-msg {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: 1.25rem;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 18px;
   line-height: 1.6;
 }
 
 .confirm-footer {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   justify-content: flex-end;
 }
 
-/* ── 10. Responsive ──────────────────────────────────── */
+/* ── 12. Responsive màn hình nhỏ ────────────────────────── */
 @media (max-width: 600px) {
   .form-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* 1 cột khi màn hình hẹp */
   }
-
   .form-group.full {
     grid-column: 1;
   }
-
   .stats-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  body {
-    padding: 1rem 0.75rem;
+    flex-direction: column;
   }
 }
