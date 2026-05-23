@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý công việc</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ── Tiêu đề trang ──────────────────────────────── -->
+  <h1 class="page-title">&#128203; Quản lý công việc cá nhân</h1>
+  <p class="page-subtitle">Theo dõi và hoàn thành công việc mỗi ngày </p>
+
+  <!-- ── Thống kê ───────────────────────────────────── -->
+  <div class="stats-row">
+    <div class="stat-box total">
+      <div class="stat-number" id="stat-total">0</div>
+      <div class="stat-label">Tổng công việc</div>
+    </div>
+    <div class="stat-box done">
+      <div class="stat-number" id="stat-done">0</div>
+      <div class="stat-label">Đã hoàn thành</div>
+    </div>
+    <div class="stat-box todo">
+      <div class="stat-number" id="stat-todo">0</div>
+      <div class="stat-label">Chưa xong</div>
+    </div>
+  </div>
+
+  <!-- ── Thông báo ──────────────────────────────────── -->
+  <div id="message" class="message" role="alert" aria-live="polite"></div>
+
+  <!-- ── Thanh công cụ ──────────────────────────────── -->
+  <div class="toolbar">
+    <span class="toolbar-label">Danh sách công việc</span>
+    <button class="btn btn-primary" id="btn-add">
+      + Thêm công việc
+    </button>
+  </div>
+
+  <!-- ── Danh sách công việc ────────────────────────── -->
+  <!--
+    Khu vực này được render hoàn toàn bằng JavaScript.
+    Hàm renderTasks() trong ui.js sẽ tạo HTML và
+    chèn vào đây mỗi khi dữ liệu thay đổi.
+  -->
+  <div id="task-list">
+    <!-- renderTasks() sẽ điền nội dung vào đây -->
+  </div>
+
+</div><!-- /container -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     MODAL FORM — Thêm / Sửa công việc
+     ══════════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="modal-backdrop"
+     role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+  <div class="modal">
+
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title-text">Thêm công việc</span>
+      <button class="modal-close" id="btn-close" aria-label="Đóng form">&#215;</button>
+    </div>
+
+    <form id="task-form" novalidate>
+
+      <!-- Tiêu đề (bắt buộc) -->
+      <div class="form-group">
+        <label for="f-title">Tiêu đề công việc *</label>
+        <input
+          id="f-title"
+          type="text"
+          placeholder="Nhập tiêu đề công việc..."
+          maxlength="100"
+          autocomplete="off" />
+      </div>
+
+      <!-- Mô tả (không bắt buộc) -->
+      <div class="form-group">
+        <label for="f-desc">Mô tả ngắn</label>
+        <textarea
+          id="f-desc"
+          placeholder="Ghi chú thêm về công việc (không bắt buộc)..."
+          maxlength="300"></textarea>
+      </div>
+
+      <!-- Hạn hoàn thành (bắt buộc) -->
+      <div class="form-group">
+        <label for="f-deadline">Hạn hoàn thành *</label>
+        <input id="f-deadline" type="date" />
+      </div>
+
+      <!-- Mức ưu tiên (bắt buộc) -->
+      <div class="form-group">
+        <label for="f-priority">Mức ưu tiên *</label>
+        <select id="f-priority">
+          <option value="">-- Chọn mức ưu tiên --</option>
+          <option value="cao">Cao</option>
+          <option value="trung binh">Trung bình</option>
+          <option value="thap">Thấp</option>
+        </select>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn" id="btn-cancel">Hủy</button>
+        <button type="submit" class="btn btn-primary" id="btn-submit">Lưu</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     HỘP XÁC NHẬN XÓA
+     ══════════════════════════════════════════════════════ -->
+<div class="confirm-backdrop" id="confirm-backdrop"
+     role="alertdialog" aria-modal="true">
+  <div class="confirm-box">
+    <div class="confirm-title">Xác nhận xóa</div>
+    <p class="confirm-msg" id="confirm-msg">
+      Bạn có chắc muốn xóa công việc này không?
+    </p>
+    <div class="confirm-footer">
+      <button class="btn" id="confirm-no">Hủy</button>
+      <button class="btn btn-delete" id="confirm-yes">Xóa</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT — load theo đúng thứ tự phụ thuộc
+     ══════════════════════════════════════════════════════ -->
+<script src="js/data.js"></script>      <!-- 1. Dữ liệu & localStorage  -->
+<script src="js/validate.js"></script>  <!-- 2. Kiểm tra dữ liệu form   -->
+<script src="js/ui.js"></script>        <!-- 3. Render & cập nhật DOM   -->
+<script src="js/app.js"></script>       <!-- 4. Gắn sự kiện & điều phối -->
+
+</body>
+</html>
