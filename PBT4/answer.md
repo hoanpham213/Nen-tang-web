@@ -22,3 +22,75 @@ Câu hỏi thêm:
     + "Positioned ancestor" là phần tử cha (hoặc ông, cụ...) có position khác static (tức là relative, absolute, fixed, hoặc sticky)
     + Nếu không có ancestor nào được positioned → nó sẽ tham chiếu đến <body> (hay chính xác hơn là initial containing block)
     + Nếu có ancestor được positioned → nó tham chiếu đến ancestor gần nhất đó
+
+Câu A2 - Flexbox vs Grid - Dự đoán layout
+* Trường hợp 1: 
+.container { display: flex; }
+.item { flex: 1; }
+/* 4 items */
+
+Dự đoán: 4 items xếp thành 1 hàng ngang, mỗi item chiếm đều nhau (25% mỗi cái).
+flex: 1 = flex-grow: 1, flex-shrink: 1, flex-basis: 0 → tất cả co giãn đều nhau.
+
+┌──────┬──────┬──────┬──────┐
+│  1   │  2   │  3   │  4   │
+└──────┴──────┴──────┴──────┘
+
+* Trường hợp 2:
+.container { display: flex; flex-wrap: wrap; }
+.item { width: 45%; margin: 2.5%; }
+/* 6 items */
+
+Dự đoán: 3 hàng, 2 cột. Mỗi item chiếm 45% + 2.5%*2 = 50% không gian → vừa 2 item/hàng, 6 items = 3 hàng.
+
+┌──────────┬──────────┐
+│    1     │    2     │
+├──────────┼──────────┤
+│    3     │    4     │
+├──────────┼──────────┤
+│    5     │    6     │
+└──────────┴──────────┘
+
+* Trường hợp 3:
+.container { display: flex; justify-content: space-between; align-items: center; }
+/* 3 items */
+
+Dự đoán: 3 items trên 1 hàng ngang, khoảng cách đều giữa các items, tất cả căn giữa theo chiều dọc.
+    - Item 1: bên trái | Item 2: giữa | Item 3: bên phải
+    - Khoảng trống phân bổ đều giữa các items (không có ở 2 đầu)
+
+┌────────────────────────────────────┐
+│ [1]        [2]              [3]    │
+└────────────────────────────────────┘
+
+* Trường hợp 4:
+.container { display: grid; grid-template-columns: 200px 1fr 200px; gap: 20px; }
+/* 3 items */
+
+Dự đoán: 1 hàng, 3 cột:
+    - Cột 1: cố định 200px
+    - Cột 2: chiếm hết phần còn lại (flexible)
+    - Cột 3: cố định 200px
+    - Khoảng cách 20px giữa các cột
+
+┌─────────┬──────────────────┬─────────┐
+│  200px  │       1fr        │  200px  │
+│  (1)    │       (2)        │  (3)    │
+└─────────┴──────────────────┴─────────┘
+
+* Trường hợp 5:
+.container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+/* 7 items */
+
+Dự đoán: 3 hàng, 3 cột. 7 items ÷ 3 cột = 2 hàng đầy + 1 hàng cuối thiếu.
+    - Hàng 1: items 1, 2, 3
+    - Hàng 2: items 4, 5, 6
+    - Hàng 3: item 7 ở cột đầu tiên (bên trái), 2 ô còn lại trống
+
+┌──────┬──────┬──────┐
+│  1   │  2   │  3   │
+├──────┼──────┼──────┤
+│  4   │  5   │  6   │
+├──────┼──────┼──────┤
+│  7   │      │      │
+└──────┴──────┴──────┘
