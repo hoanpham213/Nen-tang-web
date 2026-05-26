@@ -120,3 +120,53 @@ Nếu cần responsive (4 cột → 2 cột → 1 cột) thì Grid + media query
 5. Card sản phẩm (ảnh trên, text giữa, nút dưới — nút luôn dính đáy)
 → Dùng Flexbox (column direction)
 Bên trong card dùng display: flex; flex-direction: column + margin-top: auto trên nút "Mua" → nút luôn đẩy xuống đáy dù text có dài ngắn khác nhau. Đây là pattern kinh điển của Flexbox.
+
+Câu C2 - Debug Flexbox
+- Lỗi 1: Cards không đều chiều cao — nút "Mua" bị nhảy lên/xuống
+    + Nguyên nhân: Card không dùng Flexbox bên trong, nên các phần tử con (img, h3, btn) xếp bình thường theo flow. Khi tên sản phẩm dài ngắn khác nhau → nút "Mua" ở các card sẽ ở vị trí khác nhau.
+
+    + Code sửa:
+
+/* Thêm vào .card */
+.card {
+    width: 30%;
+    margin: 1.5%;
+    display: flex;              /* ← thêm */
+    flex-direction: column;     /* ← thêm */
+}
+
+/* Thêm margin-top: auto cho nút */
+.card .btn {
+    padding: 10px;
+    margin-top: auto;           /* ← thêm: đẩy nút xuống đáy */
+}
+
+- Lỗi 2: Muốn items nằm giữa cả ngang lẫn dọc trong container 100vh, nhưng item vẫn dính góc trái trên
+    + Nguyên nhân: Chỉ có display: flex nhưng thiếu justify-content: center (căn ngang) và align-items: center (căn dọc). Mặc định là justify-content: flex-start và align-items: stretch.
+
+    + Code sửa:
+.hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;    /* ← thêm: căn giữa theo chiều ngang */
+    align-items: center;        /* ← thêm: căn giữa theo chiều dọc */
+}
+.hero-content {
+    text-align: center;
+}
+
+- Lỗi 3: Sidebar bị co lại khi content quá dài
+    + Nguyên nhân: Mặc định flex-shrink: 1 → khi content dài ra, cả sidebar lẫn content đều có thể bị co. Sidebar sẽ bị thu nhỏ dưới 250px.
+
+    + Code sửa:
+.layout { display: flex; }
+
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;   /* ← thêm: ngăn sidebar bị co lại */
+}
+
+.content {
+    flex: 1;          /* flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
+    min-width: 0;     /* ← thêm: tránh overflow trong flex item */
+}
