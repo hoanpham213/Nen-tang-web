@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài B2 — Flexbox Layout</title>
+    <link rel="stylesheet" href="flexbox.css">
+</head>
+<body>
+
+    <!-- ==========================================
+         PHẦN 1: NAVBAR FLEXBOX
+         Logo trái | Menu giữa | Buttons phải
+    =========================================== -->
+    <nav class="navbar">
+        <!-- Logo bên trái -->
+        <div class="nav-logo">🛍️ HoanPham Shop</div>
+
+        <!-- Menu items ở giữa -->
+        <ul class="nav-menu">
+            <li><a href="#">Trang chủ</a></li>
+            <li><a href="#">Sản phẩm</a></li>
+            <li><a href="#">Khuyến mãi</a></li>
+            <li><a href="#">Về chúng tôi</a></li>
+        </ul>
+
+        <!-- Buttons bên phải -->
+        <div class="nav-buttons">
+            <a href="#" class="btn-login">Đăng nhập</a>
+            <a href="#" class="btn-register">Đăng ký</a>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         PHẦN 2: PRODUCT CARDS GRID
+         8 cards — 4 cột, 2 hàng
+    =========================================== -->
+    <main class="products-section">
+        <h2>Sản phẩm nổi bật</h2>
+
+        <div class="cards-container">
+
+            <!-- Card 1 -->
+            <div class="card">
+                <img src="https://via.placeholder.com/260x160/4a90e2/fff?text=iPhone+15" alt="iPhone 15">
+                <div class="card-body">
+                    <h3>iPhone 15 Pro Max</h3>
+                    <p class="price">25.990.000 ₫</p>
+                </div>
+                <button class="btn-buy">Mua ngay</button>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card">
+                <img src="https://via.placeholder.com/260x160/e2724a/fff?text=MacBook+Air" alt="MacBook">
+                <div class="card-body">
+                    <h3>MacBook Air M2 13 inch Chip M2 RAM 8GB SSD 256GB</h3>
+                    <p class="price">28.500.000 ₫</p>
+                </div>
+                <button class="btn-buy">Mua ngay</button>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card">
+                <img src="https://via.placeholder.com/260x160/4ae27a/fff?text=AirPods+Pro" alt="AirPods">
+                <div class="card-body">
+                    <h3>AirPods Pro 2</h3>
+                    <p class="price">5.990.000 ₫</p>
+                </div>
+                <button class="btn-buy">Mua ngay</button>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card">
+                <img src="https://via.placeholder.com/260x160/e2c94a/fff?text=iPad+Pro" alt="iPad">
+                <div class="card-body">
+                    <h3>iPad Pro M4 11 inch</h3>
+                    <p class="price">19.990.000 ₫</p>
+                </div>
+                <button class="btn-buy">Mua ngay</button>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="card">
+                <img src="https://via.placeholder.com/260x160/9b4ae2/fff?text=Samsung+S24" alt="Samsung S24">
+                <div class="card-body">
+                    <h3>Samsung Galaxy S24 Ultra 256GB</h3>
+                    <p class="price">22.990.000 ₫</p>
+                </div>
+                <button class="btn-buy">Mua ngay</button>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="card">
+                <img src="https://via.placeholder.com/260x160/4ae2d4/fff?text=Apple+Watch" alt="Watch">
+                <div class="card-body">
+                    <h3>Apple Watch Series 9 GPS 41mm</h3>
+                    <p class="price">11.990.000 ₫</p>
+                </div>
+                <button class="btn-buy">Mua ngay</button>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="card">
+                <img src="https://via.placeholder.com/260x160/e24a8a/fff?text=Sony+WH-1000" alt="Sony">
+                <div class="card-body">
+                    <h3>Tai nghe Sony WH-1000XM5</h3>
+                    <p class="price">6.990.000 ₫</p>
+                </div>
+                <button class="btn-buy">Mua ngay</button>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="card">
+                <img src="https://via.placeholder.com/260x160/4a6ae2/fff?text=Logitech+MX" alt="Logitech">
+                <div class="card-body">
+                    <h3>Chuột Logitech MX Master 3S</h3>
+                    <p class="price">1.990.000 ₫</p>
+                </div>
+                <button class="btn-buy">Mua ngay</button>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
