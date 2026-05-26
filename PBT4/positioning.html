@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài B1 — CSS Positioning</title>
+    <link rel="stylesheet" href="positioning.css">
+</head>
+<body>
+
+    <!-- FIXED HEADER -->
+    <header class="fixed-header">
+        <div class="header-logo">🛍️ HoanPham Shop</div>
+        <nav class="header-nav">
+            <a href="#">Trang chủ</a>
+            <a href="#">Sản phẩm</a>
+            <a href="#">Về chúng tôi</a>
+            <a href="#">Liên hệ</a>
+        </nav>
+    </header>
+
+    <!-- MAIN LAYOUT (sidebar + content) -->
+    <div class="main-layout">
+
+        <!-- STICKY SIDEBAR -->
+        <aside class="sticky-sidebar">
+            <h3>Danh mục</h3>
+            <ul>
+                <li><a href="#">Điện thoại</a></li>
+                <li><a href="#">Laptop</a></li>
+                <li><a href="#">Phụ kiện</a></li>
+                <li><a href="#">Màn hình</a></li>
+                <li><a href="#">Bàn phím</a></li>
+                <li><a href="#">Chuột</a></li>
+                <li><a href="#">Tai nghe</a></li>
+            </ul>
+
+            <h3>Lọc giá</h3>
+            <ul>
+                <li><a href="#">Dưới 1 triệu</a></li>
+                <li><a href="#">1 - 5 triệu</a></li>
+                <li><a href="#">5 - 10 triệu</a></li>
+                <li><a href="#">Trên 10 triệu</a></li>
+            </ul>
+        </aside>
+
+        <!-- PRODUCT CARDS -->
+        <main class="content-area">
+            <h2>Sản phẩm nổi bật</h2>
+            <div class="cards-grid">
+
+                <!-- Card 1 - có badge HOT -->
+                <div class="card">
+                    <span class="badge-hot">HOT</span>
+                    <img src="https://via.placeholder.com/240x160/4a90e2/fff?text=iPhone+15" alt="iPhone 15">
+                    <h3>iPhone 15 Pro</h3>
+                    <p class="price">25.990.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+                <!-- Card 2 - có badge HOT -->
+                <div class="card">
+                    <span class="badge-hot">HOT</span>
+                    <img src="https://via.placeholder.com/240x160/e24a4a/fff?text=MacBook" alt="MacBook">
+                    <h3>MacBook Air M2</h3>
+                    <p class="price">28.500.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card">
+                    <img src="https://via.placeholder.com/240x160/4ae27a/fff?text=AirPods" alt="AirPods">
+                    <h3>AirPods Pro</h3>
+                    <p class="price">5.990.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card">
+                    <img src="https://via.placeholder.com/240x160/e2c94a/fff?text=iPad" alt="iPad">
+                    <h3>iPad Pro 11 inch</h3>
+                    <p class="price">19.990.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+                <!-- Card 5 - có badge HOT -->
+                <div class="card">
+                    <span class="badge-hot">HOT</span>
+                    <img src="https://via.placeholder.com/240x160/9b4ae2/fff?text=Samsung+S24" alt="Samsung">
+                    <h3>Samsung Galaxy S24</h3>
+                    <p class="price">22.990.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="card">
+                    <img src="https://via.placeholder.com/240x160/4ae2d4/fff?text=Watch" alt="Watch">
+                    <h3>Apple Watch Series 9</h3>
+                    <p class="price">11.990.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+            </div>
+
+            <!-- Thêm nội dung để có thể scroll -->
+            <div class="extra-content">
+                <h2>Tin tức công nghệ</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, vel. Natus perspiciatis odio totam repellat aperiam sit amet vero, ea tempore sequi quasi itaque.</p>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint.</p>
+                <p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Quis autem vel eum iure reprehenderit qui in ea voluptate.</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, vel. Natus perspiciatis odio totam repellat aperiam sit amet vero.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- SCROLL TO TOP BUTTON -->
+    <button class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+</body>
+</html>
