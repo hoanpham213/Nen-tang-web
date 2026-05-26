@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài B3 — CSS Grid E-Commerce</title>
+    <link rel="stylesheet" href="grid.css">
+</head>
+<body>
+
+    <!-- =====================================================
+         LAYOUT CHÍNH: CSS Grid
+         Cấu trúc:
+         - header:  span full width (1 / -1)
+         - hero:    span full width (1 / -1)
+         - sidebar | main | ads  (3 cột: 200px 1fr 200px)
+         - footer:  span full width (1 / -1)
+    ====================================================== -->
+    <div class="page-grid">
+
+        <!-- HEADER — full width -->
+        <header class="header">
+            <div class="header-inner">
+                <div class="logo">🛒 HoanPham Shop</div>
+                <nav class="header-nav">
+                    <a href="#">Trang chủ</a>
+                    <a href="#">Sản phẩm</a>
+                    <a href="#">Khuyến mãi</a>
+                    <a href="#">Liên hệ</a>
+                </nav>
+                <div class="header-actions">
+                    <span>🔍</span>
+                    <span>🛒 0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO BANNER — full width -->
+        <section class="hero">
+            <!-- Grid con bên trong hero: 3 cột, có 1 card "nổi bật" span 2 cột -->
+            <div class="hero-grid">
+
+                <!-- Banner chính -->
+                <div class="hero-main">
+                    <p class="hero-tag">🔥 Siêu Sale tháng 5</p>
+                    <h1>Công nghệ đỉnh cao<br>Giá không tưởng</h1>
+                    <p>Giảm đến 40% tất cả sản phẩm Apple, Samsung, Sony</p>
+                    <a href="#" class="hero-btn">Mua sắm ngay →</a>
+                </div>
+
+                <!-- Card nổi bật — span 2 cột (bonus) -->
+                <div class="hero-featured">
+                    <span class="featured-label">⭐ Nổi bật</span>
+                    <img src="https://via.placeholder.com/300x180/1a1a2e/e2b04a?text=iPhone+15+Pro+Max" alt="iPhone 15">
+                    <h3>iPhone 15 Pro Max</h3>
+                    <p>Giảm 15% — Chỉ còn <strong>25.990.000 ₫</strong></p>
+                    <button>Xem chi tiết</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SIDEBAR — cột trái (filter) -->
+        <aside class="sidebar">
+            <h3>Danh mục</h3>
+            <ul class="filter-list">
+                <li><label><input type="checkbox" checked> Điện thoại</label></li>
+                <li><label><input type="checkbox"> Laptop</label></li>
+                <li><label><input type="checkbox"> Máy tính bảng</label></li>
+                <li><label><input type="checkbox"> Phụ kiện</label></li>
+                <li><label><input type="checkbox"> Tai nghe</label></li>
+            </ul>
+
+            <h3>Lọc giá</h3>
+            <ul class="filter-list">
+                <li><label><input type="checkbox"> Dưới 1 triệu</label></li>
+                <li><label><input type="checkbox" checked> 1 – 5 triệu</label></li>
+                <li><label><input type="checkbox" checked> 5 – 15 triệu</label></li>
+                <li><label><input type="checkbox"> Trên 15 triệu</label></li>
+            </ul>
+
+            <h3>Thương hiệu</h3>
+            <ul class="filter-list">
+                <li><label><input type="checkbox" checked> Apple</label></li>
+                <li><label><input type="checkbox" checked> Samsung</label></li>
+                <li><label><input type="checkbox"> Sony</label></li>
+                <li><label><input type="checkbox"> Logitech</label></li>
+            </ul>
+
+            <button class="btn-filter">Áp dụng bộ lọc</button>
+        </aside>
+
+        <!-- MAIN CONTENT — lưới sản phẩm 3 cột (Grid con) -->
+        <main class="main-content">
+            <div class="main-header">
+                <h2>Tất cả sản phẩm</h2>
+                <select class="sort-select">
+                    <option>Sắp xếp: Mới nhất</option>
+                    <option>Giá thấp đến cao</option>
+                    <option>Giá cao đến thấp</option>
+                </select>
+            </div>
+
+            <!-- Grid con 3 cột cho product cards -->
+            <div class="products-grid">
+
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/220x140/4a90e2/fff?text=iPhone+15" alt="">
+                    <h4>iPhone 15 Pro 256GB</h4>
+                    <p class="prod-price">22.990.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/220x140/e2724a/fff?text=MacBook" alt="">
+                    <h4>MacBook Air M2</h4>
+                    <p class="prod-price">28.500.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/220x140/4ae27a/fff?text=AirPods" alt="">
+                    <h4>AirPods Pro 2nd Gen</h4>
+                    <p class="prod-price">5.990.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/220x140/e2c94a/fff?text=iPad+Pro" alt="">
+                    <h4>iPad Pro M4 11 inch</h4>
+                    <p class="prod-price">19.990.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/220x140/9b4ae2/fff?text=Galaxy+S24" alt="">
+                    <h4>Samsung Galaxy S24 Ultra</h4>
+                    <p class="prod-price">22.990.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/220x140/4ae2d4/fff?text=Apple+Watch" alt="">
+                    <h4>Apple Watch Series 9 GPS</h4>
+                    <p class="prod-price">11.990.000 ₫</p>
+                    <button>Mua ngay</button>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- ADS SIDEBAR — cột phải -->
+        <aside class="ads-sidebar">
+            <div class="ad-banner">
+                <img src="https://via.placeholder.com/180x220/e24a4a/fff?text=SALE+40%25" alt="Quảng cáo">
+                <p>Siêu giảm giá cuối tuần!</p>
+            </div>
+
+            <div class="ad-banner">
+                <img src="https://via.placeholder.com/180x160/4a6ae2/fff?text=Bảo+hành+2+năm" alt="Quảng cáo 2">
+                <p>Bảo hành chính hãng 24 tháng</p>
+            </div>
+
+            <div class="ad-banner">
+                <img src="https://via.placeholder.com/180x140/4ae27a/fff?text=Freeship" alt="Quảng cáo 3">
+                <p>Freeship toàn quốc đơn từ 200k</p>
+            </div>
+        </aside>
+
+        <!-- FOOTER — full width -->
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="footer-col">
+                    <h4>Về chúng tôi</h4>
+                    <p>HoanPham Shop — Hệ thống bán lẻ công nghệ uy tín hàng đầu Việt Nam.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Liên kết nhanh</h4>
+                    <ul>
+                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="#">Sản phẩm</a></li>
+                        <li><a href="#">Khuyến mãi</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Hỗ trợ</h4>
+                    <ul>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Bảo hành</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Liên hệ</h4>
+                    <p>📞 1800 1234</p>
+                    <p>✉️ support@hoanphamshop.vn</p>
+                    <p>📍 Hà Nội, Việt Nam</p>
+                </div>
+            </div>
+            <div class="footer-bottom">© 2024 HoanPham Shop. All rights reserved.</div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
