@@ -65,3 +65,13 @@ VD:
     + CSS mobile thường đơn giản hơn → dễ mở rộng lên desktop (thêm tính năng) thay vì phải ghi đè (xóa tính năng).
     + Trình duyệt mobile chỉ tải CSS cần thiết → hiệu suất tốt hơn.
     + Phù hợp với tiêu chí "progressive enhancement" (cải tiến dần lên).
+
+Câu A2 - Breakpoints
+Breakpoints chuẩn theo Bootstrap 5:
+Breakpoint                  Kích thước      Thiết bị đại diện                   Lưới sản phẩm nên mấy cột?
+xs (extra small)            < 576px         Điện thoại nhỏ (iPhone SE)          1 cột
+sm (small)                  ≥ 576px         Điện thoại lớn (iPhone 14)          1–2 cột
+md (medium)                 ≥ 768px         Tablet (iPad Mini)                  2 cột
+lg (large)                  ≥ 992px         Tablet lớn / Laptop nhỏ             3 cột
+xl (extra large)            ≥ 1200px        Desktop / Laptop                    4 cột
+xxl (extra extra large)     ≥ 1400px        Màn hình lớn                        4–6 cột
