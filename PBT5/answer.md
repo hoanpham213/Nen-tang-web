@@ -91,3 +91,109 @@ Chiều rộng màn hình	    .container width
 800px	                720px
 1000px	                960px
 1400px	                1140px
+
+Câu A4 - SCSS Basics
+4 tính năng chính của SCSS
+1. Variables ($primary-color)
+Lưu giá trị tái sử dụng (màu, font, spacing...) vào biến. Thay đổi 1 chỗ → thay đổi toàn bộ.
+$primary-color: #1a1a2e;
+$accent-color: #e2b04a;
+$font-size-base: 16px;
+
+.button {
+    background: $primary-color;
+    color: $accent-color;
+    font-size: $font-size-base;
+}
+
+2. Nesting (lồng nhau)
+Viết CSS con lồng bên trong CSS cha, phản ánh cấu trúc HTML. Dùng & để tham chiếu selector cha.
+.card {
+    padding: 16px;
+    border-radius: 8px;
+
+    .card-title {           /* → .card .card-title */
+        font-size: 18px;
+        color: #222;
+    }
+
+    .card-price {           /* → .card .card-price */
+        color: red;
+        font-weight: bold;
+    }
+
+    &:hover {               /* → .card:hover */
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    &.featured {            /* → .card.featured */
+        border: 2px solid $accent-color;
+    }
+}
+
+3. Mixins (@mixin, @include)
+Tạo "hàm CSS" tái sử dụng, có thể nhận tham số.
+/* Khai báo mixin */
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin respond-to($breakpoint) {
+    @media (min-width: $breakpoint) {
+        @content;           /* nội dung được truyền vào */
+    }
+}
+
+/* Sử dụng mixin */
+.hero {
+    @include flex-center;
+    height: 100vh;
+
+    @include respond-to(768px) {
+        height: 60vh;
+    }
+}
+
+4. @extend / Inheritance
+Cho phép một selector kế thừa toàn bộ style của selector khác. Tránh lặp code.
+/* Base style */
+%btn-base {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Kế thừa từ %btn-base */
+.btn-primary {
+    @extend %btn-base;
+    background: $primary-color;
+    color: white;
+}
+
+.btn-secondary {
+    @extend %btn-base;
+    background: transparent;
+    border: 2px solid $primary-color;
+    color: $primary-color;
+}
+
+- Tại sao trình duyệt không đọc được file .scss?
+Trình duyệt chỉ hiểu CSS thuần (.css). File .scss có cú pháp mở rộng (variables, nesting, mixins...) mà trình duyệt không hiểu.
+
+- Cần bước compile (biên dịch) SCSS → CSS:
+# Cài Sass (1 lần)
+npm install -g sass
+
+# Compile 1 lần
+sass style.scss style.css
+
+# Compile tự động khi file thay đổi (watch mode)
+sass --watch style.scss:style.css
+
+# Compile cả thư mục
+sass --watch scss/:css/
