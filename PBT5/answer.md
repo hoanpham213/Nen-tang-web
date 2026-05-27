@@ -75,3 +75,19 @@ md (medium)                 ≥ 768px         Tablet (iPad Mini)                
 lg (large)                  ≥ 992px         Tablet lớn / Laptop nhỏ             3 cột
 xl (extra large)            ≥ 1200px        Desktop / Laptop                    4 cột
 xxl (extra extra large)     ≥ 1400px        Màn hình lớn                        4–6 cột
+
+Câu A3 - Media Queries
+CSS:
+.container { width: 100%; padding: 10px; }
+
+@media (min-width: 576px) { .container { width: 540px; } }
+@media (min-width: 768px) { .container { width: 720px; } }
+@media (min-width: 992px) { .container { width: 960px; } }
+@media (min-width: 1200px) { .container { width: 1140px; } }
+
+Chiều rộng màn hình	    .container width
+375px (iPhone SE)	    100%
+600px	                540px
+800px	                720px
+1000px	                960px
+1400px	                1140px
