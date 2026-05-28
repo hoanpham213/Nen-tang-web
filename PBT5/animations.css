@@ -1,0 +1,266 @@
+/* ============================================================
+   ANIMATIONS.CSS — CSS Transitions & Animations
+   5 hiệu ứng: Card hover | Button hover | Image zoom
+               Loading spinner | Fade-in
+============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    color: #333;
+}
+
+.page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+.page-title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 32px;
+    color: #1a1a2e;
+}
+
+.demo-section {
+    background: white;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.demo-section h2 {
+    font-size: 17px;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+}
+
+.demo-section > p {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* ===================================================
+   HIỆU ỨNG 4: LOADING SPINNER
+   
+   Dùng @keyframes spin để xoay border
+   animation: spin 1s linear infinite
+=================================================== */
+
+/* Định nghĩa keyframes */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 4px solid #e0e0e0;          /* Border xám (phần nền) */
+    border-top-color: #1a1a2e;          /* Border trên = màu chính → tạo hiệu ứng */
+    border-radius: 50%;                 /* Hình tròn */
+
+    /* Áp dụng animation */
+    animation: spin 1s linear infinite; /* spin | 1 giây | tốc độ đều | lặp mãi */
+}
+
+/* ===================================================
+   HIỆU ỨNG 5: FADE-IN khi load
+   
+   @keyframes fadeIn: opacity 0 + translateY(20px) → 1 + translateY(0)
+   animation-delay để các box xuất hiện lần lượt
+=================================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);   /* Bắt đầu từ dưới lên */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);      /* Về vị trí bình thường */
+    }
+}
+
+.fade-demo {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.fade-box {
+    flex: 1;
+    min-width: 100px;
+    height: 70px;
+    background: linear-gradient(135deg, #1a1a2e, #2d2d5e);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: bold;
+
+    /* Áp dụng animation fadeIn */
+    animation: fadeIn 0.6s ease forwards;
+    /* forwards: giữ lại trạng thái cuối sau khi animation xong */
+}
+
+/* delay lần lượt để tạo hiệu ứng stagger */
+.fade-box          { animation-delay: 0s; }
+.fade-box.delay-1  { animation-delay: 0.15s; opacity: 0; }
+.fade-box.delay-2  { animation-delay: 0.3s;  opacity: 0; }
+.fade-box.delay-3  { animation-delay: 0.45s; opacity: 0; }
+
+/* ===================================================
+   CARDS ROW
+=================================================== */
+.cards-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* ===================================================
+   HIỆU ỨNG 1: CARD HOVER
+   
+   Khi hover: nhấc lên 8px + bóng mạnh hơn
+   transition: all 0.3s ease — áp dụng cho mọi property
+=================================================== */
+.card {
+    flex: 1;
+    min-width: 200px;
+    background: #fafafa;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    /* transition cho card hover */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hiệu ứng hover card */
+.card:hover {
+    transform: translateY(-8px);                        /* Nhấc lên 8px */
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);       /* Bóng mạnh hơn */
+}
+
+/* ===================================================
+   HIỆU ỨNG 3: IMAGE ZOOM
+   
+   overflow: hidden trên .card-image → ảnh scale nhưng không tràn ra ngoài
+   img transition: transform 0.35s ease
+   Khi hover card: ảnh scale(1.1)
+=================================================== */
+.card-image {
+    overflow: hidden;   /* Cắt ảnh khi scale vượt khung */
+}
+
+.card-image img {
+    width: 100%;
+    display: block;
+    transition: transform 0.35s ease;   /* Transition cho zoom ảnh */
+}
+
+/* Khi hover card → ảnh phóng to */
+.card:hover .card-image img {
+    transform: scale(1.1);              /* Phóng to 10% */
+}
+
+.card-body {
+    padding: 12px;
+    flex: 1;
+}
+
+.card-body h3 {
+    font-size: 13px;
+    color: #222;
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+.card-body .price {
+    font-size: 14px;
+    font-weight: bold;
+    color: #e53e3e;
+}
+
+/* ===================================================
+   HIỆU ỨNG 2: BUTTON HOVER
+   
+   Đổi background + color mượt mà
+   Scale nhẹ: transform: scale(1.05)
+=================================================== */
+.btn-buy {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #1a1a2e;
+    color: white;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: auto;
+
+    /* transition cho button hover */
+    transition: background-color 0.25s ease,
+                color 0.25s ease,
+                transform 0.2s ease;
+}
+
+/* Hiệu ứng hover button */
+.btn-buy:hover {
+    background-color: #e2b04a;          /* Đổi màu nền */
+    color: #1a1a2e;                     /* Đổi màu chữ */
+    transform: scale(1.05);             /* Scale nhẹ */
+}
+
+/* Active (click): thu lại một chút */
+.btn-buy:active {
+    transform: scale(0.98);
+}
+
+/* ===================================================
+   NOTES SECTION
+=================================================== */
+.notes-section ul {
+    list-style: none;
+}
+
+.notes-section li {
+    padding: 8px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f0f0;
+    line-height: 1.6;
+    color: #555;
+}
+
+.notes-section li:last-child {
+    border-bottom: none;
+}
+
+.notes-section strong {
+    color: #1a1a2e;
+}

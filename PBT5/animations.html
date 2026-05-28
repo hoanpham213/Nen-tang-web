@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài B2 — CSS Transitions & Animations</title>
+    <link rel="stylesheet" href="animations.css">
+</head>
+<body>
+
+    <div class="page">
+        <h1 class="page-title">CSS Animations Demo</h1>
+
+        <!-- ===== LOADING SPINNER ===== -->
+        <section class="demo-section">
+            <h2>1. Loading Spinner — @keyframes spin</h2>
+            <p>Dùng @keyframes để xoay vòng vô tận: animation: spin 1s linear infinite</p>
+            <div class="spinner-wrapper">
+                <div class="spinner"></div>
+                <span>Đang tải...</span>
+            </div>
+        </section>
+
+        <!-- ===== FADE-IN ===== -->
+        <section class="demo-section">
+            <h2>2. Fade-In Animation — @keyframes fadeIn</h2>
+            <p>Từ opacity: 0 + translateY(20px) → opacity: 1 + translateY(0)</p>
+            <div class="fade-demo">
+                <div class="fade-box">Box 1</div>
+                <div class="fade-box delay-1">Box 2</div>
+                <div class="fade-box delay-2">Box 3</div>
+                <div class="fade-box delay-3">Box 4</div>
+            </div>
+        </section>
+
+        <!-- ===== PRODUCT CARDS với tất cả hover effects ===== -->
+        <section class="demo-section">
+            <h2>3. Card hover + Image zoom + Button hover</h2>
+            <p>Hover vào từng card để xem hiệu ứng</p>
+
+            <div class="cards-row">
+
+                <div class="card">
+                    <!-- Image zoom: overflow hidden + img scale -->
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/280x180/4a90e2/fff?text=iPhone+15" alt="iPhone">
+                    </div>
+                    <div class="card-body">
+                        <h3>iPhone 15 Pro Max</h3>
+                        <p class="price">25.990.000 ₫</p>
+                    </div>
+                    <!-- Button hover: đổi màu + scale -->
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/280x180/e2724a/fff?text=MacBook+Air" alt="MacBook">
+                    </div>
+                    <div class="card-body">
+                        <h3>MacBook Air M2</h3>
+                        <p class="price">28.500.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/280x180/4ae27a/fff?text=AirPods+Pro" alt="AirPods">
+                    </div>
+                    <div class="card-body">
+                        <h3>AirPods Pro 2</h3>
+                        <p class="price">5.990.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/280x180/9b4ae2/fff?text=Samsung+S24" alt="Samsung">
+                    </div>
+                    <div class="card-body">
+                        <h3>Samsung Galaxy S24</h3>
+                        <p class="price">22.990.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== CHÚ THÍCH KỸ THUẬT ===== -->
+        <section class="demo-section notes-section">
+            <h2>Tóm tắt kỹ thuật</h2>
+            <ul>
+                <li><strong>Card hover:</strong> transform: translateY(-8px) + box-shadow tăng, transition: all 0.3s ease</li>
+                <li><strong>Image zoom:</strong> overflow: hidden trên .card-image + img transform: scale(1.1) khi hover</li>
+                <li><strong>Button hover:</strong> đổi background-color + transform: scale(1.05)</li>
+                <li><strong>Spinner:</strong> @keyframes spin { to { transform: rotate(360deg) } } + animation: spin 1s linear infinite</li>
+                <li><strong>Fade-in:</strong> @keyframes fadeIn + animation-delay để stagger từng box</li>
+            </ul>
+        </section>
+    </div>
+
+</body>
+</html>
