@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <!-- Meta viewport: QUAN TRỌNG cho responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài B1 — Responsive Product Page</title>
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+    <!-- =================== HEADER =================== -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">🛍️ MyShop</div>
+
+            <!-- Hamburger: chỉ hiện trên mobile -->
+            <button class="hamburger" id="hamburger" aria-label="Mở menu">☰</button>
+
+            <!-- Nav: ẩn trên mobile, hiện trên tablet/desktop -->
+            <nav class="nav-menu" id="navMenu">
+                <a href="#">Trang chủ</a>
+                <a href="#">Sản phẩm</a>
+                <a href="#">Khuyến mãi</a>
+                <a href="#">Liên hệ</a>
+            </nav>
+
+            <!-- Actions: ẩn trên mobile -->
+            <div class="header-actions">
+                <a href="#" class="btn-login">Đăng nhập</a>
+                <a href="#" class="btn-register">Đăng ký</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- =================== MAIN LAYOUT =================== -->
+    <div class="page-layout">
+
+        <!-- SIDEBAR: ẩn trên mobile, hiện trên desktop -->
+        <aside class="sidebar">
+            <h3>Danh mục</h3>
+            <ul class="filter-list">
+                <li><label><input type="checkbox" checked> Điện thoại</label></li>
+                <li><label><input type="checkbox"> Laptop</label></li>
+                <li><label><input type="checkbox"> Tablet</label></li>
+                <li><label><input type="checkbox"> Phụ kiện</label></li>
+                <li><label><input type="checkbox"> Tai nghe</label></li>
+            </ul>
+
+            <h3>Lọc giá</h3>
+            <ul class="filter-list">
+                <li><label><input type="checkbox"> Dưới 1 triệu</label></li>
+                <li><label><input type="checkbox" checked> 1–5 triệu</label></li>
+                <li><label><input type="checkbox" checked> 5–15 triệu</label></li>
+                <li><label><input type="checkbox"> Trên 15 triệu</label></li>
+            </ul>
+
+            <button class="btn-filter">Áp dụng</button>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- Filter bar: chỉ hiện trên tablet (thay sidebar) -->
+            <div class="filter-bar">
+                <span>Lọc:</span>
+                <select><option>Tất cả danh mục</option><option>Điện thoại</option><option>Laptop</option></select>
+                <select><option>Tất cả giá</option><option>Dưới 1 triệu</option><option>1–5 triệu</option></select>
+                <select><option>Sắp xếp: Mới nhất</option><option>Giá tăng dần</option></select>
+            </div>
+
+            <h2 class="section-title">Sản phẩm nổi bật</h2>
+
+            <!-- PRODUCT GRID: 1 cột (mobile) → 2 cột (tablet) → 4 cột (desktop) -->
+            <div class="product-grid">
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/300x200/4a90e2/fff?text=iPhone+15" alt="iPhone 15">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">iPhone 15 Pro Max 256GB</h3>
+                        <p class="card-price">25.990.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/300x200/e2724a/fff?text=MacBook+Air" alt="MacBook">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">MacBook Air M2 13 inch</h3>
+                        <p class="card-price">28.500.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/300x200/4ae27a/fff?text=AirPods+Pro" alt="AirPods">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">AirPods Pro 2nd Gen</h3>
+                        <p class="card-price">5.990.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/300x200/e2c94a/fff?text=iPad+Pro" alt="iPad">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">iPad Pro M4 11 inch Wi-Fi</h3>
+                        <p class="card-price">19.990.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/300x200/9b4ae2/fff?text=Galaxy+S24" alt="Samsung">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Samsung Galaxy S24 Ultra 256GB</h3>
+                        <p class="card-price">22.990.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/300x200/4ae2d4/fff?text=Apple+Watch" alt="Watch">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Apple Watch Series 9 GPS 41mm</h3>
+                        <p class="card-price">11.990.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/300x200/e24a8a/fff?text=Sony+WH" alt="Sony">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Tai nghe Sony WH-1000XM5</h3>
+                        <p class="card-price">6.990.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://via.placeholder.com/300x200/4a6ae2/fff?text=Logitech+MX" alt="Logitech">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Chuột Logitech MX Master 3S</h3>
+                        <p class="card-price">1.990.000 ₫</p>
+                    </div>
+                    <button class="btn-buy">Mua ngay</button>
+                </div>
+
+            </div><!-- /.product-grid -->
+        </main>
+
+        <!-- ADS BAR: chỉ hiện trên desktop -->
+        <aside class="ads-bar">
+            <div class="ad-item">
+                <img src="https://via.placeholder.com/160x200/e24a4a/fff?text=SALE+40%25" alt="Quảng cáo">
+                <p>Siêu sale cuối tuần!</p>
+            </div>
+            <div class="ad-item">
+                <img src="https://via.placeholder.com/160x160/4a6ae2/fff?text=Freeship" alt="Freeship">
+                <p>Miễn phí vận chuyển</p>
+            </div>
+        </aside>
+
+    </div><!-- /.page-layout -->
+
+    <!-- =================== FOOTER =================== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <h4>Về MyShop</h4>
+                <p>Hệ thống bán lẻ công nghệ uy tín hàng đầu Việt Nam.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Liên kết</h4>
+                <ul>
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="#">Sản phẩm</a></li>
+                    <li><a href="#">Khuyến mãi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hỗ trợ</h4>
+                <ul>
+                    <li><a href="#">Đổi trả</a></li>
+                    <li><a href="#">Bảo hành</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Liên hệ</h4>
+                <p>📞 1800 1234</p>
+                <p>✉️ hello@myshop.vn</p>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2024 MyShop. All rights reserved.</div>
+    </footer>
+
+    <!-- JS cho hamburger toggle -->
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+        });
+    </script>
+
+</body>
+</html>
