@@ -1,0 +1,287 @@
+// ============================================================
+// _components.scss — Styles cho các component cụ thể
+// File này @use _variables và _mixins (do style.scss import trước)
+// ============================================================
+
+@import 'variables';
+@import 'mixins';
+
+// ===========================
+// HEADER
+// ===========================
+.header {
+    background: $primary-color;
+    color: $white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: $shadow-md;
+
+    // Nesting: .header-inner bên trong .header
+    .header-inner {
+        @include flex(space-between, center);   // Dùng mixin flex
+        padding: 0 $spacing-lg;
+        height: 60px;
+    }
+
+    .logo {
+        font-size: $font-size-lg;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    // Nesting: nav bên trong header
+    .nav-menu {
+        @include flex(flex-start, center);
+        gap: $spacing-lg;
+        list-style: none;
+
+        a {
+            color: #aaa;
+            font-size: $font-size-sm;
+            transition: color 0.2s;
+
+            // Parent selector &: → .nav-menu a:hover
+            &:hover {
+                color: $white;
+            }
+        }
+    }
+
+    .header-actions {
+        @include flex(flex-start, center);
+        gap: $spacing-sm;
+    }
+}
+
+// ===========================
+// CARD COMPONENT
+// Dùng nesting + & (parent selector)
+// ===========================
+.card {
+    background: $white;
+    border-radius: $border-radius;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    @include card-shadow(normal);           // Dùng mixin card-shadow
+
+    // transition áp dụng cho hover
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    // Nesting: .card-image bên trong .card
+    .card-image {
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            display: block;
+            transition: transform 0.35s ease;
+        }
+    }
+
+    // Nesting: .card-body bên trong .card
+    .card-body {
+        padding: $spacing-sm $spacing-md;
+        flex: 1;
+    }
+
+    // Nesting: .card-title bên trong .card
+    .card-title {
+        font-size: $font-size-sm;
+        color: $text-color;
+        margin-bottom: $spacing-xs;
+        line-height: 1.4;
+    }
+
+    // Nesting: .card-price bên trong .card
+    .card-price {
+        font-size: $font-size-base;
+        font-weight: bold;
+        color: $danger-color;
+    }
+
+    // Parent selector &:hover → .card:hover
+    &:hover {
+        transform: translateY(-8px);
+        @include card-shadow(hover);        // Dùng mixin card-shadow
+
+        // Khi card hover → ảnh zoom
+        .card-image img {
+            transform: scale(1.1);
+        }
+    }
+
+    // Parent selector &.featured → .card.featured (card nổi bật)
+    &.featured {
+        border: 2px solid $accent-color;
+
+        .card-title {
+            font-weight: bold;
+            color: $primary-color;
+        }
+    }
+}
+
+// ===========================
+// BUTTON
+// ===========================
+.btn-buy {
+    display: block;
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    background: $primary-color;
+    color: $white;
+    border: none;
+    font-size: $font-size-sm;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background-color 0.25s ease, transform 0.2s ease;
+
+    &:hover {
+        background-color: $accent-color;
+        color: $primary-color;
+        transform: scale(1.05);
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+// ===========================
+// SIDEBAR
+// ===========================
+.sidebar {
+    background: $white;
+    border-radius: $border-radius;
+    padding: $spacing-md;
+    @include card-shadow(normal);
+
+    h3 {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: $text-muted;
+        margin: $spacing-md 0 $spacing-sm;
+        border-bottom: 1px solid $border-color;
+        padding-bottom: $spacing-xs;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    .filter-list {
+        list-style: none;
+
+        li {
+            padding: $spacing-xs 0;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: $spacing-sm;
+            font-size: $font-size-sm;
+            color: #555;
+            cursor: pointer;
+        }
+    }
+
+    .btn-filter {
+        display: block;
+        width: 100%;
+        margin-top: $spacing-md;
+        padding: $spacing-sm;
+        background: $primary-color;
+        color: $white;
+        border: none;
+        border-radius: 5px;
+        font-size: $font-size-sm;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+            background: $secondary-color;
+        }
+    }
+}
+
+// ===========================
+// PRODUCT GRID
+// ===========================
+.product-grid {
+    display: grid;
+    grid-template-columns: 1fr;             // Mobile: 1 cột
+    gap: $spacing-md;
+
+    // Tablet: 2 cột
+    @include respond-to($breakpoint-tablet) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    // Desktop: 4 cột
+    @include respond-to($breakpoint-desktop) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+// ===========================
+// FOOTER
+// ===========================
+.footer {
+    background: $primary-color;
+    color: #aaa;
+    margin-top: $spacing-xl;
+
+    .footer-inner {
+        display: grid;
+        grid-template-columns: 1fr;         // Mobile: 1 cột
+        gap: $spacing-lg;
+        padding: $spacing-xl $spacing-lg;
+
+        @include respond-to($breakpoint-tablet) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include respond-to($breakpoint-desktop) {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .footer-col {
+        h4 {
+            font-size: $font-size-sm;
+            color: $white;
+            margin-bottom: $spacing-sm;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.2s;
+
+            &:hover {
+                color: $white;
+            }
+        }
+
+        p, li {
+            font-size: $font-size-sm;
+            line-height: 1.8;
+        }
+    }
+
+    .footer-bottom {
+        text-align: center;
+        font-size: 12px;
+        padding: $spacing-sm $spacing-lg;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #555;
+    }
+}

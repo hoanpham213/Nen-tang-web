@@ -1,0 +1,81 @@
+// Import theo thứ tự: variables → mixins → components
+@import 'variables';
+@import 'mixins';
+@import 'components';
+
+// ===========================
+// RESET & BASE STYLES
+// ===========================
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: $font-primary;
+    font-size: $font-size-base;
+    background: $bg-color;
+    color: $text-color;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul { list-style: none; }
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+// ===========================
+// PAGE LAYOUT — MOBILE FIRST
+// ===========================
+.page-layout {
+    display: block;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: $spacing-sm $spacing-md;
+
+    .sidebar   { display: none; }
+    .ads-bar   { display: none; }
+
+    @include respond-to($breakpoint-tablet) {
+        padding: $spacing-md $spacing-lg;
+    }
+
+    @include respond-to($breakpoint-desktop) {
+        display: grid;
+        grid-template-columns: 220px 1fr 180px;
+        gap: $spacing-lg;
+        align-items: flex-start;
+
+        .sidebar {
+            display: block;
+            position: sticky;
+            top: 80px;
+        }
+
+        .ads-bar {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-md;
+        }
+    }
+}
+
+.section-title {
+    font-size: $font-size-base;
+    margin-bottom: $spacing-md;
+    color: #222;
+    border-left: 3px solid $accent-color;
+    padding-left: $spacing-sm;
+
+    @include respond-to($breakpoint-tablet) {
+        font-size: $font-size-lg;
+    }
+}

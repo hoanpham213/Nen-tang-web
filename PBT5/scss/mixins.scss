@@ -1,0 +1,46 @@
+// ============================================================
+// _mixins.scss — Các mixin tái sử dụng
+// Dùng @mixin để khai báo, @include để sử dụng
+// ============================================================
+
+// MIXIN 1: Responsive breakpoints
+// Cách dùng: @include respond-to($breakpoint-tablet) { ... }
+@mixin respond-to($breakpoint) {
+    @media (min-width: $breakpoint) {
+        @content;   // @content = nội dung được truyền vào khi gọi mixin
+    }
+}
+
+// MIXIN 2: Căn giữa bằng Flexbox (cả ngang lẫn dọc)
+// Cách dùng: @include flex-center;
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// MIXIN 3: Bóng đổ cho card
+// Cách dùng: @include card-shadow; hoặc @include card-shadow(hover)
+@mixin card-shadow($type: normal) {
+    @if $type == normal {
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    } @else if $type == hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+    }
+}
+
+// MIXIN 4: Flexbox cơ bản với tham số tùy chỉnh
+// Cách dùng: @include flex(space-between, center)
+@mixin flex($justify: flex-start, $align: stretch) {
+    display: flex;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+// MIXIN 5: Truncate text (cắt text dài bằng ...)
+// Cách dùng: @include truncate;
+@mixin truncate {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

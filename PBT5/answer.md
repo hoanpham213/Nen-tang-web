@@ -197,3 +197,15 @@ sass --watch style.scss:style.css
 
 # Compile cả thư mục
 sass --watch scss/:css/
+
+PHẦN B - THỰC HÀNH CODE
+Câu B3 - SCSS Refactor
+Lệnh compile đã dùng
+# Cài Sass toàn cục
+npm install -g sass
+
+# Compile 1 lần
+sass scss/style.scss css/style.css --silence-deprecation=import
+
+# Watch mode (dùng khi đang code)
+sass --watch scss/style.scss:css/style.css
