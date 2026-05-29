@@ -237,3 +237,86 @@ Câu C1 - Phân tích trang web thực (tiki.vn)
     + Xuất hiện thêm: Thanh cam kết ở giữa trang (Hoàn 200% | 30 ngày đổi trả | Giao nhanh 2H...), địa chỉ giao hàng hiện phía dưới header
     + Banner phụ: Xuất hiện 3 banner nhỏ nằm ngang cạnh nhau ở cuối trang (3 cột đều nhau)
     + Font size: Lớn nhất, tên sản phẩm hiện đủ, không bị cắt
+
+Câu C2 - Thiết kế Responsive Strategy
+- Vẽ Wireframe cho 3 kích thước:
+    + Mobile: C2_mobile.png
+    + Tablet: C2_tablet.png
+    + Desktop: C2_desktop.png
+- CSS skeleton (Mobile-First, chỉ Layout)
+/* ===== BASE (Mobile) ===== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hamburger { display: block; }     /* Hiện hamburger trên mobile */
+.nav-menu { display: none; }       /* Ẩn menu trên mobile */
+
+.hero {
+    width: 100%;
+    height: 200px;
+}
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);   /* 2 cột trên mobile */
+    gap: 12px;
+}
+
+.booking-section {
+    display: grid;
+    grid-template-columns: 1fr;              /* 1 cột: form full width */
+    gap: 20px;
+}
+
+.map-section {
+    width: 100%;
+    height: 200px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;             /* 1 cột trên mobile */
+}
+
+/* ===== TABLET (≥ 768px) ===== */
+@media (min-width: 768px) {
+    .hamburger { display: none; }
+    .nav-menu { display: flex; }
+
+    .hero { height: 300px; }
+
+    .food-grid {
+        grid-template-columns: repeat(3, 1fr);  /* 3 cột */
+    }
+
+    .booking-section {
+        grid-template-columns: 1fr 1fr;          /* form | bản đồ */
+    }
+
+    .map-section { height: 100%; }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);  /* 2 cột */
+    }
+}
+
+/* ===== DESKTOP (≥ 1024px) ===== */
+@media (min-width: 1024px) {
+    .hero { height: 500px; }
+
+    .food-grid {
+        grid-template-columns: repeat(3, 1fr);  /* vẫn 3 cột nhưng to hơn */
+        gap: 24px;
+    }
+
+    .booking-section {
+        grid-template-columns: 1fr 1.2fr;       /* form | bản đồ to hơn */
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(4, 1fr);  /* 4 cột */
+    }
+}
