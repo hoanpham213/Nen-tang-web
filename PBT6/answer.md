@@ -35,3 +35,45 @@ col-md-6 = tại breakpoint md (≥ 768px) trở lên, phần tử này chiếm 
 
 - Tại sao không cần viết col-sm-12?
 Vì Bootstrap dùng nguyên tắc Mobile-First — class col-12 đã áp dụng cho mọi kích thước từ nhỏ nhất (xs, < 576px) trở lên. Khi gặp breakpoint lớn hơn (md, lg...) thì class đó ghi đè lên. Viết thêm col-sm-12 là thừa vì col-12 đã bao gồm cả sm rồi
+
+Câu A2 - Utilities & Components
+1. Giải thích d-none d-md-block
+<div class="d-none d-md-block">Nội dung này</div>
++ d-none → display: none — ẩn ở mọi kích thước (mặc định, Mobile-First)
++ d-md-block → display: block khi màn hình ≥ 768px (tablet trở lên)
+
+- Kết quả:
+    + Mobile (< 768px): ẩn
+    + Tablet & Desktop (≥ 768px): hiện
+
+-> Dùng để ẩn nội dung trên mobile, chỉ hiện trên tablet/desktop. Ví dụ: sidebar, cột quảng cáo.
+
+2. Năm spacing utilities
+- Bootstrap dùng quy tắc: {property}{sides}-{size}
+    + Property: m (margin), p (padding)
+    + Sides: t top, b bottom, s start/left, e end/right, x ngang, y dọc, (trống) = tất cả
+    + Size: 0–5 (0=0, 1=0.25rem, 2=0.5rem, 3=1rem, 4=1.5rem, 5=3rem), auto
+
+Class       CSS tương đương                     Giải thích
+mt-3        margin-top: 1rem                    Margin trên = 16px
+px-4        padding-left: 1.5rem;               Padding hai bên trái/phải = 24px
+            padding-right: 1.5rem               
+mb-auto     margin-bottom: auto                 Margin dưới tự động — dùng để đẩy nút xuống đáy trong flexbox
+py-2        padding-top: 0.5rem;                Padding trên dưới = 8px
+            padding-bottom: 0.5rem              
+ms-3        margin-left: 1rem                   Margin trái = 16px (ms = margin-start)
+
+3. Sự khác nhau giữa .container, .container-fluid, .container-md
+Class           Hành vi                         Dùng khi nào
+.container      Có max-width cố định theo       Layout thông thường, 
+                từng breakpoint (540px /        nội dung không quá rộng
+                720px / 960px / 1140px /
+                 1320px), căn giữa trang
+
+.container-     Luôn rộng 100% màn hình,        Khi muốn nội dung full 
+fluid           không có max-width              width (banner, navbar)
+                
+.container-md   100% width trên mobile          Khi muốn full width trên 
+                (< 768px), chuyển sang          mobile nhưng có giới hạn trên desktop
+                fixed-width từ md (≥ 768px)
+                trở lên                         
