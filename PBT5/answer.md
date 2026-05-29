@@ -185,19 +185,6 @@ Cho phép một selector kế thừa toàn bộ style của selector khác. Trá
 - Tại sao trình duyệt không đọc được file .scss?
 Trình duyệt chỉ hiểu CSS thuần (.css). File .scss có cú pháp mở rộng (variables, nesting, mixins...) mà trình duyệt không hiểu.
 
-- Cần bước compile (biên dịch) SCSS → CSS:
-# Cài Sass (1 lần)
-npm install -g sass
-
-# Compile 1 lần
-sass style.scss style.css
-
-# Compile tự động khi file thay đổi (watch mode)
-sass --watch style.scss:style.css
-
-# Compile cả thư mục
-sass --watch scss/:css/
-
 PHẦN B - THỰC HÀNH CODE
 Câu B3 - SCSS Refactor
 Lệnh compile đã dùng
@@ -209,3 +196,44 @@ sass scss/style.scss css/style.css --silence-deprecation=import
 
 # Watch mode (dùng khi đang code)
 sass --watch scss/style.scss:css/style.css
+
+PHẦN C - PHÂN TÍCH
+Câu C1 - Phân tích trang web thực (tiki.vn)
+1. 3 kích thước màn hình khác nhau 
+* Mobile (375px):
+- mobile_giaodien.png
+- mobile_sanpham.png
+
+* Tablet (768px)
+- tablet_giaodien.png
+- tablet_sanpham.png
+
+* Desktop (1440px)
+- desktop_giaodien.png
+- desktop_sanpham.png
+
+2. 
+- Mobile 375px 
+    + Navigation: Chỉ hiện logo + thanh tìm kiếm thu gọn + icon giỏ hàng. Bottom bar cố định ở đáy: Trang Chủ | Danh Mục | Chat | Tài Khoản 
+    + Lưới sản phẩm: 1 cột (full width)
+    + Danh mục: Icon tròn xếp 5 cột, scroll ngang
+    + Ẩn: Menu ngang, sidebar, nút đăng nhập trên header
+    + Font size: ~12–13px, chữ bị cắt nếu quá dài
+
+- Tablet 768px  
+    +  Navigation: Giống mobile — vẫn giữ bottom bar (Trang Chủ | Danh Mục | Chat | Tài Khoản), không có menu ngang. Thanh tìm kiếm rộng hơn, hiện đầy đủ placeholder text "100% Hàng tuyển chọn"
+    + Banner: Full width, to hơn rõ rệt, hiện nhiều chi tiết hơn (banner khác so với mobile do A/B test hoặc responsive image)
+    + Danh mục: Icon tròn hiện nhiều hơn trên 1 hàng so với mobile (không bị cắt chữ)
+    + Lưới sản phẩm: 2 cột — thấy rõ trong ảnh tablet_sanpham.png (2 sản phẩm/hàng, ảnh to, hiện đủ tên + giá + badge)
+    + Ẩn: Sidebar lọc vẫn chưa xuất hiện
+    + Nút trợ lý: Vẫn cố định góc phải dưới (position: fixed)
+    + Font size: Lớn hơn mobile một chút, tên sản phẩm hiện đủ 2–3 dòng
+
+- Desktop 1440px
+    + Navigation: Vẫn giữ bottom bar (Tiki dùng web app, không chuyển sang menu ngang dù ở desktop) — đây là điểm đặc biệt của Tiki so với các trang thông thường. Thanh tìm kiếm full width nổi bật ở trên cùng
+    + Banner: Full width, rất lớn, chữ to rõ, hình ảnh sản phẩm hiện chi tiết hơn nhiều
+    + Danh mục: Hiện đủ tất cả icon trên 2 hàng, không cần scroll ngang
+    + Lưới sản phẩm: Nhiều cột hơn — phần Flash Sale hiện khoảng 8–10 sản phẩm trên 1 hàng (scroll ngang), phần "Hàng ngoại giá hot" hiện 8 sản phẩm/hàng
+    + Xuất hiện thêm: Thanh cam kết ở giữa trang (Hoàn 200% | 30 ngày đổi trả | Giao nhanh 2H...), địa chỉ giao hàng hiện phía dưới header
+    + Banner phụ: Xuất hiện 3 banner nhỏ nằm ngang cạnh nhau ở cuối trang (3 cột đều nhau)
+    + Font size: Lớn nhất, tên sản phẩm hiện đủ, không bị cắt
