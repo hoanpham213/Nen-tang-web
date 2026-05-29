@@ -76,4 +76,48 @@ fluid           không có max-width              width (banner, navbar)
 .container-md   100% width trên mobile          Khi muốn full width trên 
                 (< 768px), chuyển sang          mobile nhưng có giới hạn trên desktop
                 fixed-width từ md (≥ 768px)
-                trở lên                         
+                trở lên      
+
+PHẦN C - PHÂN TÍCH
+Câu C1 - Tùy biến Bootstrap
+1. Quy trình đổi màu $primary sang #E63946
+- Cần công cụ: Node.js + npm + Sass (vì Bootstrap gốc viết bằng SCSS)
+- Các bước:
+# Bước 1: Cài Bootstrap qua npm
+npm install bootstrap
+
+# Bước 2: Cài Sass
+npm install -g sass
+
+# Bước 3: Tạo file custom.scss — ghi đè biến TRƯỚC khi import Bootstrap:
+// custom.scss
+
+// Ghi đè biến Bootstrap TRƯỚC khi import
+$primary: #E63946;
+
+// Sau đó import Bootstrap (Bootstrap sẽ dùng biến mới)
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+# Bước 4: Compile SCSS → CSS:
+sass custom.scss custom.css
+
+# Bước 5: Dùng file custom.css thay vì Bootstrap CDN trong HTML:
+<link rel="stylesheet" href="custom.css">
+
+2. Tại sao KHÔNG nên override trực tiếp .btn-primary { background: red; }?
+/* CÁCH SAI — không nên làm */
+.btn-primary {
+    background: red;
+}
+
+* Có 3 vấn đề:
+- Vấn đề 1 — Chỉ ghi đè một chỗ, không ghi đè toàn bộ:
+Bootstrap dùng $primary ở rất nhiều nơi: .btn-primary, .bg-primary, .text-primary, .border-primary, .badge.bg-primary, focus ring, hover state... Override thủ công từng class sẽ bỏ sót nhiều chỗ, giao diện trở nên không nhất quán.
+
+- Vấn đề 2 — Hover/focus state bị sai màu:
+Bootstrap tự tính màu hover/active từ $primary (tối hơn 10%). Nếu chỉ ghi đè background thì màu hover vẫn là màu cũ, trông rất lạ.
+
+- Vấn đề 3 — Khó bảo trì:
+Khi nâng cấp Bootstrap lên version mới, phải tìm lại tất cả các override thủ công và kiểm tra lại. Dùng SASS variables thì chỉ cần sửa 1 dòng $primary: #E63946; là xong.
+
+-> Kết luận: Dùng SCSS variables đảm bảo nhất quán (tất cả components dùng cùng màu), đúng (hover/focus được tính lại đúng), và dễ bảo trì.
