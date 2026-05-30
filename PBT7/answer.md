@@ -44,3 +44,28 @@ console.log("Ngoài block:", a);       // → "Ngoài block: 1"
 
     + Dự đoán: "Trong block: 2" rồi "Ngoài block: 1"
     + Giải thích: let có block scope — biến a bên trong {} là một biến hoàn toàn khác với a bên ngoài. Hai biến cùng tên nhưng khác scope, không ảnh hưởng nhau.
+
+Câu A2 - Data Types & Coercion
+|       Biểu thức       |       Kết quả         |          Giải thích           |
+|typeof null            |"object"               |Bug lịch sử của JS từ version 1|
+|                       |                       |- null không phải object nhưng |
+|                       |                       |typeof trả về "object"         |
+|typeof underfined      |"underfined"           |Đúng như tên                   |
+|typeof NaN             |"number"               |NaN="Not a number" nhưng thuộc |
+|                       |                       |kiểu number - nghịch lý nổi    | 
+|                       |                       |tiếng                          |
+|"5"+3                  |53                     |+ có string->nối chuỗi. 3 bị   |
+|                       |                       |chuyển thành "3"               |
+|"5"-3                  |2                      |- không dùng cho string -> "5" |
+|                       |                       |bị chuyển thành số 5           |
+|"5"*"3"                |15                     |* luôn chuyển cả hai về số     |
+|true + true            |2                      |true chuyển thành 1            |
+|[]+[]                  |""                     |Hai mảng rỗng-> toString()=""  |
+|[]+{}                  |"[object Object]"      |[]->"", {}->"[object Object]"->|
+|                       |                       |nối chuỗi                      |
+|{}+[]                  |0                      |{} đầu dòng được hiểu là block |
+|                       |                       |rỗng                           |
+
+Tại sao "5" + 3 khác "5" - 3?
+- Toán tử + có 2 vai trò trong JS: cộng số VÀ nối chuỗi. Khi có bất kỳ operand nào là string, + ưu tiên nối chuỗi → số bị chuyển thành chuỗi.
+- Toán tử - chỉ có 1 vai trò: phép trừ số học. Khi gặp string, JS buộc phải chuyển string thành số (numeric coercion) → "5" thành 5 → 5 - 3 = 2.
