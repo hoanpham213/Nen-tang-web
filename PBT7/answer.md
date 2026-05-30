@@ -92,3 +92,24 @@ Quy tắc: Nên dùng === (strict equality)
     + Là best practice được cộng đồng JS thống nhất (ESLint mặc định yêu cầu)
 
 - Chỉ dùng == khi cố tình muốn check null == undefined cùng lúc — nhưng nên viết rõ hơn: value == null.
+
+Câu A4 - Truthy & Falsy
+- Tất cả giá trị Falsy trong JavaScript (chỉ có 6):
+1. false
+2. 0 (và -0, 0n)
+3. "" (chuỗi rỗng)
+4. null
+5. undefined
+6. NaN
+
+- Mọi giá trị khác đều là Truthy — bao gồm: "0", [], {}, " " (space), -1, v.v.
+- Dự đoán kết quả
+Biểu thức                   Kết quả                 Lý do
+if ("0") → in "A"           ✅ In "A"               "0" là string không rỗng → truthy
+if ("") → in "B"            ❌ Không in             "" là string rỗng → falsy
+if ([]) → in "C"            ✅ In "C"               Mảng rỗng vẫn là object → truthy
+if ({}) → in "D"            ✅ In "D"               Object rỗng vẫn là object → truthy
+if (null) → in "E"          ❌ Không in             null → falsy
+if (0) → in "F"             ❌ Không in             0 → falsy
+if (-1) → in "G"            ✅ In "G"               Số khác 0 → truthy (kể cả số âm)
+if (" ") → in "H"           ✅ In "H"               Chuỗi có space không phải chuỗi rỗng → truthy
