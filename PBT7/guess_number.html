@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài B3 — Đoán Số</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #2d2d5e);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            width: 380px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        h1 { font-size: 22px; color: #1a1a2e; margin-bottom: 6px; }
+        .subtitle { color: #888; font-size: 13px; margin-bottom: 20px; }
+
+        .hint-box {
+            background: #f0f4ff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a1a2e;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hint-box.higher { background: #fff3e0; color: #e65100; }
+        .hint-box.lower  { background: #e8f5e9; color: #2e7d32; }
+        .hint-box.win    { background: #e8f5e9; color: #1b5e20; }
+        .hint-box.lose   { background: #ffebee; color: #b71c1c; }
+
+        .attempts {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .attempts span {
+            font-weight: bold;
+            color: #e53e3e;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 10px 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus { border-color: #1a1a2e; }
+
+        button {
+            padding: 10px 20px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover { background: #2d2d5e; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+
+        .history {
+            text-align: left;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        .history-item { padding: 2px 0; }
+
+        .warning {
+            color: #e65100;
+            font-size: 12px;
+            margin-bottom: 8px;
+            min-height: 18px;
+        }
+
+        .btn-reset {
+            background: #888;
+            font-size: 13px;
+            padding: 8px 16px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #ff9800, #f44336);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+<div class="game-card">
+    <h1>🎯 Đoán Số Bí Ẩn</h1>
+    <p class="subtitle">Máy đã chọn 1 số từ 1 đến 100 — bạn có 7 lần đoán!</p>
+
+    <!-- Thanh tiến trình lần đoán -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+
+    <div class="hint-box" id="hintBox">Hãy nhập số đầu tiên của bạn!</div>
+
+    <div class="attempts">
+        Lần đoán: <span id="attemptCount">0</span> / 7
+    </div>
+
+    <!-- Warning cho số đã đoán -->
+    <div class="warning" id="warning"></div>
+
+    <div class="input-row">
+        <input type="number" id="guessInput" min="1" max="100" placeholder="1 — 100">
+        <button id="guessBtn" onclick="makeGuess()">Đoán</button>
+    </div>
+
+    <!-- Lịch sử các lần đoán -->
+    <div class="history" id="history"></div>
+
+    <button class="btn-reset" onclick="resetGame()">🔄 Chơi lại</button>
+</div>
+
+<script src="guess.js"></script>
+</body>
+</html>
