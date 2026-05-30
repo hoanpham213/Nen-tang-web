@@ -113,3 +113,38 @@ if (null) → in "E"          ❌ Không in             null → falsy
 if (0) → in "F"             ❌ Không in             0 → falsy
 if (-1) → in "G"            ✅ In "G"               Số khác 0 → truthy (kể cả số âm)
 if (" ") → in "H"           ✅ In "H"               Chuỗi có space không phải chuỗi rỗng → truthy
+
+Câu A5 - Template Literals
+- Cách 1:
+// Trước
+var greeting = "Xin chào " + name + "! Bạn " + age + " tuổi.";
+
+// Sau (template literal)
+var greeting = `Xin chào ${name}! Bạn ${age} tuổi.`;
+
+- Cách 2:
+// Trước
+var url = "https://api.example.com/users/" + userId + "/orders?page=" + page;
+
+// Sau
+var url = `https://api.example.com/users/${userId}/orders?page=${page}`;
+
+- Cách 3:
+// Trước
+var html = "<div class=\"card\">" +
+    "<h2>" + title + "</h2>" +
+    "<p>" + description + "</p>" +
+    "<span>Giá: " + price + "đ</span>" +
+    "</div>";
+
+// Sau — multiline, không cần escape dấu "
+var html = `<div class="card">
+    <h2>${title}</h2>
+    <p>${description}</p>
+    <span>Giá: ${price}đ</span>
+</div>`;
+
+- Lợi ích template literal:
+    + Không cần escape dấu " hay ' bên trong
+    + Hỗ trợ multiline không cần \n
+    + Có thể chứa bất kỳ biểu thức JS nào trong ${...}: ${price * 1.1}, ${isVIP ? "VIP" : ""}
