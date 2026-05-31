@@ -148,3 +148,75 @@ var html = `<div class="card">
     + Không cần escape dấu " hay ' bên trong
     + Hỗ trợ multiline không cần \n
     + Có thể chứa bất kỳ biểu thức JS nào trong ${...}: ${price * 1.1}, ${isVIP ? "VIP" : ""}
+
+PHẦN C - SUY LUẬN
+Câu C1 - Debug JavaScript
+- Code gốc có lỗi:
+function tinhGiaGiamGia(giaBan, phanTramGiam) {
+    if (phanTramGiam < 0 || phanTramGiam > 100) {
+        return "Phần trăm giảm không hợp lệ"
+    }
+    
+    var giamGia = giaBan * phanTramGiam / 100
+    let giaSauGiam = giaBan - giamGia
+    
+    if (giaSauGiam = 0) {          // LỖI 1
+        console.log("Sản phẩm miễn phí!")
+    }
+    
+    return giaSauGiam
+}
+
+const gia = tinhGiaGiamGia("100000", 20)    // LỖI 2
+console.log("Giá sau giảm: " + gia + "đ")
+
+const gia2 = tinhGiaGiamGia(50000, 110)
+console.log("Giá: " + gia2)
+
+for (var i = 0; i < 5; i++) {              // LỖI 3
+    setTimeout(function() {
+        console.log("Item " + i)           // In ra "Item 5" x5
+    }, 1000)
+}
+
+- Danh sách lỗi và cách sửa:
+
+    + Lỗi 1: Dùng = thay vì === trong điều kiện if
+// SAI: gán giá trị 0 cho giaSauGiam, luôn falsy → không bao giờ vào if
+if (giaSauGiam = 0)
+
+// ĐÚNG: so sánh bằng
+if (giaSauGiam === 0)
+
+    + Lỗi 2: Truyền String "100000" thay vì number
+// SAI: "100000" là string → phép nhân vẫn cho ra số (JS tự convert)
+// nhưng đây là lỗi logic, cần validate hoặc convert
+const gia = tinhGiaGiamGia("100000", 20)
+
+// ĐÚNG: truyền số, hoặc thêm validation trong hàm
+const gia = tinhGiaGiamGia(100000, 20)
+
+// Thêm validation vào đầu hàm:
+if (typeof giaBan !== "number" || isNaN(giaBan)) {
+    return "Lỗi: Giá bán phải là số"
+}
+
+    + Lỗi 3: var-i trong vòng lặp với setTimeout
+// SAI: var i có function scope → tất cả setTimeout dùng chung 1 biến i
+// Khi timeout chạy sau 1 giây, vòng lặp đã xong → i = 5 → in "Item 5" x5
+for (var i = 0; i < 5; i++) {
+    setTimeout(function() {
+        console.log("Item " + i)   // luôn in "Item 5"
+    }, 1000)
+}
+
+// ĐÚNG: dùng let → mỗi iteration có scope riêng → i được "đóng gói"
+for (let i = 0; i < 5; i++) {
+    setTimeout(function() {
+        console.log("Item " + i)   // in đúng: Item 0, 1, 2, 3, 4
+    }, 1000)
+}
+
+- Tại sao var gây ra lỗi này?
+    + var có function scope — chỉ có 1 biến i dùng chung cho toàn bộ vòng lặp. Các callback trong setTimeout không chạy ngay, chúng chạy sau 1 giây. Lúc đó vòng lặp đã chạy xong, i đã là 5. Tất cả 5 callback đều đọc cùng 1 biến i = 5.
+    + let có block scope — mỗi lần lặp tạo ra 1 biến i mới, riêng biệt. Closure của mỗi callback "nhớ" đúng giá trị i của lần lặp đó.
