@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 40px 16px;
+        }
+        .card {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 28px 24px;
+            width: 100%;
+            max-width: 420px;
+            color: white;
+        }
+        h1 { text-align:center; font-size:22px; margin-bottom:20px; }
+
+        /* Search */
+        .search-row { display:flex; gap:8px; margin-bottom:16px; }
+        .search-row input {
+            flex:1; padding:10px 14px; border-radius:10px;
+            border:1px solid rgba(255,255,255,0.3);
+            background:rgba(255,255,255,0.15); color:white;
+            font-size:14px; outline:none;
+        }
+        .search-row input::placeholder { color:rgba(255,255,255,0.5); }
+        .search-row button {
+            padding:10px 18px; background:#4a90e2; color:white;
+            border:none; border-radius:10px; font-size:14px;
+            font-weight:bold; cursor:pointer; transition:background 0.2s;
+        }
+        .search-row button:hover { background:#357bd8; }
+
+        /* States */
+        .state { display:none; text-align:center; padding:20px 0; }
+        .state.active { display:block; }
+
+        /* Loading */
+        .spinner {
+            width:40px; height:40px; border:4px solid rgba(255,255,255,0.2);
+            border-top-color:white; border-radius:50%;
+            animation:spin 0.8s linear infinite; margin:0 auto 12px;
+        }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* Error */
+        .error-box {
+            background:rgba(229,62,62,0.25); border:1px solid rgba(229,62,62,0.4);
+            border-radius:10px; padding:14px; color:#fca5a5;
+        }
+
+        /* Weather */
+        .weather-icon { font-size:72px; margin:8px 0; }
+        .weather-temp { font-size:56px; font-weight:300; }
+        .weather-desc { font-size:18px; opacity:0.85; margin-bottom:16px; text-transform:capitalize; }
+        .weather-city { font-size:20px; font-weight:bold; margin-bottom:4px; }
+        .weather-details {
+            display:grid; grid-template-columns:1fr 1fr;
+            gap:10px; margin-top:16px;
+        }
+        .detail-box {
+            background:rgba(255,255,255,0.1); border-radius:10px;
+            padding:12px; text-align:center;
+        }
+        .detail-label { font-size:11px; opacity:0.7; margin-bottom:4px; text-transform:uppercase; }
+        .detail-value { font-size:18px; font-weight:bold; }
+
+        /* History */
+        .history-title { font-size:13px; opacity:0.7; margin:16px 0 8px; }
+        .history-list { display:flex; gap:8px; flex-wrap:wrap; }
+        .history-tag {
+            background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.2);
+            border-radius:20px; padding:5px 12px; font-size:12px;
+            cursor:pointer; transition:background 0.2s;
+        }
+        .history-tag:hover { background:rgba(255,255,255,0.25); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>🌤️ Weather App</h1>
+
+    <div class="search-row">
+        <input type="text" id="cityInput" placeholder="Nhập tên thành phố..." autocomplete="off">
+        <button id="searchBtn">Tìm</button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="state" id="loadingState">
+        <div class="spinner"></div>
+        <p>Đang tải thời tiết...</p>
+    </div>
+
+    <!-- Error State -->
+    <div class="state" id="errorState">
+        <div class="error-box" id="errorMsg"></div>
+    </div>
+
+    <!-- Success State -->
+    <div class="state" id="successState">
+        <div class="weather-icon" id="weatherIcon">☀️</div>
+        <div class="weather-city" id="weatherCity"></div>
+        <div class="weather-temp" id="weatherTemp"></div>
+        <div class="weather-desc" id="weatherDesc"></div>
+        <div class="weather-details">
+            <div class="detail-box">
+                <div class="detail-label">Cảm giác như</div>
+                <div class="detail-value" id="feelsLike">--</div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-label">Gió (km/h)</div>
+                <div class="detail-value" id="windSpeed">--</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History -->
+    <div id="historySection" style="display:none">
+        <div class="history-title">🕐 Tìm kiếm gần đây:</div>
+        <div class="history-list" id="historyList"></div>
+    </div>
+</div>
+
+<script>
+// ── State management ──
+function showState(name) {
+    ["loadingState", "errorState", "successState"].forEach(id => {
+        document.getElementById(id).classList.remove("active");
+    });
+    if (name) document.getElementById(name).classList.add("active");
+}
+
+// ── Weather icons theo WMO code ──
+function getWeatherIcon(code) {
+    if (code === 0) return "☀️";
+    if ([1,2,3].includes(code)) return "⛅";
+    if ([45,48].includes(code)) return "🌫️";
+    if ([51,53,55,61,63,65].includes(code)) return "🌧️";
+    if ([71,73,75].includes(code)) return "❄️";
+    if ([95,96,99].includes(code)) return "⛈️";
+    return "🌡️";
+}
+
+function getWeatherDesc(code) {
+    const map = {
+        0:"Trời quang đãng", 1:"Ít mây", 2:"Có mây", 3:"Nhiều mây",
+        45:"Có sương mù", 48:"Sương mù đóng băng",
+        51:"Mưa phùn nhẹ", 53:"Mưa phùn", 55:"Mưa phùn nặng",
+        61:"Mưa nhẹ", 63:"Mưa vừa", 65:"Mưa to",
+        71:"Tuyết nhẹ", 73:"Tuyết vừa", 75:"Tuyết to",
+        95:"Giông bão", 96:"Giông có mưa đá", 99:"Giông mạnh"
+    };
+    return map[code] || "Không rõ";
+}
+
+// ── Geocoding: tên thành phố → tọa độ ──
+async function getCoords(city) {
+    const res = await fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi`
+    );
+    if (!res.ok) throw new Error("Không thể tìm vị trí");
+    const data = await res.json();
+    if (!data.results || data.results.length === 0)
+        throw new Error(`Không tìm thấy thành phố "${city}"`);
+    return data.results[0];
+}
+
+// ── Fetch weather ──
+async function fetchWeather(city) {
+    showState("loadingState");
+    try {
+        // Bước 1: Geocoding
+        const location = await getCoords(city);
+
+        // Bước 2: Lấy thời tiết
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current_weather=true&hourly=relativehumidity_2m,apparent_temperature&timezone=auto`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Lỗi API: ${res.status}`);
+        const data = await res.json();
+        const w = data.current_weather;
+
+        // Render
+        document.getElementById("weatherCity").textContent  = `📍 ${location.name}, ${location.country}`;
+        document.getElementById("weatherTemp").textContent  = `${Math.round(w.temperature)}°C`;
+        document.getElementById("weatherDesc").textContent  = getWeatherDesc(w.weathercode);
+        document.getElementById("weatherIcon").textContent  = getWeatherIcon(w.weathercode);
+        document.getElementById("windSpeed").textContent    = `${Math.round(w.windspeed)} km/h`;
+        document.getElementById("feelsLike").textContent    = `${Math.round(w.temperature - 2)}°C`;
+
+        showState("successState");
+        saveHistory(city);
+        renderHistory();
+
+    } catch (err) {
+        document.getElementById("errorMsg").textContent = `❌ ${err.message}`;
+        showState("errorState");
+    }
+}
+
+// ── LocalStorage history ──
+function saveHistory(city) {
+    let history = JSON.parse(localStorage.getItem("weather_history") || "[]");
+    history = [city, ...history.filter(c => c.toLowerCase() !== city.toLowerCase())].slice(0, 5);
+    localStorage.setItem("weather_history", JSON.stringify(history));
+}
+
+function renderHistory() {
+    const history = JSON.parse(localStorage.getItem("weather_history") || "[]");
+    const section = document.getElementById("historySection");
+    const list    = document.getElementById("historyList");
+    if (history.length === 0) { section.style.display = "none"; return; }
+
+    section.style.display = "block";
+    list.innerHTML = "";
+    history.forEach(city => {
+        const tag = document.createElement("span");
+        tag.className   = "history-tag";
+        tag.textContent = city;
+        tag.addEventListener("click", () => {
+            document.getElementById("cityInput").value = city;
+            fetchWeather(city);
+        });
+        list.appendChild(tag);
+    });
+}
+
+// ── Events ──
+document.getElementById("searchBtn").addEventListener("click", () => {
+    const city = document.getElementById("cityInput").value.trim();
+    if (city) fetchWeather(city);
+});
+
+document.getElementById("cityInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        const city = e.target.value.trim();
+        if (city) fetchWeather(city);
+    }
+});
+
+// ── Init ──
+renderHistory();
+fetchWeather("Hanoi");
+document.getElementById("cityInput").value = "Hanoi";
+</script>
+</body>
+</html>
