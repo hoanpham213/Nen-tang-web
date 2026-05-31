@@ -70,3 +70,54 @@ response.json() cũng trả về Promise vì body của response được đọc
 - Lỗi throw thủ công: throw new Error(...) khi !response.ok
 - JSON parse error: Response không phải JSON hợp lệ → response.json() throw SyntaxError
 - Không catch: Lỗi HTTP 4xx/5xx nếu không kiểm tra response.ok (fetch không tự throw)
+
+Câu A3 - Promise States
+* Sơ đồ 3 trạng thái:
+                    ┌─────────────┐
+                    │   PENDING   │  ← Trạng thái ban đầu
+                    │  (Đang chờ) │
+                    └──────┬──────┘
+                           │
+              ┌────────────┴────────────┐
+              ▼                         ▼
+   ┌─────────────────┐       ┌─────────────────┐
+   │   FULFILLED     │       │    REJECTED     │
+   │  (Thành công)   │       │    (Thất bại)   │
+   │  .then(value)   │       │  .catch(reason) │
+   └─────────────────┘       └─────────────────┘
+   
+   Pending  → Fulfilled: resolve(value) được gọi
+   Pending  → Rejected:  reject(reason) được gọi
+   Trạng thái là FINAL — không thể quay lại Pending
+
+* Callback Hell là gì?
+Callback Hell (hay "Pyramid of Doom") xảy ra khi code bất đồng bộ lồng nhau nhiều cấp, tạo ra hình tam giác ngả phải, rất khó đọc và bảo trì.
+
+* Ví dụ 4 cấp callback hell:
+// CALLBACK HELL — khó đọc, khó xử lý lỗi
+getUser(userId, function(user) {
+    getOrders(user.id, function(orders) {
+        getOrderDetails(orders[0].id, function(detail) {
+            getPayment(detail.paymentId, function(payment) {
+                console.log("Payment:", payment);
+                // Lỗi ở đây cần try/catch lồng 4 cấp!
+            }, function(err) { console.error(err); });
+        }, function(err) { console.error(err); });
+    }, function(err) { console.error(err); });
+}, function(err) { console.error(err); });
+
+* Refactor thành async/await:
+// ASYNC/AWAIT — đọc như code đồng bộ, dễ hiểu
+async function getPaymentInfo(userId) {
+    try {
+        const user    = await getUser(userId);
+        const orders  = await getOrders(user.id);
+        const detail  = await getOrderDetails(orders[0].id);
+        const payment = await getPayment(detail.paymentId);
+        console.log("Payment:", payment);
+    } catch (err) {
+        // 1 chỗ xử lý lỗi cho tất cả
+        console.error("Lỗi:", err);
+    }
+}
+
