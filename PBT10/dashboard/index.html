@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-API Dashboard</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI',Arial,sans-serif; background:#0f0f1a; color:#eee; min-height:100vh; }
+
+        /* Topbar */
+        .topbar {
+            background:#1a1a2e; padding:14px 24px; display:flex;
+            align-items:center; justify-content:space-between;
+            box-shadow:0 2px 8px rgba(0,0,0,0.4);
+        }
+        .topbar h1 { font-size:18px; color:white; }
+        .topbar-right { display:flex; align-items:center; gap:12px; }
+        .load-time { font-size:12px; color:#888; }
+        .refresh-btn {
+            padding:7px 16px; background:#4a90e2; color:white;
+            border:none; border-radius:7px; font-size:13px;
+            font-weight:bold; cursor:pointer; transition:background 0.2s;
+        }
+        .refresh-btn:hover { background:#357bd8; }
+        .refresh-btn:disabled { background:#555; cursor:not-allowed; }
+
+        /* Dashboard grid */
+        .dashboard {
+            max-width:1200px; margin:20px auto; padding:0 16px;
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+            gap:16px;
+        }
+
+        /* Widget */
+        .widget {
+            background:#1a1a2e; border-radius:12px;
+            border:1px solid #2d2d5e; overflow:hidden;
+        }
+        .widget-header {
+            padding:14px 16px 10px; border-bottom:1px solid #2d2d5e;
+            display:flex; align-items:center; justify-content:space-between;
+        }
+        .widget-title { font-size:15px; font-weight:bold; }
+        .widget-badge {
+            font-size:11px; padding:3px 8px; border-radius:20px;
+            background:#2d2d5e; color:#aaa;
+        }
+        .widget-badge.ok     { background:rgba(76,175,80,0.2); color:#4caf50; }
+        .widget-badge.err    { background:rgba(229,62,62,0.2);  color:#e53e3e; }
+        .widget-badge.loading{ background:rgba(74,144,226,0.2); color:#4a90e2; }
+        .widget-body { padding:16px; min-height:180px; }
+
+        /* Loading skeleton */
+        .skel { background:#2d2d5e; border-radius:5px; margin-bottom:10px; animation:pulse 1.2s ease infinite; }
+        @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+        /* Weather widget */
+        .weather-main { display:flex; align-items:center; gap:16px; margin-bottom:12px; }
+        .weather-icon-big { font-size:52px; }
+        .weather-temp-big { font-size:40px; font-weight:300; }
+        .weather-loc { font-size:13px; color:#888; margin-top:2px; }
+        .weather-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+        .w-stat { background:#0f0f1a; border-radius:8px; padding:10px; text-align:center; }
+        .w-stat-label { font-size:11px; color:#666; margin-bottom:3px; }
+        .w-stat-value { font-size:16px; font-weight:bold; color:#4a90e2; }
+
+        /* Users widget */
+        .user-list { display:flex; flex-direction:column; gap:8px; }
+        .user-row {
+            display:flex; align-items:center; gap:10px;
+            padding:8px 10px; background:#0f0f1a; border-radius:8px;
+        }
+        .user-av {
+            width:34px; height:34px; border-radius:50%;
+            background:#4a90e2; display:flex; align-items:center;
+            justify-content:center; font-weight:bold; font-size:14px;
+            flex-shrink:0;
+        }
+        .user-info .u-name { font-size:13px; font-weight:600; }
+        .user-info .u-email { font-size:11px; color:#888; }
+
+        /* Posts widget */
+        .post-list { display:flex; flex-direction:column; gap:8px; }
+        .post-item {
+            padding:10px; background:#0f0f1a; border-radius:8px;
+            border-left:3px solid #4a90e2;
+        }
+        .post-title { font-size:13px; font-weight:600; margin-bottom:4px; }
+        .post-body  { font-size:12px; color:#888; }
+
+        /* Error widget */
+        .widget-error {
+            display:flex; align-items:center; gap:10px;
+            color:#e53e3e; background:rgba(229,62,62,0.1);
+            border-radius:8px; padding:14px; font-size:13px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <h1>📊 Multi-API Dashboard</h1>
+    <div class="topbar-right">
+        <span class="load-time" id="loadTime"></span>
+        <button class="refresh-btn" id="refreshBtn">🔄 Refresh All</button>
+    </div>
+</div>
+
+<div class="dashboard">
+    <!-- Widget 1: Thời tiết -->
+    <div class="widget" id="widget-weather">
+        <div class="widget-header">
+            <span class="widget-title">🌤️ Thời tiết Hà Nội</span>
+            <span class="widget-badge loading" id="badge-weather">Đang tải...</span>
+        </div>
+        <div class="widget-body" id="body-weather">
+            <div class="skel" style="height:60px;width:60%"></div>
+            <div class="skel" style="height:14px;width:80%"></div>
+            <div class="skel" style="height:14px;width:50%"></div>
+        </div>
+    </div>
+
+    <!-- Widget 2: Users -->
+    <div class="widget" id="widget-users">
+        <div class="widget-header">
+            <span class="widget-title">👥 Người dùng mới nhất</span>
+            <span class="widget-badge loading" id="badge-users">Đang tải...</span>
+        </div>
+        <div class="widget-body" id="body-users">
+            <div class="skel" style="height:44px"></div>
+            <div class="skel" style="height:44px"></div>
+            <div class="skel" style="height:44px"></div>
+        </div>
+    </div>
+
+    <!-- Widget 3: Posts -->
+    <div class="widget" id="widget-posts">
+        <div class="widget-header">
+            <span class="widget-title">📝 Bài viết mới nhất</span>
+            <span class="widget-badge loading" id="badge-posts">Đang tải...</span>
+        </div>
+        <div class="widget-body" id="body-posts">
+            <div class="skel" style="height:60px"></div>
+            <div class="skel" style="height:60px"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// Multi-API Dashboard — Promise.allSettled
+// ============================================================
+
+function getWeatherIcon(code) {
+    if (code === 0) return "☀️";
+    if ([1,2,3].includes(code)) return "⛅";
+    if ([45,48].includes(code)) return "🌫️";
+    if ([51,53,55,61,63,65].includes(code)) return "🌧️";
+    return "🌡️";
+}
+
+// ── API calls ──
+async function fetchWeather() {
+    const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=21.03&longitude=105.85&current_weather=true&timezone=Asia/Bangkok");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+}
+
+async function fetchUsers() {
+    const res = await fetch("https://jsonplaceholder.typicode.com/users?_limit=4");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+}
+
+async function fetchPosts() {
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=3");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+}
+
+// ── Render widgets ──
+function renderWeather(data) {
+    const w    = data.current_weather;
+    const body = document.getElementById("body-weather");
+    const badge= document.getElementById("badge-weather");
+
+    badge.textContent = "✅ OK";
+    badge.className   = "widget-badge ok";
+
+    body.innerHTML = `
+        <div class="weather-main">
+            <div class="weather-icon-big">${getWeatherIcon(w.weathercode)}</div>
+            <div>
+                <div class="weather-temp-big">${Math.round(w.temperature)}°C</div>
+                <div class="weather-loc">📍 Hà Nội, Việt Nam</div>
+            </div>
+        </div>
+        <div class="weather-grid">
+            <div class="w-stat">
+                <div class="w-stat-label">GIÓ</div>
+                <div class="w-stat-value">${Math.round(w.windspeed)} km/h</div>
+            </div>
+            <div class="w-stat">
+                <div class="w-stat-label">THỜI ĐIỂM</div>
+                <div class="w-stat-value">${new Date(w.time).toLocaleTimeString("vi-VN", {hour:"2-digit",minute:"2-digit"})}</div>
+            </div>
+        </div>`;
+}
+
+function renderUsers(users) {
+    const body  = document.getElementById("body-users");
+    const badge = document.getElementById("badge-users");
+
+    badge.textContent = `✅ ${users.length} người`;
+    badge.className   = "widget-badge ok";
+
+    const list = document.createElement("div");
+    list.className = "user-list";
+    users.forEach(u => {
+        const row = document.createElement("div");
+        row.className = "user-row";
+        row.innerHTML = `
+            <div class="user-av">${u.name.charAt(0)}</div>
+            <div class="user-info">
+                <div class="u-name">${u.name}</div>
+                <div class="u-email">${u.email}</div>
+            </div>`;
+        list.appendChild(row);
+    });
+    body.innerHTML = "";
+    body.appendChild(list);
+}
+
+function renderPosts(posts) {
+    const body  = document.getElementById("body-posts");
+    const badge = document.getElementById("badge-posts");
+
+    badge.textContent = `✅ ${posts.length} bài`;
+    badge.className   = "widget-badge ok";
+
+    const list = document.createElement("div");
+    list.className = "post-list";
+    posts.forEach(p => {
+        const item = document.createElement("div");
+        item.className = "post-item";
+        const title = document.createElement("div");
+        title.className   = "post-title";
+        title.textContent = p.title.charAt(0).toUpperCase() + p.title.slice(1);
+        const body2 = document.createElement("div");
+        body2.className   = "post-body";
+        body2.textContent = p.body.slice(0, 80) + "...";
+        item.appendChild(title);
+        item.appendChild(body2);
+        list.appendChild(item);
+    });
+    body.innerHTML = "";
+    body.appendChild(list);
+}
+
+function renderWidgetError(widgetId, message) {
+    const body  = document.getElementById(`body-${widgetId}`);
+    const badge = document.getElementById(`badge-${widgetId}`);
+
+    badge.textContent = "❌ Lỗi";
+    badge.className   = "widget-badge err";
+
+    body.innerHTML = `
+        <div class="widget-error">
+            <span>⚠️</span>
+            <span>${message}</span>
+        </div>`;
+}
+
+function showLoadingState() {
+    ["weather","users","posts"].forEach(id => {
+        const badge = document.getElementById(`badge-${id}`);
+        badge.textContent = "Đang tải...";
+        badge.className   = "widget-badge loading";
+        document.getElementById(`body-${id}`).innerHTML =
+            `<div class="skel" style="height:60px"></div>
+             <div class="skel" style="height:40px;width:70%"></div>
+             <div class="skel" style="height:40px;width:85%"></div>`;
+    });
+}
+
+// ── Main: Promise.allSettled ──
+async function loadDashboard() {
+    const btn = document.getElementById("refreshBtn");
+    btn.disabled    = true;
+    btn.textContent = "⏳ Đang tải...";
+    showLoadingState();
+
+    const startTime = Date.now();
+
+    // Promise.allSettled: 1 API lỗi không ảnh hưởng các API khác
+    const results = await Promise.allSettled([
+        fetchWeather(),
+        fetchUsers(),
+        fetchPosts()
+    ]);
+
+    const elapsed = Date.now() - startTime;
+    document.getElementById("loadTime").textContent = `⚡ Tải xong trong ${elapsed}ms`;
+
+    const [weather, users, posts] = results;
+
+    if (weather.status === "fulfilled") renderWeather(weather.value);
+    else renderWidgetError("weather", weather.reason.message);
+
+    if (users.status === "fulfilled") renderUsers(users.value);
+    else renderWidgetError("users", users.reason.message);
+
+    if (posts.status === "fulfilled") renderPosts(posts.value);
+    else renderWidgetError("posts", posts.reason.message);
+
+    btn.disabled    = false;
+    btn.textContent = "🔄 Refresh All";
+}
+
+document.getElementById("refreshBtn").addEventListener("click", loadDashboard);
+
+// Init
+loadDashboard();
+</script>
+</body>
+</html>
