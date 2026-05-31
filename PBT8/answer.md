@@ -107,3 +107,30 @@ const moTa = nums.map(n => `Số ${n} là ${n % 2 === 0 ? "chẵn" : "lẻ"}`);
 const dao = [...nums].reverse();
 // → [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
 // (spread trước để tạo bản sao, tránh thay đổi mảng gốc)
+
+Câu A4 - Object Destructuring & Spread
+- Destructuring
+const { name, price, specs: { ram, color } } = product;
+console.log(name, price, ram, color);
+// → "iPhone 16"  25990000  8  "Titan"
+
+console.log(specs);
+// → ReferenceError: specs is not defined
+// Vì destructuring `specs: { ram, color }` chỉ lấy ram và color,
+// không tạo biến tên "specs"
+
+- Spread
+const updated = { ...product, price: 23990000, sale: true };
+console.log(updated.price);    // → 23990000  (giá mới ghi đè)
+console.log(updated.sale);     // → true       (thuộc tính mới)
+console.log(product.price);    // → 25990000   (gốc KHÔNG đổi — spread tạo object mới)
+
+- Spread gotcha
+const copy = { ...product };
+copy.specs.ram = 16;
+console.log(product.specs.ram);  // → 16  (BỊ ĐỔI!)
+
+- Giải thích "Spread gotcha" — Shallow Copy:
+    + { ...product } chỉ copy shallow (1 lớp) — các property primitive (name, price) được copy giá trị, nhưng specs là object
+→ chỉ copy tham chiếu (reference). Cả copy.specs và product.specs đều trỏ đến cùng 1 object trong bộ nhớ. Sửa copy.specs.ram → product.specs.ram cũng bị sửa theo.
+- Để tránh: dùng deep copy — JSON.parse(JSON.stringify(product)) hoặc structuredClone(product)
