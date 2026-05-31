@@ -177,3 +177,41 @@ window.addEventListener("load", () => {
     count = parseInt(localStorage.getItem("count")) || 0;  // Sửa lỗi 5, 7
     countDisplay.textContent = count;
 });
+
+Câu C2 - Performance
+- Tại sao bind event lên 1000 elements là BAD PRACTICE?
+    + Mỗi addEventListener tạo ra 1 event listener object trong bộ nhớ. 1000 elements → 1000 listener objects → tốn RAM, garbage collector phải làm việc nhiều hơn. Ngoài ra khi thêm element mới vào DOM, phải bind lại event cho element đó.
+    + Event Delegation giải quyết: Bind 1 listener duy nhất lên phần tử cha, dùng e.target để xác định element nào được click. Hiệu quả hơn vì chỉ 1 listener, tự động xử lý cả elements mới thêm vào sau.
+// BAD: 1000 listeners
+document.querySelectorAll(".item").forEach(item => {
+    item.addEventListener("click", handleClick);
+});
+
+// GOOD: 1 listener duy nhất (Event Delegation)
+document.querySelector("#container").addEventListener("click", (e) => {
+    if (e.target.classList.contains("item")) {
+        handleClick(e.target);
+    }
+});
+
+- Refactor dùng DocumentFragment
+// BAD: 1000 lần reflow (mỗi appendChild → trình duyệt tính lại layout)
+for (let i = 0; i < 1000; i++) {
+    const div = document.createElement("div");
+    div.textContent = `Item ${i}`;
+    document.body.appendChild(div);   // ← reflow mỗi lần!
+}
+
+// GOOD: DocumentFragment — chỉ 1 lần reflow
+const fragment = document.createDocumentFragment();
+// DocumentFragment tồn tại trong bộ nhớ, KHÔNG gắn vào DOM
+// → không gây reflow khi thêm vào fragment
+
+for (let i = 0; i < 1000; i++) {
+    const div = document.createElement("div");
+    div.textContent = `Item ${i}`;
+    fragment.appendChild(div);        // ← không reflow
+}
+document.body.appendChild(fragment); // ← CHỈ 1 lần reflow duy nhất
+
+- Tại sao nhanh hơn: Reflow (recalculate layout) là thao tác tốn kém nhất trong trình duyệt. Mỗi lần thêm element vào DOM thật → trình duyệt phải tính lại vị trí tất cả elements. DocumentFragment là "DOM ảo" trong bộ nhớ, chỉ khi appendChild(fragment) mới đưa vào DOM thật → 1000 elements được thêm 1 lần duy nhất → 1 reflow thay vì 1000.
