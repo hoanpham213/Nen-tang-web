@@ -121,3 +121,83 @@ async function getPaymentInfo(userId) {
     }
 }
 
+PHẦN C - PHÂN TÍCH
+Câu C1 - Error Handling Strategy
+1. Network errors
+jsasync function safeFetch(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP_${response.status}`);
+        return await response.json();
+    } catch (err) {
+        if (err instanceof TypeError) {
+            // TypeError = mất mạng, DNS lỗi, CORS...
+            showToast("Mất kết nối mạng. Vui lòng kiểm tra lại.", "error");
+            return null;
+        }
+        throw err; // Re-throw các lỗi khác
+    }
+}
+
+2. API errors theo từng status code
+jsfunction handleApiError(status) {
+    switch (true) {
+        case status === 400:
+            return "Dữ liệu gửi lên không hợp lệ";
+        case status === 401:
+            logout(); return "Phiên đăng nhập hết hạn";
+        case status === 403:
+            return "Bạn không có quyền thực hiện thao tác này";
+        case status === 404:
+            return "Không tìm thấy dữ liệu";
+        case status === 429:
+            return "Gửi quá nhiều yêu cầu. Vui lòng chờ ít phút";
+        case status >= 500:
+            return "Lỗi máy chủ. Vui lòng thử lại sau";
+        default:
+            return `Lỗi không xác định (${status})`;
+    }
+}
+
+3. Timeout
+jsfunction fetchWithTimeout(url, ms = 10000) {
+    // Race giữa fetch thật và một timeout promise
+    const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`Timeout sau ${ms}ms`)), ms)
+    );
+    return Promise.race([fetch(url), timeoutPromise]);
+}
+
+// Dùng:
+try {
+    const res = await fetchWithTimeout("https://api.example.com/data", 10000);
+    const data = await res.json();
+} catch (err) {
+    if (err.message.includes("Timeout")) {
+        showToast("API phản hồi quá chậm. Vui lòng thử lại.", "warning");
+    }
+}
+
+4. Retry logic
+jsasync function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return await response.json();
+        } catch (err) {
+            console.warn(`Lần ${attempt}/${maxRetries} thất bại:`, err.message);
+
+            if (attempt === maxRetries) {
+                throw new Error(`Hết ${maxRetries} lần thử. Lỗi: ${err.message}`);
+            }
+
+            // Exponential backoff: chờ lâu hơn mỗi lần thử
+            await new Promise(r => setTimeout(r, delay * attempt));
+        }
+    }
+}
+
+// Dùng:
+const data = await fetchWithRetry("https://api.example.com/data", 3, 1000);
+// Thử lần 1 ngay lập tức, lần 2 sau 1s, lần 3 sau 2s
