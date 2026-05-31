@@ -201,3 +201,51 @@ jsasync function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
 // Dùng:
 const data = await fetchWithRetry("https://api.example.com/data", 3, 1000);
 // Thử lần 1 ngay lập tức, lần 2 sau 1s, lần 3 sau 2s
+
+Câu C2 - Promise.all vs allSettled vs race vs any
+Method              Resolve khi                                                 Reject khi                      Use case
+.all()              Tất cả fulfilled                                            1 rejected                      Cần tất cả data
+                                                                                                                mới render được
+.allSettled()       Tất cả xong (dù pass hay fail)                              Không bao giờ reject            Dashboard nhiều
+                                                                                                                widget độc lập
+.race()             1 hoàn thành đầu tiên (dù fulfilled hay rejected)           Khi promise đầu tiên reject     Timeout
+                                                                                                                pattern, fallback
+.any()              1 fulfilled đầu tiên                                        Tất cả rejected                 Thử nhiều server, 
+                                                                                                                dùng cái nào nhanh nhất
+
+- Ví dụ thực tế
+// ── Promise.all: Trang sản phẩm cần đủ cả 3 loại data ──
+// Nếu 1 API lỗi → không render gì (throw luôn)
+const [products, categories, user] = await Promise.all([
+    api.getProducts(),
+    api.getCategories(),
+    api.getCurrentUser()
+]);
+renderPage(products, categories, user);
+
+// ── Promise.allSettled: Dashboard nhiều widget độc lập ──
+// 1 widget lỗi không ảnh hưởng widget khác
+const results = await Promise.allSettled([
+    fetchWeather(),
+    fetchStockPrice(),
+    fetchNewsFeed()
+]);
+results.forEach((r, i) => {
+    if (r.status === "fulfilled") renderWidget(i, r.value);
+    else                          renderWidgetError(i, r.reason);
+});
+
+// ── Promise.race: Timeout pattern ──
+// Nếu API chậm hơn 5s → throw timeout error
+const data = await Promise.race([
+    fetch("https://api.example.com/data"),
+    new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 5000))
+]);
+
+// ── Promise.any: Dùng CDN nhanh nhất ──
+// Thử 3 CDN, lấy cái nào trả lời trước
+const script = await Promise.any([
+    fetch("https://cdn1.example.com/lib.js"),
+    fetch("https://cdn2.example.com/lib.js"),
+    fetch("https://cdn3.example.com/lib.js")
+]);
