@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Directory</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f5f5; color:#333; }
+
+        /* Topbar */
+        .topbar {
+            background:#1a1a2e; color:white; padding:0 24px; height:56px;
+            display:flex; align-items:center; justify-content:space-between;
+            position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(0,0,0,0.3);
+        }
+        .topbar h1 { font-size:18px; }
+        .topbar button {
+            padding:7px 16px; background:#4a90e2; color:white; border:none;
+            border-radius:6px; font-size:13px; font-weight:bold; cursor:pointer;
+        }
+
+        /* Controls */
+        .controls {
+            max-width:1100px; margin:20px auto; padding:0 16px;
+            display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+        }
+        .controls input {
+            flex:1; min-width:200px; padding:9px 14px; border:2px solid #ddd;
+            border-radius:8px; font-size:14px; outline:none;
+        }
+        .controls input:focus { border-color:#4a90e2; }
+
+        /* Toast */
+        .toast {
+            position:fixed; bottom:24px; right:24px; padding:12px 20px;
+            border-radius:8px; color:white; font-size:14px; font-weight:bold;
+            z-index:1000; animation:slideUp 0.3s ease; display:none;
+        }
+        .toast.show { display:block; }
+        .toast.success { background:#4caf50; }
+        .toast.error   { background:#e53e3e; }
+        @keyframes slideUp {
+            from { opacity:0; transform:translateY(20px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        /* Grid */
+        .user-grid {
+            max-width:1100px; margin:0 auto; padding:0 16px 32px;
+            display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+            gap:14px;
+        }
+
+        /* Skeleton */
+        .skeleton {
+            background:white; border-radius:10px; padding:16px;
+            box-shadow:0 1px 4px rgba(0,0,0,0.08);
+        }
+        .skel-line {
+            background:#eee; border-radius:4px; margin-bottom:8px;
+            animation:pulse 1.2s ease infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        /* User card */
+        .user-card {
+            background:white; border-radius:10px; padding:16px;
+            box-shadow:0 1px 4px rgba(0,0,0,0.08);
+            transition:transform 0.2s, box-shadow 0.2s;
+        }
+        .user-card:hover { transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,0.12); }
+        .user-avatar {
+            width:48px; height:48px; border-radius:50%;
+            background:#4a90e2; color:white; font-size:20px; font-weight:bold;
+            display:flex; align-items:center; justify-content:center; margin-bottom:10px;
+        }
+        .user-name { font-size:15px; font-weight:bold; margin-bottom:3px; }
+        .user-email { font-size:13px; color:#888; margin-bottom:3px; }
+        .user-phone { font-size:13px; color:#888; margin-bottom:10px; }
+        .card-actions { display:flex; gap:8px; }
+        .btn-edit {
+            flex:1; padding:7px; background:#4a90e2; color:white;
+            border:none; border-radius:6px; font-size:12px; cursor:pointer;
+        }
+        .btn-delete {
+            flex:1; padding:7px; background:#e53e3e; color:white;
+            border:none; border-radius:6px; font-size:12px; cursor:pointer;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display:none; position:fixed; inset:0;
+            background:rgba(0,0,0,0.5); z-index:500;
+            align-items:center; justify-content:center; padding:16px;
+        }
+        .modal-overlay.show { display:flex; }
+        .modal-box {
+            background:white; border-radius:12px; padding:24px;
+            width:100%; max-width:400px;
+            animation:pop 0.2s ease;
+        }
+        @keyframes pop { from{opacity:0;transform:scale(0.9)} to{opacity:1;transform:scale(1)} }
+        .modal-box h3 { margin-bottom:16px; font-size:17px; }
+        .form-group { margin-bottom:14px; }
+        .form-group label { display:block; font-size:13px; font-weight:600; color:#555; margin-bottom:5px; }
+        .form-group input {
+            width:100%; padding:9px 12px; border:2px solid #e0e0e0;
+            border-radius:7px; font-size:14px; outline:none;
+        }
+        .form-group input:focus { border-color:#4a90e2; }
+        .modal-actions { display:flex; gap:10px; margin-top:18px; }
+        .btn-cancel { flex:1; padding:10px; background:#f0f0f0; border:none; border-radius:7px; cursor:pointer; font-size:14px; }
+        .btn-save { flex:1; padding:10px; background:#4a90e2; color:white; border:none; border-radius:7px; font-size:14px; font-weight:bold; cursor:pointer; }
+
+        .empty-msg { text-align:center; color:#aaa; padding:40px; font-size:16px; grid-column:1/-1; }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <h1>👥 User Directory</h1>
+    <button id="addUserBtn">+ Thêm người dùng</button>
+</div>
+
+<div class="controls">
+    <input type="text" id="searchInput" placeholder="🔍 Tìm theo tên hoặc email...">
+</div>
+
+<div class="user-grid" id="userGrid"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Modal thêm/sửa -->
+<div class="modal-overlay" id="modal">
+    <div class="modal-box">
+        <h3 id="modalTitle">Thêm người dùng</h3>
+        <div class="form-group">
+            <label>Họ tên</label>
+            <input type="text" id="fName" placeholder="Nguyễn Văn A">
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="fEmail" placeholder="abc@gmail.com">
+        </div>
+        <div class="form-group">
+            <label>Điện thoại</label>
+            <input type="text" id="fPhone" placeholder="0901234567">
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" id="cancelBtn">Hủy</button>
+            <button class="btn-save" id="saveBtn">Lưu</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// API Layer — tách riêng
+// ============================================================
+const api = {
+    baseURL: "https://jsonplaceholder.typicode.com",
+
+    async getUsers() {
+        const res = await fetch(`${this.baseURL}/users`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+    },
+    async createUser(data) {
+        const res = await fetch(`${this.baseURL}/users`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+    },
+    async updateUser(id, data) {
+        const res = await fetch(`${this.baseURL}/users/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+    },
+    async deleteUser(id) {
+        const res = await fetch(`${this.baseURL}/users/${id}`, { method: "DELETE" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return true;
+    }
+};
+
+// ============================================================
+// UI Layer — tách riêng
+// ============================================================
+const ui = {
+    showLoading() {
+        const grid = document.getElementById("userGrid");
+        grid.innerHTML = "";
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < 8; i++) {
+            const sk = document.createElement("div");
+            sk.className = "skeleton";
+            sk.innerHTML = `
+                <div class="skel-line" style="width:48px;height:48px;border-radius:50%;margin-bottom:12px"></div>
+                <div class="skel-line" style="height:16px;width:70%"></div>
+                <div class="skel-line" style="height:13px;width:90%"></div>
+                <div class="skel-line" style="height:13px;width:60%"></div>`;
+            fragment.appendChild(sk);
+        }
+        grid.appendChild(fragment);
+    },
+
+    renderUsers(users) {
+        const grid = document.getElementById("userGrid");
+        grid.innerHTML = "";
+        if (users.length === 0) {
+            const msg = document.createElement("div");
+            msg.className = "empty-msg";
+            msg.textContent = "Không tìm thấy người dùng nào";
+            grid.appendChild(msg);
+            return;
+        }
+        const fragment = document.createDocumentFragment();
+        users.forEach(u => fragment.appendChild(this.createCard(u)));
+        grid.appendChild(fragment);
+    },
+
+    createCard(u) {
+        const card = document.createElement("div");
+        card.className  = "user-card";
+        card.dataset.id = u.id;
+
+        const av = document.createElement("div");
+        av.className   = "user-avatar";
+        av.textContent = u.name.charAt(0).toUpperCase();
+
+        const name  = document.createElement("div");
+        name.className   = "user-name";
+        name.textContent = u.name;
+
+        const email = document.createElement("div");
+        email.className   = "user-email";
+        email.textContent = `✉️ ${u.email}`;
+
+        const phone = document.createElement("div");
+        phone.className   = "user-phone";
+        phone.textContent = `📞 ${u.phone || "—"}`;
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        const editBtn = document.createElement("button");
+        editBtn.className   = "btn-edit";
+        editBtn.textContent = "✏️ Sửa";
+        editBtn.addEventListener("click", () => openEditModal(u));
+
+        const delBtn = document.createElement("button");
+        delBtn.className   = "btn-delete";
+        delBtn.textContent = "🗑️ Xóa";
+        delBtn.addEventListener("click", () => deleteUser(u.id));
+
+        actions.appendChild(editBtn);
+        actions.appendChild(delBtn);
+        card.appendChild(av);
+        card.appendChild(name);
+        card.appendChild(email);
+        card.appendChild(phone);
+        card.appendChild(actions);
+        return card;
+    },
+
+    showToast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className   = `toast show ${type}`;
+        clearTimeout(this._toastTimer);
+        this._toastTimer = setTimeout(() => t.classList.remove("show"), 3000);
+    }
+};
+
+// ============================================================
+// App State & Logic
+// ============================================================
+let allUsers  = [];
+let editingId = null;
+
+async function loadUsers() {
+    ui.showLoading();
+    try {
+        allUsers = await api.getUsers();
+        renderFiltered();
+    } catch (err) {
+        ui.showToast("Không thể tải danh sách người dùng", "error");
+    }
+}
+
+function renderFiltered() {
+    const q = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = allUsers.filter(u =>
+        u.name.toLowerCase().includes(q) ||
+        u.email.toLowerCase().includes(q)
+    );
+    ui.renderUsers(filtered);
+}
+
+async function deleteUser(id) {
+    if (!confirm("Bạn có chắc muốn xóa người dùng này?")) return;
+    try {
+        await api.deleteUser(id);
+        allUsers = allUsers.filter(u => u.id !== id);
+        renderFiltered();
+        ui.showToast("Đã xóa người dùng");
+    } catch (err) {
+        ui.showToast("Xóa thất bại: " + err.message, "error");
+    }
+}
+
+// ── Modal ──
+function openAddModal() {
+    editingId = null;
+    document.getElementById("modalTitle").textContent = "Thêm người dùng";
+    document.getElementById("fName").value  = "";
+    document.getElementById("fEmail").value = "";
+    document.getElementById("fPhone").value = "";
+    document.getElementById("modal").classList.add("show");
+}
+
+function openEditModal(user) {
+    editingId = user.id;
+    document.getElementById("modalTitle").textContent = "Sửa người dùng";
+    document.getElementById("fName").value  = user.name;
+    document.getElementById("fEmail").value = user.email;
+    document.getElementById("fPhone").value = user.phone || "";
+    document.getElementById("modal").classList.add("show");
+}
+
+function closeModal() {
+    document.getElementById("modal").classList.remove("show");
+}
+
+document.getElementById("saveBtn").addEventListener("click", async () => {
+    const data = {
+        name:  document.getElementById("fName").value.trim(),
+        email: document.getElementById("fEmail").value.trim(),
+        phone: document.getElementById("fPhone").value.trim(),
+    };
+    if (!data.name || !data.email) {
+        ui.showToast("Vui lòng điền đầy đủ thông tin", "error");
+        return;
+    }
+    try {
+        if (editingId) {
+            const updated = await api.updateUser(editingId, data);
+            const idx = allUsers.findIndex(u => u.id === editingId);
+            if (idx !== -1) allUsers[idx] = { ...allUsers[idx], ...data };
+            ui.showToast("Đã cập nhật thành công");
+        } else {
+            const newUser = await api.createUser(data);
+            // JSONPlaceholder trả về id=11, thêm vào đầu danh sách
+            allUsers.unshift({ ...data, id: newUser.id });
+            ui.showToast("Đã thêm người dùng mới");
+        }
+        renderFiltered();
+        closeModal();
+    } catch (err) {
+        ui.showToast("Lỗi: " + err.message, "error");
+    }
+});
+
+document.getElementById("cancelBtn").addEventListener("click", closeModal);
+document.getElementById("modal").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("modal")) closeModal();
+});
+document.getElementById("addUserBtn").addEventListener("click", openAddModal);
+document.getElementById("searchInput").addEventListener("input", renderFiltered);
+
+// ── Init ──
+loadUsers();
+</script>
+</body>
+</html>
