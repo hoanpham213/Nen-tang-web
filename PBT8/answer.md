@@ -134,3 +134,54 @@ console.log(product.specs.ram);  // → 16  (BỊ ĐỔI!)
     + { ...product } chỉ copy shallow (1 lớp) — các property primitive (name, price) được copy giá trị, nhưng specs là object
 → chỉ copy tham chiếu (reference). Cả copy.specs và product.specs đều trỏ đến cùng 1 object trong bộ nhớ. Sửa copy.specs.ram → product.specs.ram cũng bị sửa theo.
 - Để tránh: dùng deep copy — JSON.parse(JSON.stringify(product)) hoặc structuredClone(product)
+
+PHẦN C - SUY LUẬN
+Câu C1 - Refactor Code
+- Code gốc:
+function processOrders(orders) {
+    var result = [];
+    for (var i = 0; i < orders.length; i++) {
+        if (orders[i].status === "completed") {
+            if (orders[i].total > 100000) {
+                var item = {};
+                item.id = orders[i].id;
+                item.customer = orders[i].customer;
+                item.total = orders[i].total;
+                item.discount = orders[i].total * 0.1;
+                item.finalTotal = orders[i].total - item.discount;
+                result.push(item);
+            }
+        }
+    }
+    // bubble sort
+    for (var j = 0; j < result.length; j++) {
+        for (var k = j + 1; k < result.length; k++) {
+            if (result[j].finalTotal < result[k].finalTotal) {
+                var temp = result[j]; result[j] = result[k]; result[k] = temp;
+            }
+        }
+    }
+    return result;
+}
+
+- Code refactored:
+const processOrders = (orders) =>
+    orders
+        .filter(({ status, total }) => status === "completed" && total > 100000)
+        .map(({ id, customer, total }) => ({
+            id,
+            customer,
+            total,
+            discount:   total * 0.1,
+            finalTotal: total * 0.9
+        }))
+        .sort((a, b) => b.finalTotal - a.finalTotal);
+
+- Điểm cải thiện:
+    + filter thay 2 if lồng nhau → rõ ràng hơn
+    + map + destructuring thay vòng for + gán thủ công từng field
+    + .sort() thay bubble sort O(n²) → nhanh hơn, ngắn hơn
+    + Arrow function + implicit return cho map
+    + Không dùng var, không có biến tạm
+
+
