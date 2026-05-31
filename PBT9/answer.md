@@ -65,3 +65,17 @@ document.querySelector("#result").textContent = userInput;
 const textNode = document.createTextNode(userInput);
 document.querySelector("#result").appendChild(textNode);
 
+Câu A3 - Event Bubbling
+- Khi click button — KHÔNG có stopPropagation:   
+Output (theo thứ tự):
+BUTTON   ← button bắt được trước (target)
+INNER    ← bubble lên div#inner
+OUTER    ← bubble lên div#outer
+
+- Giải thích: Event bubbling là sự kiện "nổi bọt" từ phần tử được click (target) lên dần đến các phần tử cha. Thứ tự: target → cha gần nhất → cha tiếp theo → ... → document.
+
+- Khi có e.stopPropagation():
+Output:
+BUTTON   ← chỉ có BUTTON, event bị chặn không bubble lên
+
+-> stopPropagation() ngăn event tiếp tục nổi bọt lên các phần tử cha. Hữu ích khi không muốn event của con ảnh hưởng đến handler của cha.
