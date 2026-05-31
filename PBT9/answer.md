@@ -79,3 +79,101 @@ Output:
 BUTTON   ← chỉ có BUTTON, event bị chặn không bubble lên
 
 -> stopPropagation() ngăn event tiếp tục nổi bọt lên các phần tử cha. Hữu ích khi không muốn event của con ảnh hưởng đến handler của cha.
+
+PHẦN C - DEBUG VÀ PHÂN TÍCH
+Câu C1 - Debug DOM Code
+* Danh sách lỗi tìm được (7 lỗi):
+- Lỗi 1 — "onclick" thay vì "click"
+// SAI: "onclick" không phải tên event hợp lệ cho addEventListener
+document.querySelector("#decrementBtn").addEventListener("onclick", function() { ... });
+
+// ĐÚNG:
+document.querySelector("#decrementBtn").addEventListener("click", function() { ... });
+
+- Lỗi 2 — Gán giá trị cho countDisplay (const)
+// SAI: countDisplay là DOM element (const), không thể gán = count (số)
+countDisplay = count;
+
+// ĐÚNG: cập nhật textContent
+countDisplay.textContent = count;
+
+- Lỗi 3 — historyList.innerHTML = null
+// SAI: null chuyển thành chuỗi "null" — không xóa được list
+historyList.innerHTML = null;
+
+// ĐÚNG: dùng chuỗi rỗng
+historyList.innerHTML = "";
+
+- Lỗi 4 — item.remove thiếu dấu gọi hàm ()
+// SAI: item.remove là tham chiếu hàm, không gọi
+items.forEach(item => { item.remove; });
+
+// ĐÚNG:
+items.forEach(item => { item.remove(); });
+
+- Lỗi 5 — Load localStorage trả về string, không phải number
+// SAI: localStorage.getItem trả về string "0", "1"...
+// count sẽ là string → count++ thành "11", "12"... (nối chuỗi)
+count = localStorage.getItem("count");
+
+// ĐÚNG: chuyển về number
+count = parseInt(localStorage.getItem("count")) || 0;
+
+- Lỗi 6 — Dùng innerHTML để set số đếm (bảo mật + sai ngữ nghĩa)
+// SAI: count là số thuần, không cần parse HTML
+countDisplay.innerHTML = count;
+
+// ĐÚNG:
+countDisplay.textContent = count;
+
+- Lỗi 7 — Không kiểm tra null khi load localStorage
+// SAI: nếu chưa có dữ liệu trong localStorage → getItem trả về null
+count = parseInt(localStorage.getItem("count"));
+// parseInt(null) → NaN → countDisplay hiển thị NaN
+
+// ĐÚNG:
+count = parseInt(localStorage.getItem("count")) || 0;
+
+* Code đã sửa hoàn chỉnh:
+jsconst countDisplay = document.querySelector(".count");
+const historyList = document.getElementById("history");
+let count = 0;
+
+document.querySelector("#incrementBtn").addEventListener("click", function() {
+    count++;
+    countDisplay.textContent = count;           // Sửa lỗi 6
+    const li = document.createElement("li");
+    li.textContent = "Count changed to " + count;
+    li.addEventListener("click", function() { deleteHistory(this); });
+    historyList.append(li);
+});
+
+document.querySelector("#decrementBtn").addEventListener("click", function() {  // Sửa lỗi 1
+    count--;
+    countDisplay.textContent = count;           // Sửa lỗi 6
+});
+
+document.querySelector("#resetBtn").addEventListener("click", () => {
+    count = 0;
+    countDisplay.textContent = count;           // Sửa lỗi 2
+    historyList.innerHTML = "";                 // Sửa lỗi 3
+});
+
+function deleteHistory(element) {
+    element.parentNode.removeChild(element);
+}
+
+document.querySelector("#clearHistory").addEventListener("click", () => {
+    const items = historyList.querySelectorAll("li");
+    items.forEach(item => { item.remove(); });  // Sửa lỗi 4
+});
+
+window.addEventListener("beforeunload", () => {
+    localStorage.setItem("count", count);
+    localStorage.setItem("history", historyList.innerHTML);
+});
+
+window.addEventListener("load", () => {
+    count = parseInt(localStorage.getItem("count")) || 0;  // Sửa lỗi 5, 7
+    countDisplay.textContent = count;
+});
