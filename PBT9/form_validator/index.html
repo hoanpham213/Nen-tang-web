@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validator</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+        h2 { text-align:center; margin-bottom: 24px; color:#333; }
+
+        .field { margin-bottom: 18px; }
+        label { display:block; font-size:13px; font-weight:600; color:#555; margin-bottom:5px; }
+
+        .input-wrapper { position: relative; }
+        input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
+            width: 100%;
+            padding: 10px 36px 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: #764ba2; }
+        input.valid   { border-color: #4caf50; }
+        input.invalid { border-color: #e53e3e; }
+
+        .status-icon {
+            position: absolute;
+            right: 10px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+        }
+
+        .error-msg {
+            font-size: 12px;
+            color: #e53e3e;
+            margin-top: 4px;
+            min-height: 16px;
+        }
+        .success-msg { color: #4caf50; }
+
+        /* Password strength */
+        .strength-bar {
+            height: 5px;
+            border-radius: 3px;
+            background: #eee;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        .strength-fill {
+            height: 100%;
+            border-radius: 3px;
+            width: 0;
+            transition: width 0.3s, background 0.3s;
+        }
+        .strength-label { font-size:11px; color:#888; margin-top:3px; }
+
+        /* Submit button */
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, opacity 0.2s;
+            margin-top: 8px;
+        }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; background: #999; }
+        .submit-btn:not(:disabled):hover { background: #5c3a7e; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: white;
+            border-radius: 12px;
+            padding: 28px 24px;
+            max-width: 360px;
+            width: 90%;
+            text-align: center;
+            animation: pop 0.25s ease;
+        }
+        @keyframes pop {
+            from { opacity:0; transform: scale(0.8); }
+            to   { opacity:1; transform: scale(1); }
+        }
+        .modal-box h3 { font-size: 22px; margin-bottom: 12px; }
+        .modal-box p  { font-size: 14px; color: #555; margin-bottom: 6px; text-align: left; }
+        .modal-close-btn {
+            margin-top: 16px;
+            padding: 9px 24px;
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>📋 Đăng ký tài khoản</h2>
+
+    <form id="registerForm" novalidate>
+
+        <!-- Tên -->
+        <div class="field">
+            <label for="fullname">Họ và tên</label>
+            <div class="input-wrapper">
+                <input type="text" id="fullname" placeholder="Nguyễn Văn A" autocomplete="off">
+                <span class="status-icon" id="nameIcon"></span>
+            </div>
+            <div class="error-msg" id="nameMsg"></div>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+            <label for="email">Email</label>
+            <div class="input-wrapper">
+                <input type="email" id="email" placeholder="example@gmail.com">
+                <span class="status-icon" id="emailIcon"></span>
+            </div>
+            <div class="error-msg" id="emailMsg"></div>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+            <label for="password">Mật khẩu</label>
+            <div class="input-wrapper">
+                <input type="password" id="password" placeholder="Tối thiểu 8 ký tự">
+                <span class="status-icon" id="passIcon"></span>
+            </div>
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <div class="strength-label" id="strengthLabel"></div>
+            <div class="error-msg" id="passMsg"></div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="field">
+            <label for="confirm">Xác nhận mật khẩu</label>
+            <div class="input-wrapper">
+                <input type="password" id="confirm" placeholder="Nhập lại mật khẩu">
+                <span class="status-icon" id="confirmIcon"></span>
+            </div>
+            <div class="error-msg" id="confirmMsg"></div>
+        </div>
+
+        <!-- Phone -->
+        <div class="field">
+            <label for="phone">Số điện thoại</label>
+            <div class="input-wrapper">
+                <input type="tel" id="phone" placeholder="0901-234-567" maxlength="12">
+                <span class="status-icon" id="phoneIcon"></span>
+            </div>
+            <div class="error-msg" id="phoneMsg"></div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn" disabled>Đăng ký</button>
+    </form>
+</div>
+
+<!-- Modal thành công -->
+<div class="modal-overlay" id="successModal">
+    <div class="modal-box">
+        <h3>🎉 Đăng ký thành công!</h3>
+        <p id="modalInfo"></p>
+        <button class="modal-close-btn" id="modalCloseBtn">Đóng</button>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// Form Validator — Real-time validation
+// ============================================================
+
+const fields = {
+    name:    { el: document.querySelector("#fullname"), icon: document.querySelector("#nameIcon"),    msg: document.querySelector("#nameMsg"),    valid: false },
+    email:   { el: document.querySelector("#email"),    icon: document.querySelector("#emailIcon"),   msg: document.querySelector("#emailMsg"),   valid: false },
+    pass:    { el: document.querySelector("#password"), icon: document.querySelector("#passIcon"),    msg: document.querySelector("#passMsg"),    valid: false },
+    confirm: { el: document.querySelector("#confirm"),  icon: document.querySelector("#confirmIcon"), msg: document.querySelector("#confirmMsg"), valid: false },
+    phone:   { el: document.querySelector("#phone"),    icon: document.querySelector("#phoneIcon"),   msg: document.querySelector("#phoneMsg"),   valid: false },
+};
+
+const submitBtn = document.querySelector("#submitBtn");
+const strengthFill  = document.querySelector("#strengthFill");
+const strengthLabel = document.querySelector("#strengthLabel");
+
+// Hàm đặt trạng thái hợp lệ/không
+function setStatus(field, isValid, message = "") {
+    field.valid = isValid;
+    field.el.classList.toggle("valid",   isValid);
+    field.el.classList.toggle("invalid", !isValid && field.el.value.length > 0);
+    field.icon.textContent = field.el.value.length === 0 ? "" : (isValid ? "✅" : "❌");
+    field.msg.textContent  = isValid ? "" : message;
+    field.msg.className    = `error-msg${isValid ? " success-msg" : ""}`;
+    checkAllValid();
+}
+
+function checkAllValid() {
+    const allOk = Object.values(fields).every(f => f.valid);
+    submitBtn.disabled = !allOk;
+}
+
+// ── Validate Tên ──
+fields.name.el.addEventListener("input", () => {
+    const v = fields.name.el.value.trim();
+    if (v.length < 2)       setStatus(fields.name, false, "Tên phải có ít nhất 2 ký tự");
+    else if (v.length > 50) setStatus(fields.name, false, "Tên không quá 50 ký tự");
+    else                    setStatus(fields.name, true);
+});
+
+// ── Validate Email ──
+fields.email.el.addEventListener("input", () => {
+    const v = fields.email.el.value.trim();
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!v)              setStatus(fields.email, false, "Email không được để trống");
+    else if (!regex.test(v)) setStatus(fields.email, false, "Email không đúng định dạng (vd: abc@gmail.com)");
+    else                 setStatus(fields.email, true);
+});
+
+// ── Validate Password + Strength ──
+fields.pass.el.addEventListener("input", () => {
+    const v = fields.pass.el.value;
+    let strength = 0, label = "", color = "";
+
+    if (v.length >= 8) strength++;
+    if (/[a-z]/.test(v) && /[A-Z]/.test(v)) strength++;
+    if (/\d/.test(v)) strength++;
+    if (/[^a-zA-Z0-9]/.test(v)) strength++;
+
+    if (v.length === 0) {
+        strengthFill.style.width = "0";
+        strengthLabel.textContent = "";
+    } else if (v.length < 8) {
+        strengthFill.style.width = "25%";
+        strengthFill.style.background = "#e53e3e";
+        strengthLabel.textContent = "Yếu — cần ít nhất 8 ký tự";
+    } else if (strength <= 2) {
+        strengthFill.style.width = "50%";
+        strengthFill.style.background = "#f59e0b";
+        strengthLabel.textContent = "Trung bình — thêm chữ hoa + số";
+    } else if (strength === 3) {
+        strengthFill.style.width = "75%";
+        strengthFill.style.background = "#3b82f6";
+        strengthLabel.textContent = "Khá mạnh — thêm ký tự đặc biệt";
+    } else {
+        strengthFill.style.width = "100%";
+        strengthFill.style.background = "#4caf50";
+        strengthLabel.textContent = "Mạnh 💪";
+    }
+
+    if (v.length < 8) setStatus(fields.pass, false, "Mật khẩu phải có ít nhất 8 ký tự");
+    else              setStatus(fields.pass, true);
+
+    // Re-validate confirm nếu đã có giá trị
+    if (fields.confirm.el.value) fields.confirm.el.dispatchEvent(new Event("input"));
+});
+
+// ── Validate Confirm ──
+fields.confirm.el.addEventListener("input", () => {
+    const v = fields.confirm.el.value;
+    if (!v)                                   setStatus(fields.confirm, false, "Vui lòng xác nhận mật khẩu");
+    else if (v !== fields.pass.el.value)      setStatus(fields.confirm, false, "Mật khẩu không khớp");
+    else                                      setStatus(fields.confirm, true);
+});
+
+// ── Validate Phone + Auto format ──
+fields.phone.el.addEventListener("input", (e) => {
+    // Chỉ giữ số
+    let digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+
+    // Auto format: 0901-234-567
+    let formatted = digits;
+    if (digits.length > 7)      formatted = digits.slice(0,4) + "-" + digits.slice(4,7) + "-" + digits.slice(7);
+    else if (digits.length > 4) formatted = digits.slice(0,4) + "-" + digits.slice(4);
+
+    e.target.value = formatted;
+
+    if (digits.length !== 10)   setStatus(fields.phone, false, "Số điện thoại phải đủ 10 chữ số");
+    else if (!/^0\d{9}$/.test(digits)) setStatus(fields.phone, false, "Số điện thoại phải bắt đầu bằng 0");
+    else                        setStatus(fields.phone, true);
+});
+
+// ── Submit ──
+document.querySelector("#registerForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const info = document.querySelector("#modalInfo");
+    info.innerHTML = `
+        <strong>Tên:</strong> ${fields.name.el.value}<br>
+        <strong>Email:</strong> ${fields.email.el.value}<br>
+        <strong>Phone:</strong> ${fields.phone.el.value}
+    `;
+    document.querySelector("#successModal").classList.add("show");
+});
+
+document.querySelector("#modalCloseBtn").addEventListener("click", () => {
+    document.querySelector("#successModal").classList.remove("show");
+});
+</script>
+</body>
+</html>
