@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyboard App</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: #eee; min-height: 100vh; }
+
+        h2 { font-size: 16px; color: #aaa; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; padding-left: 4px; }
+
+        .section { max-width: 900px; margin: 0 auto; padding: 28px 20px; }
+
+        /* ── GALLERY ── */
+        .gallery-hint {
+            font-size: 12px; color: #666;
+            margin-bottom: 12px;
+            display: flex; gap: 16px; flex-wrap: wrap;
+        }
+        .gallery-hint span { background: #2d2d5e; padding: 3px 8px; border-radius: 4px; }
+
+        .gallery-main {
+            position: relative;
+            background: #0d0d1e;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-img {
+            max-width: 100%; max-height: 100%;
+            object-fit: contain;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-counter {
+            position: absolute; bottom: 12px; right: 16px;
+            background: rgba(0,0,0,0.6); color: white;
+            font-size: 13px; padding: 4px 10px; border-radius: 20px;
+        }
+
+        .gallery-thumbs {
+            display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 4px;
+        }
+
+        .thumb {
+            width: 60px; height: 45px;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            object-fit: cover;
+            opacity: 0.5;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .thumb.active { border-color: #764ba2; opacity: 1; }
+
+        .play-status {
+            position: absolute; top: 12px; left: 16px;
+            background: rgba(0,0,0,0.6); color: white;
+            font-size: 12px; padding: 4px 10px; border-radius: 20px;
+        }
+
+        /* ── COMMAND PALETTE ── */
+        .open-palette-btn {
+            padding: 10px 20px;
+            background: #2d2d5e;
+            color: #aaa;
+            border: 1px solid #444;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .open-palette-btn:hover { background: #3d3d7e; color: white; }
+        .open-palette-btn kbd {
+            background: #444; padding: 2px 6px; border-radius: 4px;
+            font-size: 11px; color: #ddd;
+        }
+
+        /* Command Palette Overlay */
+        .palette-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 15vh;
+        }
+        .palette-overlay.show { display: flex; }
+
+        .palette-box {
+            background: #1e1e2e;
+            border: 1px solid #444;
+            border-radius: 12px;
+            width: 560px;
+            max-width: 90vw;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        .palette-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+        .palette-input::placeholder { color: #555; }
+
+        .palette-list { max-height: 320px; overflow-y: auto; }
+
+        .palette-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 16px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-radius: 4px;
+        }
+        .palette-item:hover, .palette-item.focused {
+            background: #2d2d5e;
+        }
+        .palette-item .icon { font-size: 18px; width: 24px; text-align: center; }
+        .palette-item .label { font-size: 14px; color: #ddd; }
+        .palette-item .desc  { font-size: 12px; color: #666; margin-left: auto; }
+
+        .palette-empty {
+            padding: 20px 16px;
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+        }
+
+        /* Focus ring visible */
+        :focus-visible { outline: 2px solid #764ba2; outline-offset: 2px; }
+
+        hr { border: none; border-top: 1px solid #2d2d5e; margin: 8px 0; }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════ SECTION 1: GALLERY ═══════════ -->
+<div class="section">
+    <h2>🖼️ Keyboard Gallery</h2>
+    <div class="gallery-hint">
+        <span>← → Chuyển ảnh</span>
+        <span>Space: Play/Pause slideshow</span>
+        <span>1–9: Nhảy đến ảnh</span>
+        <span>Esc: Đóng modal</span>
+    </div>
+
+    <div class="gallery-main" id="galleryMain" tabindex="0" aria-label="Gallery ảnh">
+        <img class="gallery-img" id="galleryImg" src="" alt="Gallery image">
+        <span class="play-status" id="playStatus" style="display:none">▶ Đang phát</span>
+        <span class="gallery-counter" id="galleryCounter">1 / 9</span>
+    </div>
+
+    <div class="gallery-thumbs" id="galleryThumbs" role="list" aria-label="Danh sách ảnh thumbnail"></div>
+</div>
+
+<hr>
+
+<!-- ═══════════ SECTION 2: COMMAND PALETTE ═══════════ -->
+<div class="section">
+    <h2>⌨️ Command Palette</h2>
+    <button class="open-palette-btn" id="openPaletteBtn" aria-label="Mở command palette (Ctrl+K)">
+        <span>🔍 Tìm lệnh...</span>
+        <kbd>Ctrl</kbd>+<kbd>K</kbd>
+    </button>
+</div>
+
+<!-- Command Palette Overlay -->
+<div class="palette-overlay" id="paletteOverlay" role="dialog" aria-modal="true" aria-label="Command Palette">
+    <div class="palette-box">
+        <input class="palette-input" id="paletteInput" type="text"
+               placeholder="Gõ để tìm lệnh..." autocomplete="off"
+               aria-label="Tìm kiếm lệnh">
+        <div class="palette-list" id="paletteList" role="listbox"></div>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// GALLERY
+// ============================================================
+
+const IMAGES = [
+    { src: "https://placehold.co/800x400/4a90e2/fff?text=Ảnh+1+—+Thiên+nhiên",   alt: "Thiên nhiên"  },
+    { src: "https://placehold.co/800x400/e2724a/fff?text=Ảnh+2+—+Thành+phố",     alt: "Thành phố"    },
+    { src: "https://placehold.co/800x400/4ae27a/fff?text=Ảnh+3+—+Biển+cả",       alt: "Biển cả"      },
+    { src: "https://placehold.co/800x400/e2c94a/fff?text=Ảnh+4+—+Núi+rừng",      alt: "Núi rừng"     },
+    { src: "https://placehold.co/800x400/9b4ae2/fff?text=Ảnh+5+—+Hoàng+hôn",     alt: "Hoàng hôn"    },
+    { src: "https://placehold.co/800x400/4ae2d4/fff?text=Ảnh+6+—+Công+nghệ",     alt: "Công nghệ"    },
+    { src: "https://placehold.co/800x400/e24a8a/fff?text=Ảnh+7+—+Nghệ+thuật",    alt: "Nghệ thuật"   },
+    { src: "https://placehold.co/800x400/4a6ae2/fff?text=Ảnh+8+—+Ẩm+thực",      alt: "Ẩm thực"      },
+    { src: "https://placehold.co/800x400/e2a44a/fff?text=Ảnh+9+—+Du+lịch",       alt: "Du lịch"      },
+];
+
+let currentIdx   = 0;
+let slideInterval = null;
+let isPlaying    = false;
+
+const galleryImg     = document.querySelector("#galleryImg");
+const galleryCounter = document.querySelector("#galleryCounter");
+const galleryThumbs  = document.querySelector("#galleryThumbs");
+const playStatus     = document.querySelector("#playStatus");
+
+// Build thumbnails
+IMAGES.forEach((img, i) => {
+    const thumb = document.createElement("img");
+    thumb.src       = img.src;
+    thumb.alt       = img.alt;
+    thumb.className = `thumb${i === 0 ? " active" : ""}`;
+    thumb.setAttribute("role", "listitem");
+    thumb.setAttribute("aria-label", `Ảnh ${i+1}: ${img.alt}`);
+    thumb.tabIndex  = 0;
+    thumb.addEventListener("click", () => goTo(i));
+    thumb.addEventListener("keydown", e => { if (e.key === "Enter") goTo(i); });
+    galleryThumbs.appendChild(thumb);
+});
+
+function goTo(idx) {
+    currentIdx = (idx + IMAGES.length) % IMAGES.length;
+    galleryImg.style.opacity = 0;
+    setTimeout(() => {
+        galleryImg.src          = IMAGES[currentIdx].src;
+        galleryImg.alt          = IMAGES[currentIdx].alt;
+        galleryImg.style.opacity = 1;
+    }, 150);
+    galleryCounter.textContent = `${currentIdx + 1} / ${IMAGES.length}`;
+    // Update thumbs
+    document.querySelectorAll(".thumb").forEach((t, i) => {
+        t.classList.toggle("active", i === currentIdx);
+    });
+}
+
+function togglePlay() {
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+        slideInterval = setInterval(() => goTo(currentIdx + 1), 2000);
+        playStatus.style.display = "block";
+    } else {
+        clearInterval(slideInterval);
+        playStatus.style.display = "none";
+    }
+}
+
+// Khởi tạo ảnh đầu tiên
+goTo(0);
+
+// ── Keyboard events cho gallery ──
+document.addEventListener("keydown", (e) => {
+    // Không xử lý nếu đang focus trong palette input
+    if (document.activeElement === document.querySelector("#paletteInput")) return;
+
+    if (e.key === "ArrowLeft")  { e.preventDefault(); goTo(currentIdx - 1); }
+    if (e.key === "ArrowRight") { e.preventDefault(); goTo(currentIdx + 1); }
+    if (e.key === " ")          { e.preventDefault(); togglePlay(); }
+
+    // Phím số 1–9 → nhảy đến ảnh
+    const num = parseInt(e.key);
+    if (num >= 1 && num <= IMAGES.length) goTo(num - 1);
+});
+
+// ============================================================
+// COMMAND PALETTE
+// ============================================================
+
+const COMMANDS = [
+    { icon: "🏠", label: "Trang chủ",         desc: "Ctrl+H", action: () => alert("→ Trang chủ") },
+    { icon: "🔍", label: "Tìm kiếm",           desc: "Ctrl+F", action: () => alert("→ Tìm kiếm") },
+    { icon: "🌙", label: "Dark Mode",           desc: "Ctrl+D", action: () => document.body.classList.toggle("dark") },
+    { icon: "⚙️", label: "Cài đặt",            desc: "Ctrl+,", action: () => alert("→ Cài đặt") },
+    { icon: "📋", label: "Todo App",            desc: "",       action: () => alert("→ Mở Todo App") },
+    { icon: "🛍️", label: "Danh mục sản phẩm", desc: "",       action: () => alert("→ Product Catalog") },
+    { icon: "📝", label: "Form đăng ký",        desc: "",       action: () => alert("→ Form Validator") },
+    { icon: "🚪", label: "Đăng xuất",           desc: "",       action: () => alert("→ Đăng xuất") },
+    { icon: "❓", label: "Trợ giúp",            desc: "F1",     action: () => alert("→ Trợ giúp") },
+];
+
+const paletteOverlay = document.querySelector("#paletteOverlay");
+const paletteInput   = document.querySelector("#paletteInput");
+const paletteList    = document.querySelector("#paletteList");
+let focusedIndex     = -1;
+
+function openPalette() {
+    paletteOverlay.classList.add("show");
+    paletteInput.value = "";
+    focusedIndex = -1;
+    renderCommands(COMMANDS);
+    paletteInput.focus();
+}
+
+function closePalette() {
+    paletteOverlay.classList.remove("show");
+    document.querySelector("#openPaletteBtn").focus();
+}
+
+function renderCommands(list) {
+    paletteList.innerHTML = "";
+    focusedIndex = -1;
+
+    if (list.length === 0) {
+        const empty = document.createElement("div");
+        empty.className   = "palette-empty";
+        empty.textContent = "Không tìm thấy lệnh nào";
+        paletteList.appendChild(empty);
+        return;
+    }
+
+    list.forEach((cmd, i) => {
+        const item = document.createElement("div");
+        item.className    = "palette-item";
+        item.setAttribute("role", "option");
+        item.setAttribute("aria-label", cmd.label);
+        item.tabIndex     = 0;
+
+        const icon  = document.createElement("span");
+        icon.className   = "icon";
+        icon.textContent = cmd.icon;
+        icon.setAttribute("aria-hidden", "true");
+
+        const label = document.createElement("span");
+        label.className   = "label";
+        label.textContent = cmd.label;
+
+        const desc = document.createElement("span");
+        desc.className   = "desc";
+        desc.textContent = cmd.desc;
+
+        item.appendChild(icon);
+        item.appendChild(label);
+        if (cmd.desc) item.appendChild(desc);
+
+        item.addEventListener("click", () => { cmd.action(); closePalette(); });
+        paletteList.appendChild(item);
+    });
+}
+
+function setFocus(idx) {
+    const items = paletteList.querySelectorAll(".palette-item");
+    items.forEach(it => it.classList.remove("focused"));
+    focusedIndex = Math.max(0, Math.min(idx, items.length - 1));
+    if (items[focusedIndex]) {
+        items[focusedIndex].classList.add("focused");
+        items[focusedIndex].scrollIntoView({ block: "nearest" });
+    }
+}
+
+// Search trong palette
+paletteInput.addEventListener("input", () => {
+    const q = paletteInput.value.toLowerCase();
+    const filtered = COMMANDS.filter(c => c.label.toLowerCase().includes(q));
+    renderCommands(filtered);
+});
+
+// Keyboard navigation trong palette
+paletteInput.addEventListener("keydown", (e) => {
+    const items = paletteList.querySelectorAll(".palette-item");
+    if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setFocus(focusedIndex + 1);
+    } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setFocus(focusedIndex - 1);
+    } else if (e.key === "Enter" && items[focusedIndex]) {
+        items[focusedIndex].click();
+    } else if (e.key === "Escape") {
+        closePalette();
+    }
+});
+
+// Ctrl+K mở palette
+document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        if (paletteOverlay.classList.contains("show")) {
+            closePalette();
+        } else {
+            openPalette();
+        }
+    }
+    if (e.key === "Escape" && paletteOverlay.classList.contains("show")) {
+        closePalette();
+    }
+});
+
+// Nút mở
+document.querySelector("#openPaletteBtn").addEventListener("click", openPalette);
+
+// Click ngoài để đóng
+paletteOverlay.addEventListener("click", (e) => {
+    if (e.target === paletteOverlay) closePalette();
+});
+</script>
+</body>
+</html>
