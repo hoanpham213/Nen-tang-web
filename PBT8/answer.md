@@ -71,3 +71,39 @@ console.log(c.getCount());   // → 2
 - Giải thích chi tiết:
     + var i có function scope — chỉ có 1 biến i duy nhất cho toàn bộ vòng lặp. Khi các callback của setTimeout chạy (sau 100ms), vòng lặp đã chạy xong → i = 3. Tất cả 3 callback đều đọc cùng 1 biến i = 3.
     + let j có block scope — mỗi lần lặp tạo ra 1 biến j mới và riêng biệt. Closure của mỗi callback "đóng gói" đúng giá trị j của lần lặp đó (0, 1, 2). Khi chạy sau 200ms, mỗi callback vẫn nhớ đúng j của mình.
+
+Câu A3 - Array Methods
+Cho mảng: const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+// 1. Lấy các số chẵn
+const chan = nums.filter(n => n % 2 === 0);
+// → [2, 4, 6, 8, 10]
+
+// 2. Nhân mỗi số với 3
+const nhan3 = nums.map(n => n * 3);
+// → [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+
+// 3. Tính tổng
+const tong = nums.reduce((acc, n) => acc + n, 0);
+// → 55
+
+// 4. Tìm số đầu tiên > 7
+const lon7 = nums.find(n => n > 7);
+// → 8
+
+// 5. Kiểm tra CÓ số > 10 không
+const coLon10 = nums.some(n => n > 10);
+// → false
+
+// 6. Kiểm tra TẤT CẢ đều > 0
+const tatcaDuong = nums.every(n => n > 0);
+// → true
+
+// 7. Tạo mảng "Số X là [chẵn/lẻ]"
+const moTa = nums.map(n => `Số ${n} là ${n % 2 === 0 ? "chẵn" : "lẻ"}`);
+// → ["Số 1 là lẻ", "Số 2 là chẵn", ...]
+
+// 8. Đảo ngược không mutate gốc
+const dao = [...nums].reverse();
+// → [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+// (spread trước để tạo bản sao, tránh thay đổi mảng gốc)
