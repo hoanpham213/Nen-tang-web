@@ -184,4 +184,46 @@ const processOrders = (orders) =>
     + Arrow function + implicit return cho map
     + Không dùng var, không có biến tạm
 
+Câu C2 - Thiết kế API miniArray
+const miniArray = {
+    // map: duyệt từng phần tử, áp dụng fn, thu thập kết quả
+    map(arr, fn) {
+        const result = [];
+        for (let i = 0; i < arr.length; i++) {
+            result.push(fn(arr[i], i, arr));
+        }
+        return result;
+    },
 
+    // filter: chỉ giữ phần tử mà fn trả về true
+    filter(arr, fn) {
+        const result = [];
+        for (let i = 0; i < arr.length; i++) {
+            if (fn(arr[i], i, arr)) {
+                result.push(arr[i]);
+            }
+        }
+        return result;
+    },
+
+    // reduce: gộp toàn bộ mảng thành 1 giá trị
+    reduce(arr, fn, initialValue) {
+        let acc = initialValue;
+        for (let i = 0; i < arr.length; i++) {
+            acc = fn(acc, arr[i], i, arr);
+        }
+        return acc;
+    }
+};
+
+// Test:
+console.log(miniArray.map([1,2,3], x => x * 2));           // → [2, 4, 6]
+console.log(miniArray.filter([1,2,3,4], x => x > 2));      // → [3, 4]
+console.log(miniArray.reduce([1,2,3,4], (a,b) => a+b, 0)); // → 10
+
+* Giải thích cách hoạt động của reduce:
+- reduce nhận 4 tham số: mảng, hàm callback, giá trị khởi tạo. Callback nhận (accumulator, currentValue). Mỗi vòng lặp: acc = fn(acc, arr[i]). Ví dụ với [1,2,3,4] và (a,b) => a+b, khởi tạo 0:
+    + i=0: acc = 0+1 = 1
+    + i=1: acc = 1+2 = 3
+    + i=2: acc = 3+3 = 6
+    + i=3: acc = 6+4 = 10 → trả về 10
